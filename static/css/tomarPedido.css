@@ -1,0 +1,54 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    display: flex;
+    flex: 1;
+}
+
+.content {
+    flex: 1;
+    margin-right: 16rem; /* Matches the width of the panel */
+    transition: margin-right 0.3s ease;
+}
+
+.panel {
+    width: 16rem;
+    transition: transform 0.3s ease;
+}
+
+.panel.closed {
+    transform: translateX(100%);
+}
+
+@media (max-width: 640px) {
+    .panel {
+        width: 100%; /* Ocupar todo el ancho */
+        height: 200px; /* Altura fija */
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #e2e8f0; /* Color de fondo */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        z-index: 50;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow-y: auto; /* Permitir scroll */
+    }
+
+    .panel.open {
+        transform: translateY(0);
+    }
+
+    .content {
+        transition: padding-top 0.3s ease;
+    }
+
+    .panel.open ~ .content {
+        padding-top: 220px; /* Ajuste para evitar que el contenido quede tapado */
+    }
+}

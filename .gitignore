@@ -1,0 +1,46 @@
+# Entornos virtuales (¡nunca los subas!)
+.venv/
+venv/
+env/
+.env/  # Si usas variables de entorno, mejor usa `.env.example`
+
+# Archivos de configuración sensible
+.env
+.env.local
+.env*.local
+
+# Base de datos SQLite (común en desarrollo)
+*.sqlite3
+*.sqlite3-journal
+
+# Logs y archivos temporales
+*.log
+*.tmp
+*.pid
+
+### 📦 Dependencias y builds ###
+# Dependencias de Python
+venv/  # (repetido para énfasis)
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+
+# Directorios de instalación/built
+build/
+dist/
+*.egg
+
+### 🛠 Herramientas específicas ###
+# Coverage y tests
+.coverage
+htmlcov/
+.pytest_cache/
+
+# IDE/Editores
+.vscode/
+.idea/
+*.swp
+
+# Static files generados por Django (si usas collectstatic)
+/staticfiles/
+/mediafiles/  # Si no quieres subir archivos multimedia
