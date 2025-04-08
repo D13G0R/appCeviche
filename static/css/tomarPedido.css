@@ -15,16 +15,41 @@ main {
     transition: margin-right 0.3s ease;
 }
 
+/*Responsive Design to Panel of Orders*/
 .panel {
     width: 16rem;
+    height: 200px;
     transition: transform 0.3s ease;
+    overflow-y: scroll;
 }
+@media (min-height:500px){
+    .panel{
+        height: 350px;
+    }
+}
+@media (min-height:650px){
+    .panel{
+        height: 500px;
+    }
+}
+@media (min-height:900px){
+    .panel{
+        height: 750px;
+    }
+}
+@media(min-height:1150px){
+    .panel{
+        height: 950px;
+    }
+}
+/*End responsive Panel of Orders*/
+
 
 .panel.closed {
     transform: translateX(100%);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 500px) {
     .panel {
         width: 100%; /* Ocupar todo el ancho */
         height: 200px; /* Altura fija */
@@ -38,6 +63,7 @@ main {
         padding: 1rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         overflow-y: auto; /* Permitir scroll */
+        background-color: red;
     }
 
     .panel.open {
@@ -46,6 +72,9 @@ main {
 
     .content {
         transition: padding-top 0.3s ease;
+        margin-right: 16rem; /* Matches the width of the panel */
+        margin-top: 120px;
+        margin-right: 0px; /* Matches the width of the panel */
     }
 
     .panel.open ~ .content {

@@ -44,3 +44,4 @@ htmlcov/
 # Static files generados por Django (si usas collectstatic)
 /staticfiles/
 /mediafiles/  # Si no quieres subir archivos multimedia
+/database

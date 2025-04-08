@@ -15,8 +15,8 @@ class Productos(models.Model):
 
 class Topics(models.Model):
     nombre_topic = models.CharField(max_length= 50, null = False, blank = False)
-    descripcion_producto = models.TextField(null = False, blank = False)
-    precio_producto = models.FloatField(null = False, blank = False)
+    descripcion_topic = models.TextField(null = False, blank = False)
+    precio_topic = models.FloatField(null = False, blank = False)
 
 class Pedido_Producto_Topic(models.Model):
     fk_pedido = models.BigIntegerField()

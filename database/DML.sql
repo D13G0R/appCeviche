@@ -27,7 +27,7 @@ INSERT INTO productos_productos (id, nombre_producto, descripcion_producto, prec
 (26, 'Limonada', 'Bebida refrescante de limón', 2.49),
 (27, 'Agua de Coco', 'Bebida natural de coco', 3.49);
 
-INSERT INTO productos_topics (id, nombre_topic, descripcion_producto, precio_producto) VALUES
+INSERT INTO productos_topics (id, nombre_topic, descripcion_topic, precio_topic) VALUES
 (1, '50grs de Camarón', 'Porción de 50 gramos de camarón fresco', 3.99),
 (2, '50grs de Cebolla', 'Porción de 50 gramos de cebolla', 0.99),
 (3, '50grs de Mango', 'Porción de 50 gramos de mango fresco', 1.99),

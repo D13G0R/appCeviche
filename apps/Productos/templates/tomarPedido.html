@@ -18,36 +18,41 @@
 
     <main class="pt-20 pb-16">
         <div class="content">
-            <article>
-                <section class="grid gap-4 px-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {% for producto in Productos %}
-                    <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                        onclick="addToPanel('Producto', {{ producto.id }}, '{{ producto.nombre_producto }}', '{{ producto.descripcion_producto }}', '{{ producto.precio_producto }}')">
-                        <h2 class="text-lg font-semibold text-gray-700">{{ producto.nombre_producto }}</h2>
-                        <p class="text-sm text-gray-600">{{ producto.descripcion_producto }}</p>
-                        <p class="text-md font-bold text-gray-800 mt-2">${{ producto.precio_producto }}</p>
-                    </div>
-                    {% endfor %}
-                </section>
 
-                <h2 class="text-3xl text-center font-bold mt-12 mb-6 text-blue-400">Topics</h2>
+            <section class="grid gap-4 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"> <!--Las visas menores a 640 (sm) no se cojen porque los telefonos tienes menores tamaños (400-500px) entonces se edito con @media en CSS-->
+                {% for producto in Productos %}
+                <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
+                    onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.descripcion_producto }}', '{{ producto.precio_producto }}')">
+                    <h2 class="text-lg font-semibold text-gray-700">{{ producto.nombre_producto }}</h2>
+                    <p class="text-sm text-gray-600">{{ producto.descripcion_producto }}</p>
+                    <p class="text-md font-bold text-gray-800 mt-2">${{ producto.precio_producto }}</p>
+                </div>
+                {% endfor %}
+            </section>
 
-                <section class="grid gap-4 px-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {% for topic in Topics %}
-                    <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                        onclick="addToPanel('Topic', {{ topic.id }}, '{{ topic.nombre_topic }}', '{{ topic.descripcion_topic }}', '{{ topic.precio_topic }}')">
-                        <h3 class="text-lg font-semibold text-gray-700">{{ topic.nombre_topic }}</h3>
-                        <qp class="text-sm text-gray-600">{{ topic.descripcion_topic }}</qp>
-                        <qp class="text-sm text-gray-600">{{ topic.precio_topic }}</qp>
-                    </div>
-                    {% endfor %}
-                </section>
-            </article>
+            <h2 class="text-3xl text-center font-bold mt-12 mb-6 text-blue-400">Topics</h2>
+
+            <section class="grid gap-5 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                {% for topic in Topics %}
+                <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
+                    onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.descripcion_topic }}', '{{ topic.precio_topic }}')">
+                    <h3 class="text-lg font-semibold text-gray-700">{{ topic.nombre_topic }}</h3>
+                    <qp class="text-sm text-gray-600">{{ topic.descripcion_topic }}</qp>
+                    <qp class="text-sm text-gray-600">{{ topic.precio_topic }}</qp>
+                </div>
+                {% endfor %}
+            </section>
+
         </div>
-        <article id="panel" class="panel bg-gray-300 fixed top-0 right-0 pt-20 overflow-y-auto shadow-md">
+        <article id="panel"
+            class="top-15 right-2 pt-5 panel bg-gray-400 fixed shadow-lg shadow-gray-400 rounded-lg border border-black border-4">
             <h2 class="text-center font-bold text-lg mb-4">En lista...</h2>
             <ul id="panel-list" class="px-4">
                 <!-- Items will be added here dynamically -->
+                <button type="button"
+                    class="w-5/6 h-10 mx-4 my-4 text-white font-semibold bg-sky-600 text-center rounded-3xl shadow shadow-black border border-4 border-black hover:bg-sky-500">Enviar
+                    Pedido
+                </button>
             </ul>
         </article>
     </main>
@@ -56,7 +61,7 @@
         <p class="text-sm">© 2023 Pedido App</p>
     </footer>
 
-    <script src = " {% static 'js/tomarPedido.js' %}">
+    <script src=" {% static 'js/tomarPedido.js' %}">
     </script>
 
 </body>
