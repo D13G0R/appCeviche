@@ -22,7 +22,7 @@
             <section class="grid gap-4 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"> <!--Las visas menores a 640 (sm) no se cojen porque los telefonos tienes menores tamaños (400-500px) entonces se edito con @media en CSS-->
                 {% for producto in Productos %}
                 <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                    onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.descripcion_producto }}', '{{ producto.precio_producto }}')">
+                    onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.precio_producto }}')">
                     <h2 class="text-lg font-semibold text-gray-700">{{ producto.nombre_producto }}</h2>
                     <p class="text-sm text-gray-600">{{ producto.descripcion_producto }}</p>
                     <p class="text-md font-bold text-gray-800 mt-2">${{ producto.precio_producto }}</p>
@@ -35,10 +35,10 @@
             <section class="grid gap-5 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                 {% for topic in Topics %}
                 <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                    onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.descripcion_topic }}', '{{ topic.precio_topic }}')">
+                    onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.precio_topic }}')">
                     <h3 class="text-lg font-semibold text-gray-700">{{ topic.nombre_topic }}</h3>
-                    <qp class="text-sm text-gray-600">{{ topic.descripcion_topic }}</qp>
-                    <qp class="text-sm text-gray-600">{{ topic.precio_topic }}</qp>
+                    <p class="text-sm text-gray-600">{{ topic.descripcion_topic }}</p>
+                    <p class="text-sm text-gray-600">{{ topic.precio_topic }}</p>
                 </div>
                 {% endfor %}
             </section>
@@ -55,9 +55,24 @@
                 </button>
             </ul>
         </article>
+        <div class = "modalTopics hidden absolute w-3/4 h-5/6 left-12 bg-blue-600 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-y-auto rounded-lg shadow-2xl pt-10 ">
+            <div class = "sm:col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-between">
+                <button onclick="closeTopicModal()">
+                    <img src = "{% static 'images/close.png' %}" class = "w-10">
+                </button>
+                <h2 class = "text-2xl text-bold text-white font-extrabold ml-32">Topics</h2>
+                <input class = "buscador" placeholder="aca va el buscador"></input>
+            </div>
+           
+            <!-- MODAL DE TOPICS -->
+
+
+        </div>
+
+        
     </main>
 
-    <footer class="bg-blue-200 text-gray-800 text-center py-4 fixed bottom-0 left-0 w-full shadow-md z-10">
+    <footer class="bg-blue-200 text-gray-800 text-center py-4 fixed bottom-0 left-0 r-20 w-full shadow-md z-10">
         <p class="text-sm">© 2023 Pedido App</p>
     </footer>
 

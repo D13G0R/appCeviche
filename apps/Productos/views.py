@@ -4,9 +4,10 @@ from django.views.generic import View, ListView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import viewsets
 
 from .models import Pedido_Producto_Topic
-from .serializers import PedidoProductoTopicSerializer
+from .serializers import PedidoProductoTopicSerializer, TopicSerializer
 from .models import Pedidos, Productos, Topics
 
 # Create your views here.
@@ -30,3 +31,9 @@ class PedidoProductoTopicView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class TopicViewSet(viewsets.ModelViewSet):
+    queryset = Topics.objects.all().order_by("nombre_topic")
+    serializer_class = TopicSerializer
+

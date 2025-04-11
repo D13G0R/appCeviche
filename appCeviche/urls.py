@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import inicio
 from apps.Productos import urls
+from rest_framework import routers
+from apps.Productos import views
 
+routes = routers.DefaultRouter()
+routes.register("topicsAll", views.TopicViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inicio/', inicio, name = "inicio"),
-    path('', include(urls))
+    path('', include(urls)),
+    path('api/', include(routes.urls)),
 ]

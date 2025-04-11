@@ -11,17 +11,18 @@ main {
 
 .content {
     flex: 1;
-    margin-right: 16rem; /* Matches the width of the panel */
+    margin-right: 18rem; /* Matches the width of the panel */
     transition: margin-right 0.3s ease;
 }
 
 /*Responsive Design to Panel of Orders*/
 .panel {
-    width: 16rem;
+    width: 18rem;
     height: 200px;
     transition: transform 0.3s ease;
     overflow-y: scroll;
 }
+/*RESPONSIVE ALTURA*/
 @media (min-height:500px){
     .panel{
         height: 350px;
@@ -42,6 +43,27 @@ main {
         height: 950px;
     }
 }
+/*RESPONSIVE ANCHURA*/
+/* @media (min-width:500px){
+    .panel{
+        width: 350px;
+    }
+}
+@media (min-width:650px){
+    .panel{
+        width: 500px;
+    }
+}
+@media (min-width:900px){
+    .panel{
+        width: 750px;
+    }
+}
+@media(min-width:1150px){
+    .panel{
+        width: 950px;
+    }
+} */
 /*End responsive Panel of Orders*/
 
 
@@ -79,5 +101,8 @@ main {
 
     .panel.open ~ .content {
         padding-top: 220px; /* Ajuste para evitar que el contenido quede tapado */
+    }
+    .modalTopics{
+        width: 90%;
     }
 }
