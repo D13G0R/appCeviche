@@ -1,6 +1,7 @@
 // Array para almacenar los pedidos en formato JSON
 let pedidoJson = [];
-let contador = 0;
+let contador = 0; //HAY QUE ARREGLAR ACA YA QUE SI SE INCREMENTA LA CANTIDAD DE TOPICS Y LUEGO LA CANTIDAD DE PRODUCTOS EL TOTAL RETROCEDE SUMANDO SOLO LOS PRODUCTOS 
+// Y NO LOS YOPICS PERO SI VUELVES SUMAR O RESTAR UN TOPIC VUELVE A LA NORMALIDAD
 // Función para agregar un elemento al panel
 function addToPanel(tipo, id, nombre, precio = null) {
     const panelList = document.getElementById('panel-list');
@@ -10,8 +11,8 @@ function addToPanel(tipo, id, nombre, precio = null) {
     // Estilo y estructura del elemento
     listItem.className = "bg-white p-4 rounded-lg shadow-md mb-4 border border-gray-300";
     listItem.innerHTML = `
-        <div class="id-${contador} flex flex-col gap-1">
-
+        <div class="id-${contador} elementos flex flex-col gap-1">
+            <input class = "id_elemento" type = "hidden" value ="id-${contador}">
             <div class = "w-full flex flex-row justify-between">
                 <h3 class="tipo font-bold text-sm text-gray-700">${tipo}</h3>
                 <p class = "text-sm">${contador}</p>
@@ -19,11 +20,12 @@ function addToPanel(tipo, id, nombre, precio = null) {
 
         
             <div class="flex justify-between items-center text-sm">
+                <input class = "id_producto" type = "hidden" value ="${id}">
                 <p class="nombre font-medium text-gray-600">${nombre}</p>
                 <div class="flex items-center gap-1">
                     <button class="increment-btn text-sm font-bold bg-gray-200 px-1 rounded hover:bg-gray-300">+</button>
                     <div class="cantidad-container w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                        <p class="cantidad text-xs font-semibold text-white">1</p>
+                        <p class="cantidad_producto text-xs font-semibold text-white">1</p>
                     </div>
                     <button class="decrement-btn text-sm font-bold bg-gray-200 px-1 rounded hover:bg-gray-300">-</button>
                 </div>
@@ -35,7 +37,7 @@ ${precio ? `<p class="precioUnidad text-gray-800 font-bold hidden">${precio}</p>
                 
             </div>
             <div>
-                <textarea class="detalle-producto w-full h-12 p-1 mt-2 border rounded text-sm text-gray-700 resize-none" placeholder="Detalle del pedido..."></textarea>
+                <textarea class="detalle_producto w-full h-12 p-1 mt-2 border rounded text-sm text-gray-700 resize-none" placeholder="Detalle del pedido..."></textarea>
             </div>
             <button class="add-topic-btn w-1/2 py-1 bg-blue-500 text-sm text-white font-medium rounded border border-black hover:bg-blue-400" onclick="panelAddTopics(this)">
                 Agregar Topic
@@ -70,7 +72,7 @@ document.getElementById('panel-list').addEventListener('click', function(event) 
     const idContainer = event.target.closest('div[class^="id-"]');
     if (!idContainer) return;
 
-    const cantidadElement = idContainer.querySelector('.cantidad');
+    const cantidadElement = idContainer.querySelector('.cantidad_producto');
     const precioElement = idContainer.querySelector('.precio');
     const precioUnidadElement = idContainer.querySelector('.precioUnidad');
 
@@ -134,24 +136,25 @@ function addTopicToProduct(topic) {
 
     topicWrapper.innerHTML = `
         <div class="flex justify-between items-center mb-1">
+            <input class = "id_topic "type="hidden" value = "${topic.id}">
             <p class="font-semibold text-gray-800 text-sm">${topic.nombre_topic}</p>
             <button class="remove-topic text-xs text-red-500 font-bold">X</button>
         </div>
         <div class="flex items-center justify-between text-sm mb-1">
             <p>Precio:</p>
-            <p class="precio-topic font-medium">${topic.precio_topic || 100}</p>
+            <p class="precio_topic font-medium">${topic.precio_topic || 100}</p>
         </div>
         <div class="flex items-center gap-2 mb-2">
             <button class="inc-topic bg-gray-300 px-2 rounded">+</button>
-            <span class="cantidad-topic">${1}</span>
+            <span class="cantidad_topic">${1}</span>
             <button class="dec-topic bg-gray-300 px-2 rounded">-</button>
         </div>
-        <textarea class="detalle-topic w-full p-1 border rounded text-sm" placeholder="Detalle del topic..."></textarea>
+        <textarea class="detalle_topic w-full p-1 border rounded text-sm" placeholder="Detalle del topic..."></textarea>
     `;
 
     const precioBase = parseFloat(topic.precio_topic || 100);
-    const cantidadSpan = topicWrapper.querySelector(".cantidad-topic");
-    const precioText = topicWrapper.querySelector(".precio-topic");
+    const cantidadSpan = topicWrapper.querySelector(".cantidad_topic");
+    const precioText = topicWrapper.querySelector(".precio_topic");
 
     topicWrapper.querySelector(".inc-topic").addEventListener("click", () => {
         let cantidad = parseInt(cantidadSpan.textContent);
@@ -187,18 +190,64 @@ function addTopicToProduct(topic) {
 
 function actualizarTotalProducto(productDiv) {
     const precioUnidadElement = productDiv.querySelector(".precioUnidad");
-    const cantidadProducto = parseInt(productDiv.querySelector(".cantidad").textContent);
+    const cantidadProducto = parseInt(productDiv.querySelector(".cantidad_producto").textContent);
     const base = parseFloat(precioUnidadElement.textContent);
     let total = base * cantidadProducto;
 
     const topics = productDiv.querySelectorAll(".topic-item");
     topics.forEach(topic => {
-        const cantidadTopic = parseInt(topic.querySelector(".cantidad-topic").textContent);
-        const precioUnitario = parseFloat(topic.querySelector(".precio-topic").textContent) / cantidadTopic;
+        const cantidadTopic = parseInt(topic.querySelector(".cantidad_topic").textContent);
+        const precioUnitario = parseFloat(topic.querySelector(".precio_topic").textContent) / cantidadTopic;
         total += precioUnitario * cantidadTopic;
     });
 
     const precioTotal = productDiv.querySelector(".precio");
     precioTotal.textContent = total.toFixed(2);
+}
+
+let listaElementos = [];
+async function enviarDatos (){
+    elementos = document.querySelectorAll(".elementos").forEach(elemento => {
+        let id_elemento = elemento.querySelector(".id_elemento").value;//input
+
+        let id_producto = elemento.querySelector(".id_producto").value;//input
+        let cantidad_producto = elemento.querySelector(".cantidad_producto").textContent; //p
+        let detalle_producto = elemento.querySelector(".detalle_producto") ? elemento.querySelector(".detalle_producto").value : ""; //textarea
+        
+
+        let id_topic = elemento.querySelector(".id_topic") ? elemento.querySelector(".id_topic").value : 0; //input
+        let cantidad_topic = elemento.querySelector(".cantidad_topic") ? elemento.querySelector(".cantidad_topic").textContent : 0; //span
+        let detalle_topic = elemento.querySelector(".detalle_topic") ? elemento.querySelector(".detalle_topic").value : ""; //textarea
+
+        let precioTotal = elemento.querySelector(".precio").textContent;
+        let precioUnidad = elemento.querySelector(".precioUnidad").textContent;
+
+        let dicElemento = 
+        {
+            "id_elemento" : id_elemento,
+            "precio_total" : precioTotal,
+            "precio_unidad_producto": precioUnidad,  
+            "elemento": 
+                {
+                    "id_producto" : id_producto,
+                    "cantidad_producto" : cantidad_producto,
+                    "detalle_producto" : detalle_producto,
+                    "id_topic" : id_topic,
+                    "cantidad_topic": cantidad_topic,
+                    "detalle_topic" : detalle_topic
+                }
+        }
+        listaElementos.push(dicElemento);
+    });
+    let JSONElements = JSON.stringify(listaElementos)
+    console.log(JSONElements);
+
+    const response = await fetch("http://127.0.0.1:8000/api/receiveOrder", {
+        "method" : "POST",
+        "headers" : {"Content-Type": "application/json"},
+        "body" : JSON.stringify(listaElementos),
+    })
+    .then(res => res.json())
+    .then(data => console.log(data));
 }
 //END IA

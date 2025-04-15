@@ -22,11 +22,13 @@ from rest_framework import routers
 from apps.Productos import views
 
 routes = routers.DefaultRouter()
-routes.register("topicsAll", views.TopicViewSet)
+routes.register("topicsAll", views.TopicViewSet, basename="topicsAll")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inicio/', inicio, name = "inicio"),
     path('', include(urls)),
     path('api/', include(routes.urls)),
+    path('api/receiveOrder', views.receiveOrder, name = "receiveOrder"),
 ]

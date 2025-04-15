@@ -25,7 +25,7 @@ class Pedido_Producto_Topic(models.Model):
     detalle_producto = models.TextField(default = "ninguno")
     fk_topic = models.BigIntegerField()
     cantidad_topic = models.IntegerField()
-    detalle_topics = models.TextField(default="ninguno")
+    detalle_topics = models.TextField(default="ninguno") #debo corregir esa s al final de detalle_topics la S final no va
 
 # [
 #     {
