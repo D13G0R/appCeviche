@@ -47,7 +47,7 @@ ${precio ? `<p class="precioUnidad text-gray-800 font-bold hidden">${precio}</p>
 
     // Agregar el elemento al panel
     panelList.appendChild(listItem);
-
+    actualizarTotalPedido()
     // Abrir el panel automáticamente en pantallas pequeñas
     if (window.innerWidth <= 640) {
         panel.classList.add('open');
@@ -60,26 +60,24 @@ function togglePanel() {
     panel.classList.toggle('open');
 }
 
-// Event listener para manejar el incremento de cantidad (opcional)
 
+
+
+
+
+
+// Event listener para manejar el incremento de cantidad (opcional)
 document.getElementById('panel-list').addEventListener('click', function(event) {
     const incrementBtn = event.target.closest('.increment-btn');
     const decrementBtn = event.target.closest('.decrement-btn');
 
     if (!incrementBtn && !decrementBtn) return;
 
-    // Buscar el div padre con clase que empieza con id-
     const idContainer = event.target.closest('div[class^="id-"]');
     if (!idContainer) return;
 
     const cantidadElement = idContainer.querySelector('.cantidad_producto');
-    const precioElement = idContainer.querySelector('.precio');
-    const precioUnidadElement = idContainer.querySelector('.precioUnidad');
-
-    if (!cantidadElement || !precioElement || !precioUnidadElement) return;
-
     let cantidad = parseInt(cantidadElement.textContent);
-    const precioUnidad = parseFloat(precioUnidadElement.textContent);
 
     if (incrementBtn) {
         cantidad++;
@@ -88,8 +86,15 @@ document.getElementById('panel-list').addEventListener('click', function(event) 
     }
 
     cantidadElement.textContent = cantidad;
-    precioElement.textContent = (cantidad * precioUnidad).toFixed(2);
+
+    // ✅ Actualizar el total completo del producto con topics incluidos
+    actualizarTotalProducto(idContainer);
 });
+
+
+
+
+
 
 //MODIFICADO POR IA
 let currentProductTarget = null;
@@ -129,10 +134,10 @@ function closeTopicModal() {
     modal.classList.replace("absolute", "hidden");
 }
 
-//START IA
+//START IA (AGREGAR TOPIC A UN PRODUCTO)
 function addTopicToProduct(topic) {
     const topicWrapper = document.createElement("div");
-    topicWrapper.className = "topic-item bg-yellow-100 border border-yellow-300 rounded p-2 mt-2";
+    topicWrapper.className = "topic-item bg-yellow-100 border border-blue-300 rounded p-2 mt-2";
 
     topicWrapper.innerHTML = `
         <div class="flex justify-between items-center mb-1">
@@ -188,6 +193,12 @@ function addTopicToProduct(topic) {
     actualizarTotalProducto(currentProductTarget);
 }
 
+
+
+
+
+
+
 function actualizarTotalProducto(productDiv) {
     const precioUnidadElement = productDiv.querySelector(".precioUnidad");
     const cantidadProducto = parseInt(productDiv.querySelector(".cantidad_producto").textContent);
@@ -203,7 +214,37 @@ function actualizarTotalProducto(productDiv) {
 
     const precioTotal = productDiv.querySelector(".precio");
     precioTotal.textContent = total.toFixed(2);
+    actualizarTotalPedido();
 }
+
+
+
+
+
+
+
+
+function actualizarTotalPedido() {  
+    let totalText = document.querySelector(".totalPedido");  
+    let preciosProductos = document.querySelectorAll(".precio");  
+    let sumaTotal = 0;  
+
+    preciosProductos.forEach(precioProducto => {  
+        // Convert the text content to a number and add it to sumaTotal  
+        sumaTotal += parseFloat(precioProducto.textContent) || 0; // Use parseFloat to convert to number  
+    });  
+
+    totalText.innerHTML = `${sumaTotal.toFixed(2)}`; // Display total with two decimal places  
+}  
+
+
+
+
+
+
+
+
+
 
 let listaElementos = [];
 async function enviarDatos (){
