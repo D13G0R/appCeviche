@@ -22,10 +22,10 @@ class Pedido_Producto_Topic(models.Model):
     fk_pedido = models.BigIntegerField()
     fk_producto = models.BigIntegerField()
     cantidad_producto = models.IntegerField()
-    detalle_producto = models.TextField(default = "ninguno")
+    detalle_producto = models.TextField(default="ninguno", blank = True)
     fk_topic = models.BigIntegerField()
     cantidad_topic = models.IntegerField()
-    detalle_topics = models.TextField(default="ninguno") #debo corregir esa s al final de detalle_topics la S final no va
+    detalle_topics = models.TextField(default="ninguno", blank = True) #debo corregir esa s al final de detalle_topics la S final no va
 
 # [
 #     {

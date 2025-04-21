@@ -50,8 +50,9 @@
             <ul id="panel-list" class="px-4">
                 <!-- Items will be added here dynamically -->
                 <button type="button"
-                    class="w-5/6 h-10 mx-4 my-4 text-white font-semibold bg-sky-600 text-center rounded-3xl shadow shadow-black border border-4 border-black hover:bg-sky-500" onclick = "enviarDatos()">Enviar
-                    Pedido
+                    class="w-5/6 h-10 mx-4 my-4 text-white font-semibold bg-sky-600 text-center rounded-3xl shadow shadow-black border border-4 border-black hover:bg-sky-500" onclick = "enviarDatos()" >
+                    <a href = "{% url 'takeOrderView' %}">Enviar
+                        Pedido</a>
                 </button>
                 <div class = "bg-sky-600 w-full h-8 flex justify-between px-2 mb-4 rounded-lg border-2 border-black">
                     <p class = "font-bold text-lg text-white">Total</p><p class = "totalPedido font-bold text-lg text-white">0</p>

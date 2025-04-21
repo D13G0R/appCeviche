@@ -91,7 +91,7 @@ main {
     .panel.open {
         transform: translateY(0);
     }
-
+    
     .content {
         transition: padding-top 0.3s ease;
         margin-right: 16rem; /* Matches the width of the panel */
