@@ -60,12 +60,6 @@ function togglePanel() {
     panel.classList.toggle('open');
 }
 
-
-
-
-
-
-
 // Event listener para manejar el incremento de cantidad (opcional)
 document.getElementById('panel-list').addEventListener('click', function(event) {
     const incrementBtn = event.target.closest('.increment-btn');
@@ -90,9 +84,6 @@ document.getElementById('panel-list').addEventListener('click', function(event) 
     // ✅ Actualizar el total completo del producto con topics incluidos
     actualizarTotalProducto(idContainer);
 });
-
-
-
 
 
 
@@ -260,14 +251,14 @@ async function enviarDatos (){
         let cantidad_topic = elemento.querySelector(".cantidad_topic") ? elemento.querySelector(".cantidad_topic").textContent : 0; //span
         let detalle_topic = elemento.querySelector(".detalle_topic") ? elemento.querySelector(".detalle_topic").value : ""; //textarea
 
-        let precioTotal = elemento.querySelector(".precio").textContent;
-        let precioUnidad = elemento.querySelector(".precioUnidad").textContent;
+        let precioTotal = document.querySelector(".totalPedido").textContent;
+        let precioUnidad = elemento.querySelector(".precioUnidad").textContent;//NO SE ESTÁ USANDO AUN
 
         let dicElemento = 
         {
             "id_elemento" : id_elemento,
             "precio_total" : precioTotal,
-            "precio_unidad_producto": precioUnidad,  
+            "precio_unidad_producto": precioTotal,  
             "elemento": 
                 {
                     "id_producto" : id_producto,
