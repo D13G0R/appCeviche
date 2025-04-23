@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View, ListView
 
 from rest_framework.views import APIView
@@ -20,8 +20,8 @@ class view_take_order(ListView):
         context = super().get_context_data(**kwargs)
         context["Topics"] = Topics.objects.all().order_by("nombre_topic")
         return context
-    
 
+#HAY QUE CONTIUAR CON MOSTRAR LOS PEDIDOS QUE SE HAYAN ECHO.
 class PedidoProductoTopicView(APIView):
     def post(self, request):
         serializer = PedidoProductoTopicSerializer(data=request.data, many=True)
@@ -50,25 +50,28 @@ def receiveOrder(request):
         precio_unidad_producto = elemento["precio_unidad_producto"]
 
         if seCreoPedido != True:
-            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = True, descripcion_pedido ="Ninguna")
+            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion_pedido ="Ninguna")
             seCreoPedido = True
 
-        fragmentoElement = elemento["elemento"]
-        id_producto = fragmentoElement["id_producto"]
-        cantidad_producto = fragmentoElement["cantidad_producto"]
-        detalle_producto = fragmentoElement["detalle_producto"]
-        id_topic = fragmentoElement["id_topic"]
-        cantidad_topic = fragmentoElement["cantidad_topic"]
-        detalle_topic = fragmentoElement["detalle_topic"]
-        jsonFormatData = {
-            "fk_pedido" : int(pedido.id),
-            "fk_producto" : int(id_producto),
-            "cantidad_producto" : int(cantidad_producto),
-            "detalle_producto" : detalle_producto if detalle_producto else "sin detalle",
-            "fk_topic" : int(id_topic) if id_topic else int(0),
-            "cantidad_topic" : int(cantidad_topic) if id_topic else int(0),
-            "detalle_topics" : detalle_topic if id_topic else "sin detalle"  # OJO con el nombre correcto
-        }
+        producto = elemento["producto"]
+        id_producto = producto["id_producto"]
+        cantidad_producto = producto["cantidad_producto"]
+        detalle_producto = producto["detalle_producto"]
+
+        for topic in producto["topics"]:
+            id_topic = topic["id_topic"]
+            cantidad_topic = topic["cantidad_topic"]
+            detalle_topic = topic["detalle_topic"]
+            
+            jsonFormatData = {
+                "fk_pedido" : int(pedido.id),
+                "fk_producto" : int(id_producto),
+                "cantidad_producto" : int(cantidad_producto),
+                "detalle_producto" : detalle_producto if detalle_producto else "sin detalle", #HAY QUE CREAR UNA TABLA POR PRODUCTO SELECCIONADO Y POR TOPICS Y LUEGO UNIRLAS EN UNA TABLA INTERMEDIA PARA QUE NO HAYA REDUNDANCIA
+                "fk_topic" : int(id_topic) if id_topic else int(100),
+                "cantidad_topic" : int(cantidad_topic) if id_topic else int(0),
+                "detalle_topics" : detalle_topic if id_topic else "sin detalle"  # OJO con el nombre correcto
+            }
         
         serializer = PedidoProductoTopicSerializer(data=jsonFormatData)
         if serializer.is_valid():
@@ -79,3 +82,23 @@ def receiveOrder(request):
             message = "ERROR no se enviaron los datos o hay error en el formato."
 
     return  Response({"message": message})
+
+class showOrdersTaken(ListView):
+    model = Pedidos
+    context_object_name = "orders"
+    template_name = "ordersTaken.html"
+    def get_queryset(self):
+        return Pedidos.objects.filter(estado = "Pendiente")
+
+def cancelarPedido(request, id):
+    pedido = Pedidos.objects.get(id = id)
+    pedido.estado = "Cancelado"
+    pedido.save()
+    return redirect("showOrdersTaken")
+
+def pagarPedido(request, id):
+    pedido = Pedidos.objects.get(id = id)
+    pedido.estado = "Pagado"
+    pedido.save()
+    return redirect("showOrdersTaken")
+    
