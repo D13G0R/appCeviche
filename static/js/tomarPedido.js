@@ -146,6 +146,7 @@ function addTopicToProduct(topic) {
             <button class="dec-topic bg-gray-300 px-2 rounded">-</button>
         </div>
         <textarea class="detalle_topic w-full p-1 border rounded text-sm" placeholder="Detalle del topic..."></textarea>
+
     `;
 
     const precioBase = parseFloat(topic.precio_topic || 100);
@@ -247,26 +248,35 @@ async function enviarDatos (){
         let detalle_producto = elemento.querySelector(".detalle_producto") ? elemento.querySelector(".detalle_producto").value : ""; //textarea
         
 
-        let id_topic = elemento.querySelector(".id_topic") ? elemento.querySelector(".id_topic").value : 0; //input
-        let cantidad_topic = elemento.querySelector(".cantidad_topic") ? elemento.querySelector(".cantidad_topic").textContent : 0; //span
-        let detalle_topic = elemento.querySelector(".detalle_topic") ? elemento.querySelector(".detalle_topic").value : ""; //textarea
+        
+
+        let topics = [];
+        elemento.querySelectorAll(".topic-item").forEach(topic => {
+            let id_topic = topic.querySelector(".id_topic") ? elemento.querySelector(".id_topic").value : 0; //input
+            let cantidad_topic = topic.querySelector(".cantidad_topic") ? elemento.querySelector(".cantidad_topic").textContent : 0; //span
+            let detalle_topic = topic.querySelector(".detalle_topic") ? elemento.querySelector(".detalle_topic").value : ""; //textarea
+            topics.push({
+                    "id_topic" : id_topic,
+                    "cantidad_topic": cantidad_topic,
+                    "detalle_topic" : detalle_topic
+            })
+        });
 
         let precioTotal = document.querySelector(".totalPedido").textContent;
         let precioUnidad = elemento.querySelector(".precioUnidad").textContent;//NO SE ESTÁ USANDO AUN
 
+        console.log(topics);
         let dicElemento = 
         {
             "id_elemento" : id_elemento,
             "precio_total" : precioTotal,
             "precio_unidad_producto": precioTotal,  
-            "elemento": 
+            "producto": 
                 {
                     "id_producto" : id_producto,
                     "cantidad_producto" : cantidad_producto,
                     "detalle_producto" : detalle_producto,
-                    "id_topic" : id_topic,
-                    "cantidad_topic": cantidad_topic,
-                    "detalle_topic" : detalle_topic
+                    "topics" : topics
                 }
         }
         listaElementos.push(dicElemento);
