@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view 
-from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics
+from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
 from .serializers import PedidoProductoTopicSerializer, TopicSerializer
 
 
@@ -50,37 +50,46 @@ def receiveOrder(request):
         precio_unidad_producto = elemento["precio_unidad_producto"]
 
         if seCreoPedido != True:
-            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion_pedido ="Ninguna")
+            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion ="Ninguna")
             seCreoPedido = True
 
         producto = elemento["producto"]
         id_producto = producto["id_producto"]
+        objeto_producto = Productos.objects.get(id = id_producto)
         cantidad_producto = producto["cantidad_producto"]
         detalle_producto = producto["detalle_producto"]
-
+        pedido_producto = Pedido_Producto.objects.create(fk_pedido = pedido, fk_producto = objeto_producto, cantidad_producto = cantidad_producto, detalle_producto = detalle_producto)
+        if not pedido_producto:
+            message = "ERROR al crear un pedido_producto"
+            return  Response({"message": message})
+        
         for topic in producto["topics"]:
             id_topic = topic["id_topic"]
+            objeto_topic = Topics.objects.get(id = id_topic)
             cantidad_topic = topic["cantidad_topic"]
             detalle_topic = topic["detalle_topic"]
-            
-            jsonFormatData = {
-                "fk_pedido" : int(pedido.id),
-                "fk_producto" : int(id_producto),
-                "cantidad_producto" : int(cantidad_producto),
-                "detalle_producto" : detalle_producto if detalle_producto else "sin detalle", #HAY QUE CREAR UNA TABLA POR PRODUCTO SELECCIONADO Y POR TOPICS Y LUEGO UNIRLAS EN UNA TABLA INTERMEDIA PARA QUE NO HAYA REDUNDANCIA
-                "fk_topic" : int(id_topic) if id_topic else int(100),
-                "cantidad_topic" : int(cantidad_topic) if id_topic else int(0),
-                "detalle_topics" : detalle_topic if id_topic else "sin detalle"  # OJO con el nombre correcto
-            }
-        
-        serializer = PedidoProductoTopicSerializer(data=jsonFormatData)
-        if serializer.is_valid():
-            serializer.save()
-            message = "Datos guardados correctamente"
-        else:
-            print(serializer.errors)
-            message = "ERROR no se enviaron los datos o hay error en el formato."
+            pedido_producto_topic = Pedido_Producto_Topic.objects.create(fk_id_pedido_producto = pedido_producto, fk_topic = objeto_topic, cantidad_topic = cantidad_topic, detalle_topic = detalle_topic)
+            if not pedido_producto_topic:
+                message = "ERROR al crear un pedido_producto_topic"
+                return  Response({"message": message})
+            # jsonFormatData = {
+            #     "fk_pedido" : int(pedido.id),
+            #     "fk_producto" : int(id_producto),
+            #     "cantidad_producto" : int(cantidad_producto),
+            #     "detalle_producto" : detalle_producto if detalle_producto else "sin detalle", #HAY QUE CREAR UNA TABLA POR PRODUCTO SELECCIONADO Y POR TOPICS Y LUEGO UNIRLAS EN UNA TABLA INTERMEDIA PARA QUE NO HAYA REDUNDANCIA
+            #     "fk_topic" : int(id_topic) if id_topic else int(100),
+            #     "cantidad_topic" : int(cantidad_topic) if id_topic else int(0),
+            #     "detalle_topics" : detalle_topic if id_topic else "sin detalle"  # OJO con el nombre correcto
+            # }
 
+        # serializer = PedidoProductoTopicSerializer(data=jsonFormatData)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     message = "Datos guardados correctamente"
+        # else:
+        #     print(serializer.errors)
+        #     message = "ERROR no se enviaron los datos o hay error en el formato."
+    message = "Todo Ok (al parecer)"
     return  Response({"message": message})
 
 class showOrdersTaken(ListView):

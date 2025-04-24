@@ -6,12 +6,18 @@ class Pedidos(models.Model):
     sub_total = models.FloatField(null = False, blank = False)
     total = models.FloatField(null = False, blank = False)
     estado = models.CharField(max_length=15, null = False, blank = False, default = "Pendiente")
-    descripcion_pedido = models.TextField(null = False, blank = False)
+    descripcion = models.TextField(null = False, blank = False)
 
 class Productos(models.Model):
     nombre_producto = models.CharField(max_length= 50, null = False, blank = False)
     descripcion_producto = models.TextField(null = False, blank = False)
     precio_producto = models.FloatField(null = False, blank = False)
+
+class Pedido_Producto(models.Model):
+    fk_pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
+    fk_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    cantidad_producto = models.IntegerField()
+    detalle_producto = models.TextField(null = True, blank = True)
 
 class Topics(models.Model):
     nombre_topic = models.CharField(max_length= 50, null = False, blank = False)
@@ -19,13 +25,10 @@ class Topics(models.Model):
     precio_topic = models.FloatField(null = False, blank = False)
 
 class Pedido_Producto_Topic(models.Model):
-    fk_pedido = models.ForeignKey(Pedidos, related_name = "detalles", on_delete=models.CASCADE)
-    fk_producto = models.ForeignKey(Productos, related_name = "productos", on_delete=models.CASCADE, null = True)
-    cantidad_producto = models.IntegerField()
-    detalle_producto = models.TextField(default="ninguno", blank = True)
+    fk_id_pedido_producto = models.ForeignKey(Pedido_Producto, on_delete=models.CASCADE)
     fk_topic = models.ForeignKey(Topics, related_name = "topics", on_delete=models.CASCADE, null = True)
     cantidad_topic = models.IntegerField()
-    detalle_topics = models.TextField(default="ninguno", blank = True) #debo corregir esa s al final de detalle_topics la S final no va
+    detalle_topic = models.TextField(default="ninguno", blank = True)
 
 # [
 #     {
