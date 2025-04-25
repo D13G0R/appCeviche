@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Pendientes</title>
+</head>
+<body>
+    <h1>Pedidos Pendientes</h1>
+
+    {% for pedido in Pedidos %}
+    <h2>Pedido #{{ pedido.id }}</h2>
+    <p>Total: {{ pedido.total }} | Estado: {{ pedido.estado }}</p>
+
+    <ul>
+    {% for detalle in pedido.detalle_pedido.all %}
+        <li>
+            Producto: {{ detalle.fk_producto.nombre_producto }} - Cantidad: {{ detalle.cantidad_producto }}
+            
+            <ul>
+            {% for topic in detalle.topics_de_producto.all %}
+                <li>
+                    Topic: {{ topic.fk_topic.nombre_topic }} |
+                    Cantidad: {{ topic.cantidad_topic }} |
+                    Detalle: {{ topic.detalle_topic }}
+                </li>
+            {% empty %}
+                <li>Sin topics asociados</li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+    <hr>
+{% endfor %}
+
+</body>
+</html>

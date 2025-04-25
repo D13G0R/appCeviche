@@ -14,7 +14,7 @@ class Productos(models.Model):
     precio_producto = models.FloatField(null = False, blank = False)
 
 class Pedido_Producto(models.Model):
-    fk_pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
+    fk_pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, related_name="detalle_pedido")
     fk_producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
     cantidad_producto = models.IntegerField()
     detalle_producto = models.TextField(null = True, blank = True)
@@ -25,7 +25,7 @@ class Topics(models.Model):
     precio_topic = models.FloatField(null = False, blank = False)
 
 class Pedido_Producto_Topic(models.Model):
-    fk_id_pedido_producto = models.ForeignKey(Pedido_Producto, on_delete=models.CASCADE)
+    fk_id_pedido_producto = models.ForeignKey(Pedido_Producto, on_delete=models.CASCADE, related_name = "topics_de_producto")
     fk_topic = models.ForeignKey(Topics, related_name = "topics", on_delete=models.CASCADE, null = True)
     cantidad_topic = models.IntegerField()
     detalle_topic = models.TextField(default="ninguno", blank = True)
