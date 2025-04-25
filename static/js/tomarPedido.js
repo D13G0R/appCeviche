@@ -251,10 +251,12 @@ async function enviarDatos (){
         
 
         let topics = [];
-        elemento.querySelectorAll(".topic-item").forEach(topic => {
-            let id_topic = topic.querySelector(".id_topic") ? elemento.querySelector(".id_topic").value : 0; //input
-            let cantidad_topic = topic.querySelector(".cantidad_topic") ? elemento.querySelector(".cantidad_topic").textContent : 0; //span
-            let detalle_topic = topic.querySelector(".detalle_topic") ? elemento.querySelector(".detalle_topic").value : ""; //textarea
+        elemento.querySelectorAll(".topic-added").forEach(topic => {
+            console.log(topic)
+            let id_topic = topic.querySelector(".id_topic") ? topic.querySelector(".id_topic").value : 0; //input
+            let cantidad_topic = topic.querySelector(".cantidad_topic") ? topic.querySelector(".cantidad_topic").textContent : 0; //span
+            let detalle_topic = topic.querySelector(".detalle_topic") ? topic.querySelector(".detalle_topic").value : ""; //textarea
+            console.log(id_topic)
             topics.push({
                     "id_topic" : id_topic,
                     "cantidad_topic": cantidad_topic,
