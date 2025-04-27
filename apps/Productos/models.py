@@ -1,5 +1,5 @@
 from django.db import models
-
+from .choices import estados_productos
 # Create your models here.
 
 class Pedidos(models.Model):
@@ -12,6 +12,7 @@ class Productos(models.Model):
     nombre_producto = models.CharField(max_length= 50, null = False, blank = False)
     descripcion_producto = models.TextField(null = False, blank = False)
     precio_producto = models.FloatField(null = False, blank = False)
+    estado_producto = models.TextField(choices = estados_productos, default = "activo")
 
 class Pedido_Producto(models.Model):
     fk_pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, related_name="detalle_pedido")
@@ -23,6 +24,7 @@ class Topics(models.Model):
     nombre_topic = models.CharField(max_length= 50, null = False, blank = False)
     descripcion_topic = models.TextField(null = False, blank = False)
     precio_topic = models.FloatField(null = False, blank = False)
+    estado_topic = models.TextField(choices = estados_productos, default = "activo")
 
 class Pedido_Producto_Topic(models.Model):
     fk_id_pedido_producto = models.ForeignKey(Pedido_Producto, on_delete=models.CASCADE, related_name = "topics_de_producto")
