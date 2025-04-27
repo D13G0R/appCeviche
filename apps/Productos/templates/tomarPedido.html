@@ -10,98 +10,117 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/tomarPedido.css' %}">
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-cyan-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <header class="bg-white w-full h-16 text-gray-800 text-center fixed top-0 left-0 z-10 flex justify-between items-center">
-        <a href = "{% url 'inicio' %}" class = "w-10 ml-2"><img src = "{% static 'images/previous.png' %}"></a>
-        
+    <header class="bg-white w-full h-16 fixed top-0 left-0 z-20 flex justify-between items-center shadow-md">
+        <a href="{% url 'inicio' %}"
+            class="flex items-center justify-center w-12 h-12 ml-3 hover:bg-cyan-50 rounded-full transition-colors">
+            <img src="{% static 'images/previous.png' %}" class="w-8 h-8" alt="Back">
+        </a>
 
-        <nav class = "text-white w-2/3 h-full shadow-sm shadow-rose-200">
-            <ul class="flex flex-row w-full h-full justify-evenly justify-center items-center text-lg text-black font-bold">
-    <!--Enlaces principales, cada una tendra sub-enlacesm asi se mantiene simplicidad y cada pagina con sus propios enlaces-->
-                <li>
-                    Inicio
+        <nav class="bg-white text-slate-700 w-3/4 h-full">
+            <ul class="flex w-full h-full justify-evenly items-center text-lg font-bold">
+                <li class="h-full">
+                    <span
+                        class="flex items-center h-full px-4 cursor-pointer hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Inicio</span>
                 </li>
-                <li>
-                    <a href="{% url 'adminProductos' %}"></a>Productos
+                <li class="h-full">
+                    <a href="{% url 'adminProductos' %}"
+                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Productos</a>
                 </li>
-                <li>
-                    Topics
+                <li class="h-full">
+                    <span
+                        class="flex items-center h-full px-4 cursor-pointer hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Topics</span>
                 </li>
-                <li>
-                    <a href = "{% url 'showOrdersTaken' %}">Pedidos</a>
+                <li class="h-full">
+                    <a href="{% url 'showOrdersTaken' %}"
+                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Pedidos</a>
                 </li>
             </ul>
         </nav>
     </header>
 
-    <main class="pt-20 pb-16">
-        <div class="content">
-            <h2 class="text-3xl text-center font-bold mb-6 text-rose-400">Productos</h2>
-            <section class="grid gap-4 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"> <!--Las visas menores a 640 (sm) no se cojen porque los telefonos tienes menores tamaños (400-500px) entonces se edito con @media en CSS-->
+    <main class="pt-24 pb-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto flex flex-1">
+        <div class="content flex-1">
+            <h2 class="text-3xl md:text-4xl text-center font-bold mb-8 text-cyan-600">Productos</h2>
+            <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for producto in Productos %}
-                <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                    onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.precio_producto }}')">
-                    <h2 class="text-lg font-semibold text-gray-700">{{ producto.nombre_producto }}</h2>
-                    <p class="text-sm text-gray-600">{{ producto.descripcion_producto }}</p>
-                    <p class="text-md font-bold text-gray-800 mt-2">${{ producto.precio_producto }}</p>
-                </div>
+                    {% if  producto.estado_producto == "activo" %}
+                        <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
+                        onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.precio_producto }}')">
+                        <h2 class="text-lg font-semibold text-slate-800">{{ producto.nombre_producto }}</h2>
+                        <p class="text-sm text-slate-600 mt-2">{{ producto.descripcion_producto }}</p>
+                        <p class="text-lg font-bold text-cyan-600 mt-3">${{ producto.precio_producto }}</p>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </section>
 
-            <h2 class="text-3xl text-center font-bold mt-12 mb-6 text-rose-400">Topics</h2>
+            <h2 class="text-3xl md:text-4xl text-center font-bold mt-16 mb-8 text-cyan-600">Topics</h2>
 
-            <section class="grid gap-5 px-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+            <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for topic in Topics %}
-                <div class="bg-white hover:bg-gray-100 transition-colors p-4 rounded-lg shadow-md text-center cursor-pointer"
-                    onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.precio_topic }}')">
-                    <h3 class="text-lg font-semibold text-gray-700">{{ topic.nombre_topic }}</h3>
-                    <p class="text-sm text-gray-600">{{ topic.descripcion_topic }}</p>
-                    <p class="text-sm text-gray-600">{{ topic.precio_topic }}</p>
-                </div>
+                    {% if  topic.estado_topic == "activo" %}
+                        <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
+                        onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.precio_topic }}')">
+                        <h3 class="text-lg font-semibold text-slate-800">{{ topic.nombre_topic }}</h3>
+                        <p class="text-sm text-slate-600 mt-2">{{ topic.descripcion_topic }}</p>
+                        <p class="text-lg font-bold text-cyan-600 mt-3">${{ topic.precio_topic }}</p>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </section>
-
         </div>
+
         <article id="panel"
-            class="top-15 right-2 pt-5 panel bg-gray-400 fixed shadow-lg shadow-gray-400 rounded-lg border border-black border-4">
-            <h2 class="text-center font-bold text-lg mb-4">En lista...</h2>
-            <ul id="panel-list" class="px-4">
-                <!-- Items will be added here dynamically -->
-                <button type="button"
-                    class="w-5/6 h-10 mx-4 my-4 bg-orange-200 hover:bg-orange-300 font-bold text-center rounded-3xl border border-4 border-white shadow shadow-black  " onclick = "enviarDatos()" >
-                    <a href = "{% url 'takeOrderView' %}">Enviar
-                        Pedido</a>
-                </button>
-                <div class = "bg-orange-200 w-full h-8 flex justify-between px-2 mb-4 rounded-lg border-2 border-white">
-                    <p class = "font-bold text-lg">Total</p><p class = "totalPedido font-bold text-lg ">0</p>
-                </div>
-                
-            </ul>
-        </article>
-        <div class = "modalTopics hidden absolute w-3/4 h-5/6 left-12 bg-gray-400 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-y-auto rounded-lg shadow-2xl pt-10 border border-4 border-black">
-            <div class = "sm:col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex justify-between">
-                <button onclick="closeTopicModal()">
-                    <img src = "{% static 'images/close.png' %}" class = "w-10">
-                </button>
-                <h2 class = "text-2xl text-bold text-white font-extrabold ml-32">Topics</h2>
-                <input class = "buscador" placeholder="aca va el buscador"></input>
+            class="panel fixed top-20 right-4 bg-white rounded-xl border-2 border-cyan-200 shadow-xl overflow-hidden w-64">
+            <div class="bg-cyan-500 py-3">
+                <h2 class="text-center font-bold text-white text-lg">En lista...</h2>
             </div>
-           
-            <!-- MODAL DE TOPICS -->
+            <div class="p-4">
+                <div class="flex justify-between items-center mb-3 px-2 py-3 bg-cyan-100 rounded-lg">
+                    <p class="font-bold text-slate-800">Total</p>
+                    <p class="totalPedido font-bold text-cyan-700">0</p>
+                </div>
+                <button type="button"
+                    class="w-full py-3 mb-4 bg-teal-500 hover:bg-teal-600 text-white font-bold text-center rounded-lg shadow-md transition-colors"
+                    onclick="enviarDatos()">
+                    <a href="{% url 'takeOrderView' %}" class="block w-full h-full">Enviar Pedido</a>
+                </button>
 
+                <ul id="panel-list" class="max-h-[500px] overflow-y-auto border-t border-cyan-100 pt-3">
+                    <!-- Items will be added here dynamically -->
+                </ul>
+            </div>
+        </article>
 
+        <div class="modalTopicss hidden fixed inset-0 bg-black bg-opacity-50 z-30 flex items-center justify-center ">
+            <div class="relative bg-white w-11/12 max-w-4xl h-5/6 rounded-xl shadow-2xl overflow-hidden">
+                <div class="bg-cyan-600 p-4 flex items-center justify-between">
+                    <button onclick="closeTopicModal()"
+                        class="bg-white rounded-full p-1 hover:bg-cyan-100 transition-colors">
+                        <img src="{% static 'images/close.png' %}" class="w-8 h-8">
+                    </button>
+                    <h2 class="text-2xl font-bold text-white">Topics</h2>
+                    <div class="relative">
+                        <input
+                            class="buscador px-4 py-2 rounded-full shadow-inner focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                            placeholder="Buscar topics...">
+                    </div>
+                </div>
+                <div
+                    class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 overflow-y-auto max-h-[calc(100%-80px)]">
+                    <!-- MODAL DE TOPICS -->
+                </div>
+            </div>
         </div>
-
-        
     </main>
 
-    <footer class="bg-red-300 text-gray-800 text-center py-4 fixed bottom-0 left-0 r-20 w-full shadow-md z-10">
-        <p class="text-sm">© 2023 Pedido App</p>
+    <footer class="bg-teal-500 text-white text-center py-3 bottom-0 left-0 w-full shadow-lg z-10">
+        <p class="text-sm font-medium">© 2023 Pedido App</p>
     </footer>
 
-    <script src=" {% static 'js/tomarPedido.js' %}">
-    </script>
+    <script src="{% static 'js/tomarPedido.js' %}"></script>
 
 </body>
 

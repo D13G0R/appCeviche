@@ -1,0 +1,390 @@
+/* === BASE & RESET === */
+:root {
+    --primary-color: #007bff; /* Example primary color */
+    --primary-color-hover: #0056b3;
+    --text-color: #333;
+    --text-color-light: #666;
+    --border-color: #e0e0e0;
+    --background-color: #f8f9fa;
+    --white: #fff;
+    --danger-color: #dc3545;
+    --danger-color-hover: #c82333;
+    --disabled-color: #adb5bd;
+    --font-family: 'Inter', sans-serif;
+    --base-font-size: 16px;
+    --small-font-size: 14px;
+    --border-radius: 4px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: var(--base-font-size);
+    line-height: 1.5;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--background-color); /* Light background for contrast */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary-color-hover);
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+/* === LAYOUT & HEADER === */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.main-header h1 {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 700;
+}
+
+.header-actions {
+    /* No specific styles needed if just holding the button */
+}
+
+/* === BUTTONS === */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem; /* 8px 16px */
+    font-size: var(--small-font-size); /* 14px */
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+    color: var(--white);
+    text-decoration: none;
+}
+
+.btn-small {
+    padding: 0.25rem 0.5rem; /* 4px 8px */
+    font-size: 0.8rem; /* ~13px */
+}
+
+.btn-icon {
+   padding: 0.3rem; /* Adjust for icon-only feel */
+   line-height: 1; /* Helps vertical alignment */
+   background: none;
+   border: none;
+   color: var(--text-color-light);
+   font-weight: bold; /* Makes '...' bolder */
+   font-size: 1.25rem; /* Larger dots */
+}
+
+.btn-icon:hover {
+    color: var(--text-color);
+    background-color: #eee; /* Subtle background on hover */
+}
+
+/* === MAIN CONTENT & PRODUCT LIST === */
+.product-list-container {
+    flex-grow: 1; /* Takes remaining vertical space */
+    max-width: 1000px; /* Max width for readability */
+    margin: 1.5rem auto; /* Center the container */
+    padding: 0 1.5rem;
+    width: 100%; /* Ensure it takes width up to max-width */
+}
+
+.product-list-header {
+    display: flex;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color-light);
+    font-size: var(--small-font-size);
+    border-bottom: 2px solid var(--border-color);
+    /* Align with product-item columns */
+    align-items: center;
+}
+
+.header-image { flex: 0 0 60px; margin-right: 1rem; } /* Fixed width for image col */
+.header-info { flex: 1 1 auto; margin-right: 1rem; } /* Flexible width for info */
+.header-price { flex: 0 0 80px; text-align: right; margin-right: 1rem; } /* Fixed width price */
+.header-actions-col { flex: 0 0 50px; text-align: center; } /* Fixed width actions */
+
+
+.product-list-compact {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Clip border-radius */
+    padding-bottom: 100px;
+    
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem; /* Slightly more padding than header */
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.15s ease;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item:hover {
+    background-color: #f8f9fa; /* Subtle hover */
+}
+
+/* === PRODUCT ITEM COMPONENTS === */
+.product-item-image {
+    flex: 0 0 50px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    margin-right: 1rem;
+    display: flex; /* Center placeholder/image */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensure image fits */
+}
+
+.product-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crop image to fit */
+    border-radius: var(--border-radius);
+}
+
+.product-image-placeholder-small {
+    width: 100%;
+    height: 100%;
+    background-color: #e9ecef;
+    border-radius: var(--border-radius);
+    /* Optional: Add an icon or pattern */
+}
+
+.product-item-info {
+    flex: 1 1 auto; /* Takes up available space */
+    margin-right: 1rem;
+    overflow: hidden; /* Prevent long text breaking layout */
+}
+
+.product-item-title {
+    font-size: 1rem; /* 16px */
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-item-desc {
+    font-size: var(--small-font-size); /* 14px */
+    color: var(--text-color-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-item-price {
+    flex: 0 0 80px; /* Match header width */
+    text-align: right;
+    font-weight: 500;
+    margin-right: 1rem;
+    white-space: nowrap;
+}
+
+.product-item-actions {
+    flex: 0 0 50px; /* Match header width */
+    position: relative; /* Anchor for dropdown */
+    text-align: center; /* Center the trigger button */
+}
+
+/* === ACTIONS DROPDOWN === */
+.actions-dropdown {
+    position: relative; /* Needed for absolute positioning of content */
+    display: inline-block; /* Keep it neat */
+}
+
+/* Removed .btn-icon styles from here, using the global .btn-icon now */
+.actions-trigger {
+     /* Style using .btn, .btn-small, .btn-icon classes */
+}
+
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute;
+    right: 0; /* Align to the right of the trigger */
+    top: 100%; /* Position below the trigger */
+    background-color: var(--white);
+    min-width: 140px;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    z-index: 10; /* Ensure it's above other items */
+    margin-top: 4px; /* Small gap */
+    overflow: hidden; /* Clip items to border-radius */
+}
+
+/* Show dropdown on hover or when trigger button has focus */
+.actions-dropdown:hover .dropdown-content,
+.actions-trigger:focus + .dropdown-content, /* Show when button focused */
+.dropdown-content:hover /* Keep open when hovering content */
+ {
+    display: block;
+}
+
+.dropdown-item {
+    display: block; /* Make the link fill the width */
+    padding: 0.6rem 1rem; /* 10px 16px */
+    font-size: var(--small-font-size);
+    color: var(--text-color);
+    white-space: nowrap;
+    text-decoration: none; /* Remove default underline */
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-color);
+    color: var(--text-color); /* Ensure text color remains */
+    text-decoration: none;
+}
+
+/* Specific styles for actions */
+.dropdown-item.action-delete {
+    color: var(--danger-color);
+}
+.dropdown-item.action-delete:hover {
+    background-color: #fbebee; /* Light red background */
+    color: var(--danger-color-hover);
+}
+
+/* Style for disabled items (assuming you add this class via JS/template) */
+.dropdown-item.btn-disable,
+.dropdown-item[disabled] { /* You might add disabled attribute */
+    color: var(--disabled-color);
+    cursor: not-allowed;
+    background-color: transparent;
+}
+.dropdown-item.btn-disable:hover {
+    background-color: transparent; /* No hover effect */
+    color: var(--disabled-color);
+}
+
+/* === NO PRODUCTS MESSAGE === */
+.no-products-item {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-color-light);
+}
+
+/* === FOOTER === */
+.main-footer {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem; /* Space above footer */
+    font-size: var(--small-font-size);
+    color: var(--text-color-light);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--white);
+}
+
+/* === Optional: Basic Responsiveness === */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 0.75rem 1rem;
+    }
+    .main-header h1 {
+        font-size: 1.25rem; /* Smaller title */
+    }
+    .product-list-container {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+    .product-list-header {
+        /* Optionally hide headers on small screens */
+        /* display: none; */
+        padding: 0.5rem 0.75rem;
+    }
+    .product-item {
+        padding: 0.5rem 0.75rem;
+        font-size: var(--small-font-size); /* Smaller base font for items */
+    }
+    .product-item-image {
+        flex-basis: 40px; /* Smaller image */
+        height: 40px;
+        margin-right: 0.75rem;
+    }
+    .product-item-info { margin-right: 0.75rem; }
+    .product-item-price { flex-basis: 70px; margin-right: 0.75rem; font-size: var(--small-font-size); }
+    .product-item-actions { flex-basis: 40px; }
+
+    /* Make description less prominent or hide */
+    .product-item-desc {
+       /* display: none; */ /* Uncomment to hide description completely */
+       font-size: 0.75rem; /* Make it smaller */
+    }
+}
+
+@media (max-width: 480px) {
+     /* Adjust layout further if needed, e.g., stack elements */
+     .product-list-header { display: none; } /* Hide header row */
+
+     .product-item {
+         /* Example: Semi-stacking elements might be complex with current structure */
+         /* Consider adding labels if headers are hidden */
+         align-items: flex-start; /* Align items top */
+         padding-top: 0.75rem;
+         padding-bottom: 0.75rem;
+     }
+
+     .product-item-info {
+         /* Could add pseudo-elements for labels if needed */
+     }
+
+     .product-item-price {
+         text-align: left; /* Align left below info? */
+         margin-top: 0.25rem; /* Add space */
+         flex-basis: auto; /* Allow wrap */
+         margin-right: 0.5rem; /* Reduce margin */
+     }
+     /* This needs more complex flex adjustments or grid */
+}

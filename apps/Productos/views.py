@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View, ListView
+from django.urls import reverse_lazy
+from django.views.generic import View, ListView, UpdateView, DeleteView, CreateView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view 
+
 from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
 from .serializers import PedidoProductoTopicSerializer, TopicSerializer
+from apps.Productos import forms
 
 
 # Create your views here.
@@ -95,3 +98,32 @@ def pagarPedido(request, id):
     pedido.save()
     return redirect("showOrdersTaken")
     
+class showAllProducts(ListView):
+    model = Productos
+    template_name = "adminProductos.html"
+    # context_object_name = "Objetos_productos"
+
+class crearProducto(CreateView):
+    model = Productos
+    template_name="formularioCrearProducto.html"
+    success_url = "adminProductos"
+    form_class = forms.FormularioEditarProducto
+
+class editarProducto(UpdateView):
+    model = Productos
+    form_class = forms.FormularioEditarProducto
+    success_url = reverse_lazy("adminProductos")
+    template_name = "formularioEditarProducto.html"
+
+class eliminarProducto(DeleteView):
+    model = Productos
+    template_name = "confirmDeleteProducto.html"
+    success_url= reverse_lazy("adminProductos")
+    context_object_name = "Producto"
+
+def deshabilitarProducto(request, id):
+    producto_id = id
+    objetoProducto = Productos.objects.get(id = id)
+    objetoProducto.estado_producto = "Deshabilitado"
+    objetoProducto.save()
+    return redirect("adminProductos")

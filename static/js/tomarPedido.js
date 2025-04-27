@@ -9,48 +9,74 @@ function addToPanel(tipo, id, nombre, precio = null) {
     contador ++;
 
     // Estilo y estructura del elemento
-    listItem.className = "bg-white p-4 rounded-lg shadow-md mb-4 border border-gray-300";
-    listItem.innerHTML = `
-        <div class="id-${contador} elementos flex flex-col gap-1">
-            <input class = "id_elemento" type = "hidden" value ="id-${contador}">
-            <div class = "w-full flex flex-row justify-between">
-                <h3 class="tipo font-bold text-sm text-gray-700">${tipo}</h3>
-                <p class = "text-sm">${contador}</p>
-            </div>
+    listItem.className = "bg-white p-4 rounded-lg shadow-md mb-4 border border-gray-300 flex flex-col gap-2"; // Added flex, flex-col, gap-2
+listItem.innerHTML = `
+    <div class="id-${contador} elementos flex flex-col gap-2"> 
+        
+        <input class="id_elemento" type="hidden" value="id-${contador}">
 
         
-            <div class="flex justify-between items-center text-sm">
-                <input class = "id_producto" type = "hidden" value ="${id}">
-                <p class="nombre font-medium text-gray-600">${nombre}</p>
-                <div class="flex items-center gap-1">
-                    <button class="increment-btn text-sm font-bold bg-gray-200 px-1 rounded hover:bg-gray-300">+</button>
-                    <div class="cantidad-container w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                        <p class="cantidad_producto text-xs font-semibold text-white">1</p>
-                    </div>
-                    <button class="decrement-btn text-sm font-bold bg-gray-200 px-1 rounded hover:bg-gray-300">-</button>
+        <div class="w-full flex flex-row justify-between items-baseline border-b border-dashed border-gray-300 pb-1 mb-1">
+            <h3 class="tipo text-gray-600 font-semibold text-xs uppercase tracking-wider">${tipo}</h3> 
+            <p class="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">${contador}</p> 
+        </div>
+
+        
+        <div class="flex justify-between items-center text-sm"> 
+            
+            <input class="id_producto" type="hidden" value="${id}">
+            
+            <p class="nombre text-gray-800 font-medium text-sm truncate flex-grow mr-2">${nombre}</p>
+            
+            <div class="flex items-center gap-1 flex-shrink-0"> 
+                <button class="increment-btn bg-gray-200 text-gray-600 rounded px-2 text-base font-semibold leading-tight cursor-pointer transition-colors duration-200 hover:bg-gray-300 hover:text-gray-800">+</button> 
+                <div class="cantidad-container w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0"> 
+                    <p class="cantidad_producto text-xs font-semibold text-white">1</p> 
                 </div>
+                <button class="decrement-btn bg-gray-200 text-gray-600 rounded px-2 text-base font-semibold leading-tight cursor-pointer transition-colors duration-200 hover:bg-gray-300 hover:text-gray-800">-</button> 
             </div>
-            <div class="flex justify-between items-center text-sm">
-${precio ? `<p class="precioUnidad text-gray-800 font-bold hidden">${precio}</p>` : ''}
-                <p class="font-medium text-gray-600">Total</p>
-                ${precio ? `<p class="precio text-gray-800 font-bold">${precio}</p>` : ''}
-                
-            </div>
-            <div>
-                <textarea class="detalle_producto w-full h-12 p-1 mt-2 border rounded text-sm text-gray-700 resize-none" placeholder="Detalle del pedido..."></textarea>
-            </div>
-            <button class="add-topic-btn w-1/2 py-1 bg-blue-500 text-sm text-white font-medium rounded border border-black hover:bg-blue-400" onclick="panelAddTopics(this)">
+        </div>
+
+        
+        <div class="flex justify-between items-center text-sm"> 
+            
+            ${precio ? `<p class="precioUnidad text-gray-500 text-xs hidden">${precio}</p>` : ''}
+            
+            <p class="font-medium text-gray-600">Total</p> 
+            
+            ${precio ? `<p class="precio text-gray-800 font-bold">${precio}</p>` : ''} 
+        </div>
+
+      
+        <div> 
+            <textarea
+                class="detalle_producto w-full h-12 p-2 mt-2 border border-gray-300 rounded-lg text-sm text-gray-800 resize-none transition-colors duration-200 ease-in-out focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 placeholder-gray-400 placeholder:italic"
+                placeholder="Detalle del pedido..."
+            ></textarea>
+        </div>
+
+        
+        <div> 
+             <button
+                class="add-topic-btn self-start mt-1 px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-lg border border-black/20 cursor-pointer transition-colors duration-200 hover:bg-blue-600"
+                onclick="panelAddTopics(this)"
+             >
                 Agregar Topic
             </button>
         </div>
-    `;
+    </div>
+`;
 
     // Agregar el elemento al panel
     panelList.appendChild(listItem);
-    actualizarTotalPedido()
-    // Abrir el panel automáticamente en pantallas pequeñas
+    actualizarTotalPedido();
+    
+    // Abrir el panel automáticamente en pantallas pequeñas y asegurar que sea visible
     if (window.innerWidth <= 640) {
+        const panel = document.getElementById('panel');
         panel.classList.add('open');
+        panel.style.zIndex = "999";
+        panel.style.display = "block";
     }
 }
 
@@ -58,6 +84,12 @@ ${precio ? `<p class="precioUnidad text-gray-800 font-bold hidden">${precio}</p>
 const panel = document.getElementById('panel');
 function togglePanel() {
     panel.classList.toggle('open');
+    
+    // Asegurar visibilidad en móvil cuando se activa
+    if (panel.classList.contains('open') && window.innerWidth <= 640) {
+        panel.style.zIndex = "999";
+        panel.style.display = "block";
+    }
 }
 
 // Event listener para manejar el incremento de cantidad (opcional)
@@ -87,7 +119,8 @@ document.getElementById('panel-list').addEventListener('click', function(event) 
 
 
 
-//MODIFICADO POR IA
+//MODIFICADO POR IA // USAMOS UNA URL PARA TRAER TODOS LOS TOPICS QUE HAYAN Y MOSTRARLO EN EL MODAL
+
 let currentProductTarget = null;
 async function panelAddTopics(btn) {
     currentProductTarget = btn.closest('div[class^="id-"]'); // Guardamos el producto donde se abrirá el modal
@@ -103,29 +136,90 @@ async function panelAddTopics(btn) {
     console.log(data);
 
     if (data) {
-        const modal = document.querySelector(".modalTopics");
+        const modal = document.querySelector(".modalTopicss");
         modal.innerHTML = ''; // Limpia antes de renderizar
         modal.classList.replace("hidden", "absolute");
+        
+        // Añadir título al panel
+        const titleContainer = document.createElement("div");
+        titleContainer.className = "w-full bg-blue-500 text-white p-3 rounded-t-lg mb-4 flex justify-between items-center";
+        titleContainer.innerHTML = `
+            <h2 class="text-lg font-bold">Seleccionar Topic</h2>
+            <button id="close-topic-modal" class="text-white hover:text-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        `;
+        modal.appendChild(titleContainer);
+        
+        // Crear contenedor para la cuadrícula de topics
+        const gridContainer = document.createElement("div");
+        gridContainer.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-96 overflow-y-auto";
+        modal.appendChild(gridContainer);
+        
+        // Estilizar el modal principal
+        modal.className = "absolute bg-white rounded-lg shadow-2xl border border-gray-300 w-11/12 md:w-3/4 lg:w-2/3 max-w-4xl z-50 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 modalTopicss";
 
+        // Añadir cada topic como una tarjeta en la cuadrícula
         data.forEach(element => {
             const card = document.createElement("button");
-            card.className = "topicRelated bg-white shadow-lg border border-gray-300 rounded-lg p-4 w-64 hover:shadow-xl transition duration-300 ease-in-out";
+            card.className = "topicRelated bg-white shadow-md border border-gray-300 rounded-lg p-4 hover:shadow-xl hover:border-blue-300 transition duration-300 ease-in-out flex flex-col justify-between h-full";
             card.innerHTML = `
-                <h3 class="text-blue-600 font-bold text-lg mb-2" data-id="${element.id}" data-nombre="${element.nombre_topic}" data-precio="${element.precio || 100}">#${element.id} - ${element.nombre_topic}</h3>
-                <p class="text-gray-700 text-sm">${element.descripcion_topic}</p>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-blue-600 font-bold text-lg" data-id="${element.id}" data-nombre="${element.nombre_topic}" data-precio="${element.precio || 100}">${element.nombre_topic}</h3>
+                        <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">#${element.id}</span>
+                    </div>
+                    <p class="text-gray-700 text-sm mb-2">${element.descripcion_topic}</p>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-green-600 font-bold">${element.precio_topic || 100}</span>
+                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Agregar</span>
+                </div>
             `;
             card.addEventListener("click", () => addTopicToProduct(element));
-            modal.appendChild(card);
+            gridContainer.appendChild(card);
         });
+        
+        // Agregar botones de acción en la parte inferior
+        const actionContainer = document.createElement("div");
+        actionContainer.className = "flex justify-end gap-3 p-4 bg-gray-100 rounded-b-lg border-t border-gray-300";
+        
+        const cancelButton = document.createElement("button");
+        cancelButton.className = "px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-200";
+        cancelButton.textContent = "Cancelar";
+        cancelButton.addEventListener("click", closeTopicModal);
+        actionContainer.appendChild(cancelButton);
+        
+        modal.appendChild(actionContainer);
+        
+        // Añadir evento de cierre al botón de cerrar
+        document.getElementById("close-topic-modal").addEventListener("click", closeTopicModal);
+        
+        // Añadir un overlay para mejorar el enfoque en el modal
+        const overlay = document.createElement("div");
+        overlay.className = "fixed inset-0 bg-black bg-opacity-50 z-40";
+        overlay.id = "modal-overlay";
+        overlay.addEventListener("click", closeTopicModal);
+        document.body.appendChild(overlay);
     }
-}//END IA
+}
+//END IA
 
+//====================================CERRAR MODAL DE TOPICS MANUALMENTE
 function closeTopicModal() {
-    const modal = document.querySelector(".modalTopics");
+    const modal = document.querySelector(".modalTopicss");
     modal.classList.replace("absolute", "hidden");
+    
+    const overlay = document.getElementById("modal-overlay");
+    if (overlay) {
+        overlay.remove();
+    }
 }
 
-//START IA (AGREGAR TOPIC A UN PRODUCTO)
+//====================================START IA (AGREGAR TOPIC A UN PRODUCTO) ====Debo echarle una repasada
 function addTopicToProduct(topic) {
     const topicWrapper = document.createElement("div");
     topicWrapper.className = "topic-item bg-yellow-100 border border-blue-300 rounded p-2 mt-2";
@@ -188,7 +282,7 @@ function addTopicToProduct(topic) {
 
 
 
-
+//====================================ACTUALIZAR TOTAL DE CADA PRODUCTO SEGUN SU CANTIDAD Y LOS TOPICS QUE TENGA TAMBIEN CON SU RESPECTICA CANTIDAD CADA UNO
 
 
 function actualizarTotalProducto(productDiv) {
@@ -212,7 +306,7 @@ function actualizarTotalProducto(productDiv) {
 
 
 
-
+//====================================ACTUALIZAR TOTAL DEL PEDIDO
 
 
 
@@ -229,14 +323,7 @@ function actualizarTotalPedido() {
     totalText.innerHTML = `${sumaTotal.toFixed(2)}`; // Display total with two decimal places  
 }  
 
-
-
-
-
-
-
-
-
+//====================================ENVIAR DATOS
 
 let listaElementos = [];
 async function enviarDatos (){
@@ -294,4 +381,75 @@ async function enviarDatos (){
     .then(res => res.json())
     .then(data => console.log(data));
 }
+
+
+//ESTO FUE DADO POR LA IA PARA QUE EN EL PANEL EN DISPOSICION PEQUEÑA (TELEFONO) SE VEAN LOS PRODUCTOS SELECCIONADOS
+
+document.addEventListener('DOMContentLoaded', function() {
+    const panelToggle = document.createElement('button');
+    panelToggle.className = 'panel-toggle fixed bottom-4 right-4 z-50 bg-blue-500 text-white p-3 rounded-full shadow-lg';
+    panelToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>';
+    
+    panelToggle.addEventListener('click', function() {
+        togglePanel();
+    });
+    
+    document.body.appendChild(panelToggle);
+    
+    // Agregar listener para cambios de tamaño de pantalla
+    window.addEventListener('resize', function() {
+        const panel = document.getElementById('panel');
+        
+        if (window.innerWidth <= 640) {
+            // Si es móvil y el panel debe estar abierto
+            if (panel.classList.contains('open')) {
+                panel.style.zIndex = "999";
+                panel.style.display = "block";
+            }
+        } else {
+            // Restablecer estilos en pantallas grandes
+            panel.style.removeProperty('z-index');
+            panel.style.removeProperty('display');
+        }
+    });
+    
+    // Añadir estilos CSS para móvil
+    const styleSheet = document.createElement("style"); //LA ALTURA DE #panel acomoda la alltura del panel en la disposicion
+    styleSheet.innerHTML = `
+        @media (max-width: 640px) {
+            #panel {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 30% !important; 
+                background-color: transparent !important;
+                z-index: 999;
+                overflow-y: auto;
+                padding: 1rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                
+            }
+            
+            #panel.open {
+                transform: translateX(0);
+            }
+            
+            .modalTopics {
+                position: fixed !important;
+                z-index: 1000;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                padding: 1rem;
+            }
+            
+            .panel-toggle {
+                display: block !important;
+            }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+});
 //END IA

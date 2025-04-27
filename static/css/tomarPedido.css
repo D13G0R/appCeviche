@@ -1,7 +1,10 @@
+
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ecfeff; /* Matching the Tailwind cyan-50 color */
 }
 
 main {
@@ -11,98 +14,129 @@ main {
 
 .content {
     flex: 1;
-    margin-right: 18rem; /* Matches the width of the panel */
+    margin-right: 16rem; /* Matches the width of the panel */
     transition: margin-right 0.3s ease;
 }
 
 /*Responsive Design to Panel of Orders*/
 .panel {
-    width: 18rem;
-    height: 200px;
+    width: 16rem;
     transition: transform 0.3s ease;
-    overflow-y: scroll;
+    border-color: #000000; /* Matching Tailwind cyan-200 */
+    background-color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
-/*RESPONSIVE ALTURA*/
-@media (min-height:500px){
-    .panel{
-        height: 350px;
-    }
-}
-@media (min-height:650px){
-    .panel{
+
+/* Height responsive adjustments based on viewport height */
+@media (min-height: 500px) {
+    .panel {
         height: 500px;
     }
 }
-@media (min-height:900px){
-    .panel{
-        height: 750px;
+
+@media (min-height: 650px) {
+    .panel {
+        height: 700px;
     }
 }
-@media(min-height:1150px){
-    .panel{
+
+@media (min-height: 900px) {
+    .panel {
         height: 950px;
     }
 }
-/*RESPONSIVE ANCHURA*/
-/* @media (min-width:500px){
-    .panel{
-        width: 350px;
-    }
-}
-@media (min-width:650px){
-    .panel{
-        width: 500px;
-    }
-}
-@media (min-width:900px){
-    .panel{
-        width: 750px;
-    }
-}
-@media(min-width:1150px){
-    .panel{
-        width: 950px;
-    }
-} */
-/*End responsive Panel of Orders*/
 
+@media (min-height: 1150px) {
+    .panel {
+        height: 950px;
+    }
+}
 
 .panel.closed {
     transform: translateX(100%);
 }
 
-@media (max-width: 500px) {
-    .panel {
-        width: 100%; /* Ocupar todo el ancho */
-        height: 200px; /* Altura fija */
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #e2e8f0; /* Color de fondo */
-        transform: translateY(-100%);
-        transition: transform 0.3s ease;
-        z-index: 50;
-        padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow-y: auto; /* Permitir scroll */
-        background-color: red;
-    }
+/* Panel styling */
+.panel #panel-list {
+    overflow-y: auto;
+}
 
+/* Modal topics styling */
+.modalTopics {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.modalTopics.show {
+    display: flex;
+}
+
+.buscador {
+    background-color: white;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    outline: none;
+}
+
+.buscador:focus {
+    box-shadow: 0 0 0 2px #0891b2; /* Tailwind cyan-600 */
+}
+
+/* Mobile responsive styles */
+@media (max-width: 640px) {
+    .content {
+        margin-right: 0;
+    }
+    
+    .panel {
+        width: 100%;
+        height: auto;
+        max-height: 80vh;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        transform: translateY(100%);
+        z-index: 50;
+        border-radius: 1rem 1rem 0 0;
+        transition: transform 0.3s ease;
+    }
+    
     .panel.open {
         transform: translateY(0);
     }
     
-    .content {
-        transition: padding-top 0.3s ease;
-        margin-right: 16rem; /* Matches the width of the panel */
-        margin-top: 120px;
-        margin-right: 0px; /* Matches the width of the panel */
+    .modalTopics {
+        width: 100%;
+        padding: 1rem;
     }
-
-    .panel.open ~ .content {
-        padding-top: 220px; /* Ajuste para evitar que el contenido quede tapado */
+    
+    /* Adjust header nav for mobile */
+    header nav {
+        width: 85%;
     }
-    .modalTopics{
-        width: 90%;
+    
+    header ul {
+        justify-content: space-around;
+        font-size: 0.875rem;
+    }
+    
+    /* Add toggle button for panel on mobile */
+    .panel-toggle {
+        position: fixed;
+        bottom: 4rem;
+        right: 1rem;
+        background-color: #0891b2; /* Cyan-600 */
+        color: white;
+        border-radius: 9999px;
+        width: 3.5rem;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 40;
     }
 }
