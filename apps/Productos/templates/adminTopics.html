@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Topic</title> {# Título más específico #}
+    <link rel="stylesheet" href="{% static 'css/adminProductos.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+</head>
+<body>
+
+    <header class="main-header">
+        <div class = "flex justify-center items-center">
+            <a href="{% url 'inicio' %}" class ="mr-10"><img src="{% static 'images/previous.png' %}" class = "w-6" alt="volver"></a>
+            <h1>Administración de Topics</h1>
+        </div>
+        
+        {# Contenedor para el botón de agregar #}
+        <div class="header-actions">
+             <a href="{% url 'crearTopic' %}" class="btn btn-primary"> {# Asegúrate de poner la URL correcta #}
+                 <i class="fas fa-plus"></i>
+                Agregar Topic
+             </a>
+        </div>
+    </header>
+
+    <main class="product-list-container">
+        {# Encabezados opcionales #}
+        <div class="product-list-header" aria-hidden="true">
+             <span class="header-image">Imagen</span>
+             <span class="header-info">Producto</span>
+             <span class="header-price">Precio</span>
+             <span class="header-actions-col">Acciones</span> {# Renombrado para evitar conflicto #}
+        </div>
+
+        <ul class="product-list-compact">
+            {% for topic in object_list %}
+                <li class="product-item">
+                    <div class="product-item-image">
+                        {% if topic.imagen_url %}
+                            <img src="{{ producto.imagen_url }}" alt="" class="product-thumbnail">
+                        {% else %}
+                            <div class="product-image-placeholder-small"></div>
+                        {% endif %}
+                    </div>
+                    <div class="product-item-info">
+                        <h2 class="product-item-title">{{ topic.nombre_topic }}</h2>
+                        <p class="product-item-desc">{{ topic.descripcion_topic|truncatechars:60 }}</p>
+                    </div>
+                    <div class="product-item-price">
+                        <span>${{ topic.precio_topic|floatformat:2 }}</span>
+                    </div>
+                    
+                    <!-- INICIO SECCIÓN DE ACCIONES CON DESPLEGABLE -->
+                    <div class="product-item-actions">
+                        <div class="actions-dropdown">
+                            <!-- {# Botón que activa el desplegable (puede ser texto o icono) #}} -->
+                            <button class="actions-trigger btn btn-small btn-icon font-bold text-lg">
+                                <i class="fas fa-ellipsis-v"></i>... {# Icono opcional #}
+                                
+                            </button>
+                            
+                            <div class="dropdown-content">
+                                <a href="{% url 'editarTopic' pk=topic.id %}" class="dropdown-item"> {# URL de editar #}
+                                     <i class="fas fa-edit"></i>Editar
+                                </a>
+                                {% if topic.estado_topic == "Deshabilitado" %}
+                                    <a href="{% url 'activarTopic' id=topic.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
+                                        <i class="fas fa-toggle-off"></i>Activar
+                                    </a>
+                                {% endif %}
+                                {% if topic.estado_topic == "activo"%}
+                                    <a href="{% url 'deshabilitarTopic' id=topic.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
+                                        <i class="fas fa-toggle-off"></i>Deshabilitar
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'eliminarTopic' pk=topic.id %}" class="dropdown-item action-delete"> {# URL de eliminar #}
+                                    <i class="fas fa-trash-alt"></i>Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {# --- FIN SECCIÓN DE ACCIONES CON DESPLEGABLE --- #}
+
+                </li>
+            {% empty %}
+                <li class="no-products-item">
+                    <p>No hay productos disponibles.</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </main>
+
+    <footer class="main-footer">
+        <p>© {% now "Y" %} Tu Empresa.</p>
+    </footer>
+
+</body>
+</html>
