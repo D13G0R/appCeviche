@@ -10,10 +10,18 @@ urlpatterns = [
     path('cancelarPedido/<int:id>', views.cancelarPedido, name = "cancelarPedido"),
     path('pagarPedido/<int:id>', views.pagarPedido, name = "pagarPedido"),
 
-    path('showProductos/', views.showAllProducts.as_view(), name = "adminProductos"),
+    path('showProductos/', views.adminProductos.as_view(), name = "adminProductos"),
     path('editarProducto/<int:pk>', views.editarProducto.as_view(), name = "editarProducto"),
     path('eliminarProducto/<int:pk>', views.eliminarProducto.as_view(), name = "eliminarProducto"),
     path('crearProducto/', views.crearProducto.as_view(), name = "crearProducto"),
-    path('deshabilitarProducto/<int:id>', views.deshabilitarProducto, name = "deshabilitarProducto")
+    path('deshabilitarProducto/<int:id>', views.deshabilitarProducto, name = "deshabilitarProducto"),
+    path('activarProducto/<int:id>', views.activarProducto, name = "activarProducto"),
+
+    path('showTopics/', views.adminTopics.as_view(), name = "adminTopics"),
+    path('editarTopic/<int:pk>', views.editarTopic.as_view(), name = "editarTopic"),
+    path('eliminarTopic/<int:pk>', views.eliminarTopic.as_view(), name = "eliminarTopic"),
+    path('crearTopic/', views.crearTopic.as_view(), name = "crearTopic"),
+    path('deshabilitarTopic/<int:id>', views.deshabilitarTopic, name = "deshabilitarTopic"),
+    path('activarTopic/<int:id>', views.activarTopic, name = "activarTopic")
 ]
 

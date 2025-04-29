@@ -98,7 +98,11 @@ def pagarPedido(request, id):
     pedido.save()
     return redirect("showOrdersTaken")
     
-class showAllProducts(ListView):
+
+
+
+
+class adminProductos(ListView):
     model = Productos
     template_name = "adminProductos.html"
     # context_object_name = "Objetos_productos"
@@ -106,7 +110,7 @@ class showAllProducts(ListView):
 class crearProducto(CreateView):
     model = Productos
     template_name="formularioCrearProducto.html"
-    success_url = "adminProductos"
+    success_url = reverse_lazy("adminProductos")
     form_class = forms.FormularioEditarProducto
 
 class editarProducto(UpdateView):
@@ -127,3 +131,47 @@ def deshabilitarProducto(request, id):
     objetoProducto.estado_producto = "Deshabilitado"
     objetoProducto.save()
     return redirect("adminProductos")
+
+def activarProducto(request, id):
+    objectoProducto = Productos.objects.get(id = id)
+    objectoProducto.estado_producto = "activo"
+    objectoProducto.save()
+    return redirect("adminTopics")
+
+
+
+
+class adminTopics(ListView):
+    model = Topics
+    template_name = "adminTopics.html"
+    # context_object_name = "ObjetoTopics"
+
+class crearTopic(CreateView):
+    model = Topics
+    template_name = "formularioCrearTopic.html"
+    success_url = reverse_lazy("adminTopics")
+    form_class = forms.FormularioEditarTopic
+
+class editarTopic(UpdateView):
+    model = Topics
+    template_name = "formularioEditarTopic.html"
+    success_url = reverse_lazy("adminTopics")
+    form_class = forms.FormularioEditarTopic
+
+class eliminarTopic(DeleteView):
+    model = Topics
+    template_name = "confirmDeleteTopic.html"
+    success_url = reverse_lazy("adminTopics")
+    form_class = forms.FormularioEditarTopic
+
+def deshabilitarTopic(request, id):
+    objectoTopic = Topics.objects.get(id = id)
+    objectoTopic.estado_topic = "Deshabilitado"
+    objectoTopic.save()
+    return redirect("adminTopics")
+
+def activarTopic(request, id):
+    objectoTopic = Topics.objects.get(id = id)
+    objectoTopic.estado_topic = "activo"
+    objectoTopic.save()
+    return redirect("adminTopics")
