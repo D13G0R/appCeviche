@@ -69,9 +69,17 @@
                                 <a href="{% url 'editarProducto' pk=producto.id %}" class="dropdown-item"> {# URL de editar #}
                                      <i class="fas fa-edit"></i>Editar
                                 </a>
-                                <a href="{% url 'deshabilitarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
-                                     <i class="fas fa-toggle-off"></i>Deshabilitar
-                                </a>
+
+                                {% if producto.estado_producto == "Deshabilitado" %}
+                                    <a href="{% url 'activarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
+                                        <i class="fas fa-toggle-off"></i>Activar
+                                    </a>
+                                {% endif %}
+                                {% if producto.estado_producto == "activo" %}
+                                    <a href="{% url 'deshabilitarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
+                                        <i class="fas fa-toggle-off"></i>Deshabilitar
+                                    </a>
+                                {% endif %}
                                 <a href="{% url 'eliminarProducto' pk=producto.id %}" class="dropdown-item action-delete"> {# URL de eliminar #}
                                     <i class="fas fa-trash-alt"></i>Eliminar
                                 </a>
