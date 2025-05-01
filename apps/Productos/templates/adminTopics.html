@@ -61,7 +61,7 @@
                         <div class="actions-dropdown">
                             <!-- {# Botón que activa el desplegable (puede ser texto o icono) #}} -->
                             <button class="actions-trigger btn btn-small btn-icon font-bold text-lg">
-                                <i class="fas fa-ellipsis-v"></i>... {# Icono opcional #}
+                                <i class="fas fa-ellipsis-v"></i> {# Icono opcional #}
                                 
                             </button>
                             
@@ -74,7 +74,7 @@
                                         <i class="fas fa-toggle-off"></i>Activar
                                     </a>
                                 {% endif %}
-                                {% if topic.estado_topic == "activo"%}
+                                {% if topic.estado_topic == "Activo" %}
                                     <a href="{% url 'deshabilitarTopic' id=topic.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
                                         <i class="fas fa-toggle-off"></i>Deshabilitar
                                     </a>

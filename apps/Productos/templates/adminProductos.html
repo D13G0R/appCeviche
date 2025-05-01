@@ -75,7 +75,7 @@
                                         <i class="fas fa-toggle-off"></i>Activar
                                     </a>
                                 {% endif %}
-                                {% if producto.estado_producto == "activo" %}
+                                {% if producto.estado_producto == "Activo" %}
                                     <a href="{% url 'deshabilitarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
                                         <i class="fas fa-toggle-off"></i>Deshabilitar
                                     </a>
