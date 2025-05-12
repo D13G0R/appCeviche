@@ -7,12 +7,14 @@ class Pedidos(models.Model):
     total = models.FloatField(null = False, blank = False)
     estado = models.CharField(max_length=15, null = False, blank = False, default = "Pendiente")
     descripcion = models.TextField(null = False, blank = False)
+    fecha_pedido = models.DateTimeField(auto_now=True)
 
 class Productos(models.Model):
     nombre_producto = models.CharField(max_length= 50, null = False, blank = False)
     descripcion_producto = models.TextField(null = False, blank = False)
     precio_producto = models.FloatField(null = False, blank = False)
     estado_producto = models.TextField(choices = estados_productos, default = "activo")
+    fecha_lanzado = models.DateTimeField(auto_now=True)
 
 class Pedido_Producto(models.Model):
     fk_pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE, related_name="detalle_pedido")
@@ -20,11 +22,13 @@ class Pedido_Producto(models.Model):
     cantidad_producto = models.IntegerField()
     detalle_producto = models.TextField(null = True, blank = True)
 
+
 class Topics(models.Model):
     nombre_topic = models.CharField(max_length= 50, null = False, blank = False)
     descripcion_topic = models.TextField(null = False, blank = False)
     precio_topic = models.FloatField(null = False, blank = False)
     estado_topic = models.TextField(choices = estados_productos, default = "activo")
+    fecha_lanzado= models.DateTimeField(auto_now=True)
 
 class Pedido_Producto_Topic(models.Model):
     fk_id_pedido_producto = models.ForeignKey(Pedido_Producto, on_delete=models.CASCADE, related_name = "topics_de_producto")

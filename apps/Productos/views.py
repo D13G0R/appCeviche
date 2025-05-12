@@ -134,7 +134,7 @@ def deshabilitarProducto(request, id):
 
 def activarProducto(request, id):
     objectoProducto = Productos.objects.get(id = id)
-    objectoProducto.estado_producto = "activo"
+    objectoProducto.estado_producto = "Activo"
     objectoProducto.save()
     return redirect("adminTopics")
 
@@ -162,7 +162,7 @@ class eliminarTopic(DeleteView):
     model = Topics
     template_name = "confirmDeleteTopic.html"
     success_url = reverse_lazy("adminTopics")
-    form_class = forms.FormularioEditarTopic
+    context_object_name = "Topic"
 
 def deshabilitarTopic(request, id):
     objectoTopic = Topics.objects.get(id = id)
@@ -172,6 +172,6 @@ def deshabilitarTopic(request, id):
 
 def activarTopic(request, id):
     objectoTopic = Topics.objects.get(id = id)
-    objectoTopic.estado_topic = "activo"
+    objectoTopic.estado_topic = "Activo"
     objectoTopic.save()
     return redirect("adminTopics")

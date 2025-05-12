@@ -47,7 +47,7 @@
             <h2 class="text-3xl md:text-4xl text-center font-bold mb-8 text-cyan-600">Productos</h2>
             <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for producto in Productos %}
-                    {% if  producto.estado_producto == "activo" %}
+                    {% if  producto.estado_producto == "Activo" %}
                         <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
                         onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.precio_producto }}')">
                         <h2 class="text-lg font-semibold text-slate-800">{{ producto.nombre_producto }}</h2>
@@ -62,7 +62,7 @@
 
             <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {% for topic in Topics %}
-                    {% if  topic.estado_topic == "activo" %}
+                    {% if  topic.estado_topic == "Activo" %}
                         <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
                         onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.precio_topic }}')">
                         <h3 class="text-lg font-semibold text-slate-800">{{ topic.nombre_topic }}</h3>
