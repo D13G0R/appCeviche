@@ -53,7 +53,8 @@ def receiveOrder(request):
         precio_unidad_producto = elemento["precio_unidad_producto"]
 
         if seCreoPedido != True:
-            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion ="Ninguna")
+            descripcion_pedido = elemento["descripcion_pedido"]
+            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion = descripcion_pedido if descripcion_pedido else "Ninguna")
             seCreoPedido = True
 
         producto = elemento["producto"]
