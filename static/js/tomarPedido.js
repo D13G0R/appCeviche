@@ -330,6 +330,8 @@ async function enviarDatos (){
     elementos = document.querySelectorAll(".elementos").forEach(elemento => {
         let id_elemento = elemento.querySelector(".id_elemento").value;//input
 
+        let detalle_pedido = document.querySelector(".descripcion_pedido").value.trim();
+
         let id_producto = elemento.querySelector(".id_producto").value;//input
         let cantidad_producto = elemento.querySelector(".cantidad_producto").textContent; //p
         let detalle_producto = elemento.querySelector(".detalle_producto") ? elemento.querySelector(".detalle_producto").value : ""; //textarea
@@ -358,6 +360,7 @@ async function enviarDatos (){
         let dicElemento = 
         {
             "id_elemento" : id_elemento,
+            "descripcion_pedido" : detalle_pedido,
             "precio_total" : precioTotal,
             "precio_unidad_producto": precioTotal,  
             "producto": 
