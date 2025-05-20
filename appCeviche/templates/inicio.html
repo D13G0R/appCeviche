@@ -21,17 +21,21 @@
             <ul
                     class="flex flex-row w-full h-full justify-evenly justify-center items-center text-lg text-black font-bold">
     <!--Enlaces principales, cada una tendra sub-enlacesm asi se mantiene simplicidad y cada pagina con sus propios enlaces-->
-                <li>
+                <li >
                     Inicio
                 </li>
-                <li>
-                    <a href="{% url 'adminProductos' %}">Productos</a>
+                <li class="h-full">
+                    <a href="{% url 'adminProductos' %}" class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Productos</a>
                 </li>
-                <li>
-                    <a href="{% url 'adminTopics' %}">Topics</a>
+                <li class="h-full">
+                    <a href="{% url 'adminTopics' %}" class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Topics</a>
                 </li>
-                <li>
-                    <a href = "{% url 'showOrdersTaken' %}">Pedidos</a>
+                <li class="h-full">
+                    <a href = "{% url 'showOrdersTaken' %}" class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Pedidos</a>
+                </li>
+                <li class="h-full">
+                    <a href="{% url 'AllOrders' %}"
+                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Ventas del día</a>
                 </li>
             </ul>
         </nav>
@@ -40,7 +44,7 @@
     <section class = "h-160 flex flex-row justify-center items-center">
         <h1 class = "text-4xl font-extrabold shadow-lg absolute">BIENVENIDO</h1>
         <button type="button" class = "w-20 h-20 ml-100 bg-white shadow-lg shadow-rose-300 rounded-full">
-            <a href="{% url 'takeOrderView'%}">
+            <a href="{% url 'takeOrderView'%}" class = "botonPedido">
                 <img src = "{% static 'images/tomarPedido.png' %}" class = "rounded-full p-1">
             </a>
         </button>

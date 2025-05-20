@@ -5,6 +5,7 @@ from .views import PedidoProductoTopicView
 
 urlpatterns = [
     path('takeOrders/', views.view_take_order.as_view(), name = 'takeOrderView'),
+    path('showAllOrders/', views.showAllOrders.as_view(), name = 'AllOrders'),
     path('pedido-producto-topic/', PedidoProductoTopicView.as_view(), name='pedido_producto_topic'),
     path('showOrdersTaken/', views.showOrdersTaken.as_view(), name = "showOrdersTaken"),
     path('cancelarPedido/<int:id>', views.cancelarPedido, name = "cancelarPedido"),
