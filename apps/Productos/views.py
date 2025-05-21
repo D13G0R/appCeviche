@@ -12,7 +12,7 @@ from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Pr
 from .serializers import PedidoProductoTopicSerializer, TopicSerializer
 from apps.Productos import forms
 
-
+from django.utils import timezone
 # Create your views here.
 class view_take_order(ListView):
     model = Productos
@@ -40,6 +40,7 @@ class TopicViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def receiveOrder(request):
+    hoy = timezone.datetime
     data = request.data
     if data:
         print(data)
@@ -54,7 +55,7 @@ def receiveOrder(request):
 
         if seCreoPedido != True:
             descripcion_pedido = elemento["descripcion_pedido"]
-            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion = descripcion_pedido if descripcion_pedido else "Ninguna")
+            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion = descripcion_pedido if descripcion_pedido else "Ninguna", fecha_pedido = hoy)
             seCreoPedido = True
 
         producto = elemento["producto"]
@@ -86,6 +87,20 @@ class showOrdersTaken(ListView):
     template_name = "ordersTaken.html" # HAY QUE CAMBIAR ACA EL NOMBRE DEL HTML DESPUES DE ESTRUCTURAR
     def get_queryset(self):
         return Pedidos.objects.filter(estado = "Pendiente").prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
+    
+class showAllOrders(ListView):
+    model = Pedidos
+    context_object_name = "Pedidos"
+    template_name = "allOrders.html" # HAY QUE CAMBIAR ACA EL NOMBRE DEL HTML DESPUES DE ESTRUCTURAR
+    hoy = timezone.localdate()  # Obtiene la fecha local de hoy
+    def get_queryset(self):
+        return Pedidos.objects.filter(fecha_pedido__date=self.hoy).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hoy"] = self.hoy
+        return context
+    
     
 def cancelarPedido(request, id):
     pedido = Pedidos.objects.get(id = id)
