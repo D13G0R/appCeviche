@@ -5,11 +5,14 @@ from .views import PedidoProductoTopicView
 
 urlpatterns = [
     path('takeOrders/', views.view_take_order.as_view(), name = 'takeOrderView'),
-    path('showAllOrders/', views.showAllOrders.as_view(), name = 'AllOrders'),
+    path('showAllOrders/', views.showAllOrders.as_view(), name='AllOrders'),  # sin parámetro
+    path('showAllOrdersDay/<str:dia>/', views.showAllOrders.as_view(), name='AllOrdersForDay'),  # parámetro fecha, en formato "YYYY-MM-DD"
     path('pedido-producto-topic/', PedidoProductoTopicView.as_view(), name='pedido_producto_topic'),
     path('showOrdersTaken/', views.showOrdersTaken.as_view(), name = "showOrdersTaken"),
     path('cancelarPedido/<int:id>', views.cancelarPedido, name = "cancelarPedido"),
     path('pagarPedido/<int:id>', views.pagarPedido, name = "pagarPedido"),
+    # path("filtarFecha/", views.filtrarFecha, name = "filtrarFecha"),
+    # path("filtarFecha/<int:pk>", views.filtrarFecha, name = "filtrarFecha"),
 
     path('showProductos/', views.adminProductos.as_view(), name = "adminProductos"),
     path('editarProducto/<int:pk>', views.editarProducto.as_view(), name = "editarProducto"),
