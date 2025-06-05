@@ -89,30 +89,35 @@ class showOrdersTaken(ListView):
     def get_queryset(self):
         return Pedidos.objects.filter(estado = "Pendiente").prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
     
+from django.utils import timezone
+from datetime import datetime
+
 class showAllOrders(ListView):
     model = Pedidos
     context_object_name = "Pedidos"
-    template_name = "allOrders.html" # HAY QUE CAMBIAR ACA EL NOMBRE DEL HTML DESPUES DE ESTRUCTURAR
-    hoy = timezone.localdate()  # Obtiene la fecha local de hoy
-    
+    template_name = "allOrders.html"
+    hoy = timezone.localtime(timezone.now())
+    dia_seleccionado = ""
+
     def get_queryset(self):
-        
-        dia = self.kwargs.get("dia")
-        if dia:
-           try:
-            fecha = self.hoy.replace(day=dia)
-           except ValueError:
-                # Si la fecha no es válida (por ejemplo, día 31 en febrero), usar hoy
-                fecha = self.hoy
+        dia_str = self.kwargs.get("dia")
+        if dia_str:
+            try:
+                fecha_str = dia_str  # "YYYY-MM-DD"
+                fecha_date = datetime.strptime(fecha_str, "%Y-%m-%d").date()
+                self.dia_seleccionado = fecha_date
+                # La búsqueda en DB debe usar la parte de fecha únicamente
+                return Pedidos.objects.filter(fecha_pedido__date=fecha_date).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
+            except ValueError:
+                # Fecha inválida, usas hoy o ajustas como quieras
+                return Pedidos.objects.none()  # O Pedidos.objects.filter(fecha_pedido__date=self.hoy.date())
         else:
-            fecha = self.hoy
-
-        return Pedidos.objects.filter(fecha_pedido__date=fecha).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
-
+            # Sin parámetro, filtrar por hoy
+            return Pedidos.objects.filter(fecha_pedido__date=self.hoy.date()).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
+            self.dia_seleccionado = hoy
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["hoy"] = self.hoy
-        context["dia_para"] = self.kwargs.get('dia','')
+        context["hoy"] = self.dia_seleccionado
         return context
     
 # @api_view(['POST'])

@@ -6,7 +6,7 @@ from .views import PedidoProductoTopicView
 urlpatterns = [
     path('takeOrders/', views.view_take_order.as_view(), name = 'takeOrderView'),
     path('showAllOrders/', views.showAllOrders.as_view(), name='AllOrders'),  # sin parámetro
-    path('showAllOrdersDay/<int:dia>', views.showAllOrders.as_view(), name='AllOrdersForDay'),  # con día
+    path('showAllOrdersDay/<str:dia>/', views.showAllOrders.as_view(), name='AllOrdersForDay'),  # parámetro fecha, en formato "YYYY-MM-DD"
     path('pedido-producto-topic/', PedidoProductoTopicView.as_view(), name='pedido_producto_topic'),
     path('showOrdersTaken/', views.showOrdersTaken.as_view(), name = "showOrdersTaken"),
     path('cancelarPedido/<int:id>', views.cancelarPedido, name = "cancelarPedido"),
