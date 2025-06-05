@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Orders</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'js/allOrders.js' %}"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -29,7 +30,13 @@
             <a href="{% url 'takeOrderView' %}" class ="mr-10"><img src="{% static 'images/previous.png' %}" class = "w-8" alt="volver"></a>
         </div>
         <h1 class="text-2xl font-semibold text-center text-primary mb-6">Historial de ventas hoy : {{ hoy }} </h1>
+        <div>
+            ¿De cuando quieres ver las ventas?: <input type = "date" id = "filtroFecha" placeholder="Selecciona la fecha"> 
+            <button onclick=dateFilter() class = "bg-blue-300 rounded-lg border border-2 px-4 py-2 mb-4">Cargar Fecha</button>
+            <a href="" id="anclaFiltrarDia" class = "bg-green-300 rounded-lg border border-2 px-4 py-2 mb-10">Filtrar</a>
+        </div>
         
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {% for pedido in Pedidos %}
                 {% if forloop.counter0|divisibleby:8 < 4 %}
