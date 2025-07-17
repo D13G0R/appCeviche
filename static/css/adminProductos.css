@@ -1,390 +1,454 @@
-/* === BASE & RESET === */
-:root {
-    --primary-color: #007bff; /* Example primary color */
-    --primary-color-hover: #0056b3;
-    --text-color: #333;
-    --text-color-light: #666;
-    --border-color: #e0e0e0;
-    --background-color: #f8f9fa;
-    --white: #fff;
-    --danger-color: #dc3545;
-    --danger-color-hover: #c82333;
-    --disabled-color: #adb5bd;
-    --font-family: 'Inter', sans-serif;
-    --base-font-size: 16px;
-    --small-font-size: 14px;
-    --border-radius: 4px;
-}
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+* {
     margin: 0;
     padding: 0;
-}
-
-html {
-    font-size: var(--base-font-size);
-    line-height: 1.5;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: var(--font-family);
-    color: var(--text-color);
-    background-color: var(--background-color); /* Light background for contrast */
-    display: flex;
-    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    background-color: #1B263B;
+    color: #E0E5EC;
+    line-height: 1.6;
     min-height: 100vh;
 }
 
-a {
-    color: var(--primary-color);
-    text-decoration: none;
+
+/* Header Styles de Navegacion */
+.header {
+    background-color: #1B263B;
+    padding: 1rem 0;
+    border-bottom: 1px solid #E0E5EC;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-a:hover {
-    color: var(--primary-color-hover);
-    text-decoration: underline;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-ul {
-    list-style: none;
-}
-
-/* === LAYOUT & HEADER === */
-.main-header {
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border-color);
+    padding: 0 2rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    font-size: 2rem;
+    animation: gentle-float 3s ease-in-out infinite;
+}
+
+.logo-text h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #FFFFFF;
+    margin-bottom: 0.25rem;
+}
+
+.logo-text p {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #E0E5EC;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #E0E5EC;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #FF6B00;
+    background-color: rgba(255, 107, 0, 0.1);
+}
+
+.nav-item span:first-child {
+    font-size: 1.1rem;
+}
+
+
+/* Main Header de titulo y botones */
+.main-header {
+    background-color: #1B263B;
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.back-link {
+    color: #E0E5EC;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #3498DB;
+}
+
+.back-icon {
+    font-size: 1.5rem;
 }
 
 .main-header h1 {
-    font-size: 1.5rem; /* 24px */
     font-weight: 700;
+    font-size: 1.75rem;
+    color: #FFFFFF;
 }
 
 .header-actions {
-    /* No specific styles needed if just holding the button */
-}
-
-/* === BUTTONS === */
-.btn {
-    display: inline-block;
-    padding: 0.5rem 1rem; /* 8px 16px */
-    font-size: var(--small-font-size); /* 14px */
-    font-weight: 500;
-    text-align: center;
-    border: 1px solid transparent;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    white-space: nowrap; /* Prevent text wrapping */
+    display: flex;
+    align-items: center;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: var(--white);
-    border-color: var(--primary-color);
+    background-color: #FF6B00;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-color-hover);
-    border-color: var(--primary-color-hover);
-    color: var(--white);
-    text-decoration: none;
+    background-color: #e55a00;
+    transform: translateY(-1px);
 }
 
-.btn-small {
-    padding: 0.25rem 0.5rem; /* 4px 8px */
-    font-size: 0.8rem; /* ~13px */
-}
-
-.btn-icon {
-   padding: 0.3rem; /* Adjust for icon-only feel */
-   line-height: 1; /* Helps vertical alignment */
-   background: none;
-   border: none;
-   color: var(--text-color-light);
-   font-weight: bold; /* Makes '...' bolder */
-   font-size: 1.25rem; /* Larger dots */
-}
-
-.btn-icon:hover {
-    color: var(--text-color);
-    background-color: #eee; /* Subtle background on hover */
-}
-
-/* === MAIN CONTENT & PRODUCT LIST === */
+/* Main Content */
 .product-list-container {
-    flex-grow: 1; /* Takes remaining vertical space */
-    max-width: 1000px; /* Max width for readability */
-    margin: 1.5rem auto; /* Center the container */
-    padding: 0 1.5rem;
-    width: 100%; /* Ensure it takes width up to max-width */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
 }
 
+/* Table-like Header */
 .product-list-header {
-    display: flex;
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--text-color-light);
-    font-size: var(--small-font-size);
-    border-bottom: 2px solid var(--border-color);
-    /* Align with product-item columns */
-    align-items: center;
+    display: grid;
+    grid-template-columns: 80px 1fr 120px 100px;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 2px solid #E0E5EC;
+    margin-bottom: 0;
 }
 
-.header-image { flex: 0 0 60px; margin-right: 1rem; } /* Fixed width for image col */
-.header-info { flex: 1 1 auto; margin-right: 1rem; } /* Flexible width for info */
-.header-price { flex: 0 0 80px; text-align: right; margin-right: 1rem; } /* Fixed width price */
-.header-actions-col { flex: 0 0 50px; text-align: center; } /* Fixed width actions */
+.product-list-header span {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #E0E5EC;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-
+/* Product List */
 .product-list-compact {
-    background-color: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    overflow: hidden; /* Clip border-radius */
-    padding-bottom: 100px;
-    
+    list-style: none;
 }
 
 .product-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 80px 1fr 120px 100px;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #E0E5EC;
     align-items: center;
-    padding: 0.75rem 1rem; /* Slightly more padding than header */
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.15s ease;
-}
-
-.product-item:last-child {
-    border-bottom: none;
+    transition: background-color 0.3s ease;
 }
 
 .product-item:hover {
-    background-color: #f8f9fa; /* Subtle hover */
+    background-color: #233451;
 }
 
-/* === PRODUCT ITEM COMPONENTS === */
 .product-item-image {
-    flex: 0 0 50px; /* Fixed width */
-    height: 50px; /* Fixed height */
-    margin-right: 1rem;
-    display: flex; /* Center placeholder/image */
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Ensure image fits */
 }
 
 .product-thumbnail {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Crop image to fit */
-    border-radius: var(--border-radius);
+    object-fit: cover;
 }
 
 .product-image-placeholder-small {
     width: 100%;
     height: 100%;
-    background-color: #e9ecef;
-    border-radius: var(--border-radius);
-    /* Optional: Add an icon or pattern */
+    background-color: #233451;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E0E5EC;
+    font-size: 1.5rem;
+}
+
+.product-image-placeholder-small::before {
+    content: '🍽️';
 }
 
 .product-item-info {
-    flex: 1 1 auto; /* Takes up available space */
-    margin-right: 1rem;
-    overflow: hidden; /* Prevent long text breaking layout */
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .product-item-title {
-    font-size: 1rem; /* 16px */
     font-weight: 500;
-    margin-bottom: 0.1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 1rem;
+    color: #FFFFFF;
+    margin-bottom: 0.25rem;
 }
 
 .product-item-desc {
-    font-size: var(--small-font-size); /* 14px */
-    color: var(--text-color-light);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #E0E5EC;
+    opacity: 0.8;
 }
 
 .product-item-price {
-    flex: 0 0 80px; /* Match header width */
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #FFFFFF;
     text-align: right;
-    font-weight: 500;
-    margin-right: 1rem;
-    white-space: nowrap;
 }
 
+/* Actions Dropdown */
 .product-item-actions {
-    flex: 0 0 50px; /* Match header width */
-    position: relative; /* Anchor for dropdown */
-    text-align: center; /* Center the trigger button */
+    display: flex;
+    justify-content: center;
 }
 
-/* === ACTIONS DROPDOWN === */
 .actions-dropdown {
-    position: relative; /* Needed for absolute positioning of content */
-    display: inline-block; /* Keep it neat */
+    position: relative;
 }
 
-/* Removed .btn-icon styles from here, using the global .btn-icon now */
 .actions-trigger {
-     /* Style using .btn, .btn-small, .btn-icon classes */
+    background: none;
+    border: none;
+    color: #E0E5EC;
+    font-size: 1.125rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.actions-trigger:hover {
+    background-color: #233451;
+    color: #3498DB;
 }
 
 .dropdown-content {
-    display: none; /* Hidden by default */
     position: absolute;
-    right: 0; /* Align to the right of the trigger */
-    top: 100%; /* Position below the trigger */
-    background-color: var(--white);
+    top: 100%;
+    right: 0;
+    background-color: #233451;
     min-width: 140px;
-    box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    z-index: 10; /* Ensure it's above other items */
-    margin-top: 4px; /* Small gap */
-    overflow: hidden; /* Clip items to border-radius */
+    border: 1px solid #E0E5EC;
+    border-radius: 4px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
 }
 
-/* Show dropdown on hover or when trigger button has focus */
-.actions-dropdown:hover .dropdown-content,
-.actions-trigger:focus + .dropdown-content, /* Show when button focused */
-.dropdown-content:hover /* Keep open when hovering content */
- {
-    display: block;
+.actions-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .dropdown-item {
-    display: block; /* Make the link fill the width */
-    padding: 0.6rem 1rem; /* 10px 16px */
-    font-size: var(--small-font-size);
-    color: var(--text-color);
-    white-space: nowrap;
-    text-decoration: none; /* Remove default underline */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #E0E5EC;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(224, 229, 236, 0.1);
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
 }
 
 .dropdown-item:hover {
-    background-color: var(--background-color);
-    color: var(--text-color); /* Ensure text color remains */
-    text-decoration: none;
+    background-color: #1B263B;
+    color: #3498DB;
 }
 
-/* Specific styles for actions */
-.dropdown-item.action-delete {
-    color: var(--danger-color);
-}
 .dropdown-item.action-delete:hover {
-    background-color: #fbebee; /* Light red background */
-    color: var(--danger-color-hover);
+    background-color: #1B263B;
+    color: #FF6B00;
 }
 
-/* Style for disabled items (assuming you add this class via JS/template) */
-.dropdown-item.btn-disable,
-.dropdown-item[disabled] { /* You might add disabled attribute */
-    color: var(--disabled-color);
-    cursor: not-allowed;
-    background-color: transparent;
-}
-.dropdown-item.btn-disable:hover {
-    background-color: transparent; /* No hover effect */
-    color: var(--disabled-color);
+.dropdown-item i {
+    font-size: 0.875rem;
+    width: 16px;
 }
 
-/* === NO PRODUCTS MESSAGE === */
+/* No Products State */
 .no-products-item {
-    padding: 2rem 1rem;
+    padding: 3rem 0;
     text-align: center;
-    color: var(--text-color-light);
+    color: #E0E5EC;
+    font-style: italic;
 }
 
-/* === FOOTER === */
+/* Footer */
 .main-footer {
-    text-align: center;
-    padding: 1rem 1.5rem;
-    margin-top: 2rem; /* Space above footer */
-    font-size: var(--small-font-size);
-    color: var(--text-color-light);
-    border-top: 1px solid var(--border-color);
-    background-color: var(--white);
+    background-color: #1B263B;
+    border-top: 1px solid #E0E5EC;
+    padding: 1rem 0;
+    margin-top: auto;
 }
 
-/* === Optional: Basic Responsiveness === */
+.main-footer p {
+    text-align: center;
+    color: #E0E5EC;
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .main-header {
-        padding: 0.75rem 1rem;
-    }
-    .main-header h1 {
-        font-size: 1.25rem; /* Smaller title */
-    }
-    .product-list-container {
-        margin: 1rem auto;
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
         padding: 0 1rem;
     }
-    .product-list-header {
-        /* Optionally hide headers on small screens */
-        /* display: none; */
-        padding: 0.5rem 0.75rem;
-    }
-    .product-item {
-        padding: 0.5rem 0.75rem;
-        font-size: var(--small-font-size); /* Smaller base font for items */
-    }
-    .product-item-image {
-        flex-basis: 40px; /* Smaller image */
-        height: 40px;
-        margin-right: 0.75rem;
-    }
-    .product-item-info { margin-right: 0.75rem; }
-    .product-item-price { flex-basis: 70px; margin-right: 0.75rem; font-size: var(--small-font-size); }
-    .product-item-actions { flex-basis: 40px; }
 
-    /* Make description less prominent or hide */
-    .product-item-desc {
-       /* display: none; */ /* Uncomment to hide description completely */
-       font-size: 0.75rem; /* Make it smaller */
+    .header-left {
+        order: 2;
+    }
+
+    .header-actions {
+        order: 1;
+    }
+
+    .product-list-container {
+        padding: 1rem;
+    }
+
+    .product-list-header {
+        display: none;
+    }
+
+    .product-item {
+        grid-template-columns: 60px 1fr;
+        grid-template-areas: 
+            "image info"
+            "price actions";
+        gap: 0.75rem;
+        padding: 1rem 0;
+    }
+
+    .product-item-image {
+        grid-area: image;
+    }
+
+    .product-item-info {
+        grid-area: info;
+    }
+
+    .product-item-price {
+        grid-area: price;
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    .product-item-actions {
+        grid-area: actions;
+        justify-content: flex-end;
     }
 }
 
 @media (max-width: 480px) {
-     /* Adjust layout further if needed, e.g., stack elements */
-     .product-list-header { display: none; } /* Hide header row */
+    .main-header h1 {
+        font-size: 1.5rem;
+    }
 
-     .product-item {
-         /* Example: Semi-stacking elements might be complex with current structure */
-         /* Consider adding labels if headers are hidden */
-         align-items: flex-start; /* Align items top */
-         padding-top: 0.75rem;
-         padding-bottom: 0.75rem;
-     }
+    .btn-primary {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
 
-     .product-item-info {
-         /* Could add pseudo-elements for labels if needed */
-     }
+    .product-item {
+        grid-template-columns: 50px 1fr;
+        gap: 0.5rem;
+    }
 
-     .product-item-price {
-         text-align: left; /* Align left below info? */
-         margin-top: 0.25rem; /* Add space */
-         flex-basis: auto; /* Allow wrap */
-         margin-right: 0.5rem; /* Reduce margin */
-     }
-     /* This needs more complex flex adjustments or grid */
+    .product-item-image {
+        width: 50px;
+        height: 50px;
+    }
+
+    .product-item-title {
+        font-size: 0.875rem;
+    }
+
+    .product-item-desc {
+        font-size: 0.75rem;
+    }
+
+    .dropdown-content {
+        min-width: 120px;
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
 }

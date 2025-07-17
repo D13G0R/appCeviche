@@ -4,38 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Productos</title> {# Título más específico #}
-    <link rel="stylesheet" href="{% static 'css/adminProductos.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Administración de Productos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/adminProductos.css' %}">
 </head>
 <body>
-
-    <header class="main-header">
-        <div class = "flex justify-center items-center">
-            <a href="{% url 'inicio' %}" class ="mr-10"><img src="{% static 'images/previous.png' %}" class = "w-6" alt="volver"></a>
-            <h1>Administración de Productos</h1>
-        </div>
-        
-        {# Contenedor para el botón de agregar #}
-        <div class="header-actions">
-             <a href="{% url 'crearProducto' %}" class="btn btn-primary"> {# Asegúrate de poner la URL correcta #}
-                 <i class="fas fa-plus"></i>
-                Agregar Producto
-             </a>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo gentle-float">
+                    🐟
+                </div>
+                <div class="logo-text">
+                    <h2>CevichePro</h2>
+                    <p>Panel Administrativo</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="{% url 'inicio' %}" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'adminProductos' %}" class="nav-item">
+                    <span>🍤</span>
+                    <span>Productos</span>
+                </a>
+                <a href="{% url 'adminTopics' %}" class="nav-item">
+                    <span>📋</span>
+                    <span>Categorías</span>
+                </a>
+                <a href="{% url 'showOrdersTaken' %}" class="nav-item">
+                    <span>🛒</span>
+                    <span>Pedidos</span>
+                </a>
+                <a href="{% url 'AllOrders' %}" class="nav-item">
+                    <span>💰</span>
+                    <span>Ventas</span>
+                </a>
+            </nav>
         </div>
     </header>
+    <div class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="{% url 'inicio' %}" class="back-link">
+                    <span class="back-icon">←</span>
+                    <span>Volver</span>
+                </a>
+                <h1>Administración de Productos</h1>
+            </div>
+            
+            <div class="header-actions">
+                <a href="{% url 'crearProducto' %}" class="btn-primary">
+                    <span>+</span>
+                    Agregar Producto
+                </a>
+            </div>
+        </div>
+    </div>
 
     <main class="product-list-container">
-        {# Encabezados opcionales #}
         <div class="product-list-header" aria-hidden="true">
-             <span class="header-image">Imagen</span>
-             <span class="header-info">Producto</span>
-             <span class="header-price">Precio</span>
-             <span class="header-actions-col">Acciones</span> {# Renombrado para evitar conflicto #}
+            <span class="header-image">Imagen</span>
+            <span class="header-info">Producto</span>
+            <span class="header-price">Precio</span>
+            <span class="header-actions-col">Acciones</span>
         </div>
 
         <ul class="product-list-compact">
@@ -56,38 +90,33 @@
                         <span>${{ producto.precio_producto|floatformat:2 }}</span>
                     </div>
                     
-                    <!-- INICIO SECCIÓN DE ACCIONES CON DESPLEGABLE -->
                     <div class="product-item-actions">
                         <div class="actions-dropdown">
-                            <!-- {# Botón que activa el desplegable (puede ser texto o icono) #}} -->
-                            <button class="actions-trigger btn btn-small btn-icon font-bold text-lg">
-                                <i class="fas fa-ellipsis-v"></i> {# Icono opcional #}
-                                
+                            <button class="actions-trigger">
+                                ⋮
                             </button>
                             
                             <div class="dropdown-content">
-                                <a href="{% url 'editarProducto' pk=producto.id %}" class="dropdown-item"> {# URL de editar #}
-                                     <i class="fas fa-edit"></i>Editar
+                                <a href="{% url 'editarProducto' pk=producto.id %}" class="dropdown-item">
+                                    <i>✏️</i>Editar
                                 </a>
 
                                 {% if producto.estado_producto == "Deshabilitado" %}
-                                    <a href="{% url 'activarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
-                                        <i class="fas fa-toggle-off"></i>Activar
+                                    <a href="{% url 'activarProducto' id=producto.id %}" class="dropdown-item">
+                                        <i>🔄</i>Activar
                                     </a>
                                 {% endif %}
                                 {% if producto.estado_producto == "Activo" %}
-                                    <a href="{% url 'deshabilitarProducto' id=producto.id %}" class="dropdown-item"> {# No necesita URL si no tiene función aún #}
-                                        <i class="fas fa-toggle-off"></i>Deshabilitar
+                                    <a href="{% url 'deshabilitarProducto' id=producto.id %}" class="dropdown-item">
+                                        <i>⏸️</i>Deshabilitar
                                     </a>
                                 {% endif %}
-                                <a href="{% url 'eliminarProducto' pk=producto.id %}" class="dropdown-item action-delete"> {# URL de eliminar #}
-                                    <i class="fas fa-trash-alt"></i>Eliminar
+                                <a href="{% url 'eliminarProducto' pk=producto.id %}" class="dropdown-item action-delete">
+                                    <i>🗑️</i>Eliminar
                                 </a>
                             </div>
                         </div>
                     </div>
-                    {# --- FIN SECCIÓN DE ACCIONES CON DESPLEGABLE --- #}
-
                 </li>
             {% empty %}
                 <li class="no-products-item">
@@ -98,8 +127,7 @@
     </main>
 
     <footer class="main-footer">
-        <p>© {% now "Y" %} Tu Empresa.</p>
+        <p>© {% now "Y" %} CevichePro.</p>
     </footer>
-
 </body>
 </html>

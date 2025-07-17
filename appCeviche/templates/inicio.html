@@ -1,165 +1,100 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ceviche-Feliz</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes wave {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(1deg); }
-            50% { transform: translateY(-5px) rotate(0deg); }
-            75% { transform: translateY(-8px) rotate(-1deg); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        
-        @keyframes ripple {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2.4); opacity: 0; }
-        }
-        
-        @keyframes bubbles {
-            0% { transform: translateY(100vh) scale(0); }
-            10% { transform: translateY(90vh) scale(0.1); }
-            50% { transform: translateY(50vh) scale(0.4); }
-            100% { transform: translateY(-10vh) scale(0); }
-        }
-        
-        .wave-animation { animation: wave 3s ease-in-out infinite; }
-        .float-animation { animation: float 4s ease-in-out infinite; }
-        .ripple-animation { animation: ripple 2s infinite; }
-        .bubble { animation: bubbles 8s infinite linear; }
-        
-        .bg-ocean {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #2196F3 50%, #21CBF3 75%, #4facfe 100%);
-        }
-        
-        .bg-ocean-light {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 25%, rgba(33, 150, 243, 0.1) 50%, rgba(33, 203, 243, 0.1) 75%, rgba(79, 172, 254, 0.1) 100%);
-        }
-        
-        .text-ocean { color: #1e40af; }
-        .text-coral { color: #f97316; }
-        
-        .bubble-1 { left: 10%; animation-delay: 0s; }
-        .bubble-2 { left: 20%; animation-delay: 2s; }
-        .bubble-3 { left: 30%; animation-delay: 4s; }
-        .bubble-4 { left: 80%; animation-delay: 1s; }
-        .bubble-5 { left: 90%; animation-delay: 3s; }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CevichePro - Panel Administrativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/inicio.css' %}"
 </head>
-<body class="bg-ocean min-h-screen relative overflow-hidden">
-    <!-- Burbujas animadas de fondo -->
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="bubble bubble-1 absolute w-4 h-4 bg-white bg-opacity-20 rounded-full"></div>
-        <div class="bubble bubble-2 absolute w-6 h-6 bg-cyan-200 bg-opacity-30 rounded-full"></div>
-        <div class="bubble bubble-3 absolute w-3 h-3 bg-blue-200 bg-opacity-40 rounded-full"></div>
-        <div class="bubble bubble-4 absolute w-5 h-5 bg-white bg-opacity-25 rounded-full"></div>
-        <div class="bubble bubble-5 absolute w-2 h-2 bg-cyan-300 bg-opacity-50 rounded-full"></div>
-    </div>
-
-    <!-- Header con efecto glass -->
-    <header class="flex flex-row w-full h-20 justify-center items-center px-6 relative z-10">
-        <div class="glass-effect w-full rounded-2xl shadow-2xl p-4 flex items-center">
-            <section class="w-1/3 h-full flex items-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center shadow-lg float-animation">
-                    <span class="text-white font-bold text-xl">🐟</span>
+<body>
+    <!-- Header Administrativo -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo gentle-float">
+                    🐟
                 </div>
-                <div class="ml-3">
-                    <h2 class="text-white font-bold text-lg">Ceviche</h2>
-                    <p class="text-cyan-200 text-sm">Feliz</p>
+                <div class="logo-text">
+                    <h2>CevichePro</h2>
+                    <p>Panel Administrativo</p>
                 </div>
-            </section>
+            </div>
             
-            <nav class="w-2/3 h-full">
-                <ul class="flex flex-row w-full h-full justify-evenly items-center text-white font-semibold">
-                    <li class="h-full">
-                        <a href="{% url 'inicio' %}" class="flex items-center h-full px-4 hover:text-cyan-300 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            🏠 Inicio
-                        </a>
-                    </li>
-                    <li class="h-full">
-                        <a href="{% url 'adminProductos' %}" class="flex items-center h-full px-4 hover:text-cyan-300 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            🍤 Productos
-                        </a>
-                    </li>
-                    <li class="h-full">
-                        <a href="{% url 'adminTopics' %}" class="flex items-center h-full px-4 hover:text-cyan-300 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            📋 Topics
-                        </a>
-                    </li>
-                    <li class="h-full">
-                        <a href="{% url 'showOrdersTaken' %}" class="flex items-center h-full px-4 hover:text-cyan-300 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            🛒 Pedidos
-                        </a>
-                    </li>
-                    <li class="h-full">
-                        <a href="{% url 'AllOrders' %}" class="flex items-center h-full px-4 hover:text-cyan-300 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300 transform hover:scale-105">
-                            💰 Ventas del día
-                        </a>
-                    </li>
-                </ul>
+            <nav class="nav-menu">
+                <a href="{% url 'inicio' %}" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'adminProductos' %}" class="nav-item">
+                    <span>🍤</span>
+                    <span>Productos</span>
+                </a>
+                <a href="{% url 'adminTopics' %}" class="nav-item">
+                    <span>📋</span>
+                    <span>Categorías</span>
+                </a>
+                <a href="{% url 'showOrdersTaken' %}" class="nav-item">
+                    <span>🛒</span>
+                    <span>Pedidos</span>
+                </a>
+                <a href="{% url 'AllOrders' %}" class="nav-item">
+                    <span>💰</span>
+                    <span>Ventas</span>
+                </a>
             </nav>
         </div>
     </header>
 
-    <!-- Sección principal -->
-    <section class="h-96 flex flex-col justify-center items-center relative z-10 mt-16">
-        <!-- Título principal con efecto wave -->
-        <div class="text-center mb-12">
-            <h1 class="text-6xl font-extrabold text-white mb-4 wave-animation drop-shadow-2xl">
-                ¡BIENVENIDO!
-            </h1>
-            <p class="text-xl text-cyan-100 font-medium">
-                🌊 Gestión marina de ceviches y delicias frutales 🍊
+    <!-- Sección Principal -->
+    <main class="main-section">
+        <div>
+            <h1 class="welcome-title">Panel de Control</h1>
+            <p class="welcome-subtitle">
+                Gestiona tu restaurante de manera eficiente y profesional
             </p>
         </div>
 
-        <!-- Botón principal mejorado -->
-        <div class="relative">
-            <!-- Efecto ripple -->
-            <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 rounded-full ripple-animation opacity-30"></div>
+        <!-- Botón Principal -->
+        <div class="cta-container">
+            <a href="{% url 'takeOrderView' %}" class="cta-button">
+                <div class="cta-icon">🍽️</div>
+                <div class="cta-text">
+                    <div>TOMAR</div>
+                    <div>PEDIDO</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <!-- Tarjetas de Acceso Rápido -->
+        <div class="quick-access">
+            <div class="quick-card">
+                <div class="quick-card-icon">📊</div>
+                <div class="quick-card-title">Dashboard</div>
+                <div class="quick-card-desc">Resumen de ventas y métricas</div>
+            </div>
             
-            <!-- Botón principal -->
-            <button type="button" class="relative w-32 h-32 bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 shadow-2xl rounded-full transform hover:scale-110 transition-all duration-300 float-animation hover:shadow-orange-500/50">
-                <a href="{% url 'takeOrderView' %}" class="flex flex-col items-center justify-center h-full text-white">
-                    <div class="text-4xl mb-2">🍽️</div>
-                    <span class="font-bold text-sm">TOMAR</span>
-                    <span class="font-bold text-sm">PEDIDO</span>
-                </a>
-            </button>
-        </div>
-
-        <!-- Tarjetas de acceso rápido -->
-        <div class="flex space-x-6 mt-16">
-            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-all duration-300 cursor-pointer">
-                <div class="text-3xl mb-2">🐠</div>
-                <p class="text-white font-semibold">Menú del Mar</p>
+            <div class="quick-card">
+                <div class="quick-card-icon">🍤</div>
+                <div class="quick-card-title">Gestión de Menú</div>
+                <div class="quick-card-desc">Administra platos y precios</div>
             </div>
-            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-all duration-300 cursor-pointer">
-                <div class="text-3xl mb-2">🥭</div>
-                <p class="text-white font-semibold">Frutas Frescas</p>
+            
+            <div class="quick-card">
+                <div class="quick-card-icon">📋</div>
+                <div class="quick-card-title">Inventario</div>
+                <div class="quick-card-desc">Control de insumos y stock</div>
             </div>
-            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-all duration-300 cursor-pointer">
-                <div class="text-3xl mb-2">📊</div>
-                <p class="text-white font-semibold">Estadísticas</p>
+            
+            <div class="quick-card">
+                <div class="quick-card-icon">📈</div>
+                <div class="quick-card-title">Reportes</div>
+                <div class="quick-card-desc">Analíticas y estadísticas</div>
             </div>
         </div>
-    </section>
-
-    <!-- Decoración adicional: peces nadando -->
-    <div class="absolute bottom-10 left-10 text-4xl opacity-70 wave-animation" style="animation-delay: 1s;">🐟</div>
-    <div class="absolute bottom-20 right-20 text-3xl opacity-60 wave-animation" style="animation-delay: 2s;">🦐</div>
-    <div class="absolute top-32 right-10 text-2xl opacity-50 float-animation" style="animation-delay: 0.5s;">🐙</div>
+    </main>
 </body>
 </html>
