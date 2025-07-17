@@ -13,21 +13,60 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
 </head>
 <body>
-
-    <header class="main-header">
-        <div class = "flex justify-center items-center">
-            <a href="{% url 'inicio' %}" class ="mr-10"><img src="{% static 'images/previous.png' %}" class = "w-6" alt="volver"></a>
-            <h1>Administración de Topics</h1>
-        </div>
-        
-        {# Contenedor para el botón de agregar #}
-        <div class="header-actions">
-             <a href="{% url 'crearTopic' %}" class="btn btn-primary"> {# Asegúrate de poner la URL correcta #}
-                 <i class="fas fa-plus"></i>
-                Agregar Topic
-             </a>
+<header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo gentle-float">
+                    🐟
+                </div>
+                <div class="logo-text">
+                    <h2>CevichePro</h2>
+                    <p>Panel Administrativo</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="{% url 'inicio' %}" class="nav-item">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'adminProductos' %}" class="nav-item">
+                    <span>🍤</span>
+                    <span>Productos</span>
+                </a>
+                <a href="{% url 'adminTopics' %}" class="nav-item">
+                    <span>📋</span>
+                    <span>Categorías</span>
+                </a>
+                <a href="{% url 'showOrdersTaken' %}" class="nav-item">
+                    <span>🛒</span>
+                    <span>Pedidos</span>
+                </a>
+                <a href="{% url 'AllOrders' %}" class="nav-item">
+                    <span>💰</span>
+                    <span>Ventas</span>
+                </a>
+            </nav>
         </div>
     </header>
+    <div class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="{% url 'inicio' %}" class="back-link">
+                    <span class="back-icon">←</span>
+                    <span>Volver</span>
+                </a>
+                <h1>Administración de Topics</h1>
+            </div>
+            
+            <div class="header-actions">
+                <a href="{% url 'crearProducto' %}" class="btn-primary">
+                    <span>+</span>
+                    Agregar Producto
+                </a>
+            </div>
+        </div>
+    </div>
 
     <main class="product-list-container">
         {# Encabezados opcionales #}
