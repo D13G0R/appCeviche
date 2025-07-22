@@ -18,6 +18,12 @@ env/
 *.tmp
 *.pid
 
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
 ### 📦 Dependencias y builds ###
 # Dependencias de Python
 venv/  # (repetido para énfasis)
