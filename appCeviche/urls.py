@@ -31,4 +31,5 @@ urlpatterns = [
     path('', include(urls)),
     path('api/', include(routes.urls)),
     path('api/receiveOrder', views.receiveOrder, name = "receiveOrder"),
+    path('api/changeDescriptionOrder', views.changeDescriptionOrder, name = 'changeDescriptionOrder')
 ]
