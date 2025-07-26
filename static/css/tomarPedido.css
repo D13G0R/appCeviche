@@ -61,6 +61,28 @@ main {
     overflow-y: auto;
 }
 
+.titulo_descripcion_pedido{
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+    margin: 2px;
+}
+
+.textarea_descripcion_pedido {
+    field-sizing: content;
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    height: fit-content;
+    min-height: 30px;
+    max-height: 120px;
+    border: 2px;
+    border-radius: 8px;
+    box-shadow: 1px 0px 10px 5px rgba(12, 12, 42, 0.652);
+    padding:12px;
+}
+
+
 /* Modal topics styling */
 .modalTopics {
     background-color: rgba(0, 0, 0, 0.5);

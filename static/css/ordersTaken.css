@@ -235,6 +235,40 @@ body {
 
 .order-meta {
     margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.order-description-editor{
+    width: 276px;
+    min-width: 50px;
+    max-width: 276px;
+    max-height: 112px;
+    height: fit-content;
+    field-sizing: content;
+    background-color: #2f4262;
+    color: var(--pure-white);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 1px 12px 10px rgba(12, 12, 42, 0.652);
+    text-align: left; /* Cambio a la izquierda */
+    padding: 12px;
+}
+
+.button-edit-description-order{
+    background-color: var(--vibrant-orange);
+    margin-left: 2px;
+    border: 2px solid var(--vibrant-orange);
+    border-radius: 8px;
+    height: 40px;
+    color: white;
+    font-weight:200;
+    font-size: 16px;
+}
+.button-edit-description-order:hover{
+    background-color: white;
+    color: var(--vibrant-orange);
+    border: 2px solid var(--vibrant-orange);
 }
 
 .order-status-badge {
