@@ -93,9 +93,8 @@
                     onclick="enviarDatos()">
                     <a href="{% url 'takeOrderView' %}" class="block w-full h-full">Enviar Pedido</a>
                 </button>
-                <textarea class = "descripcion_pedido w-full h-10 p-2 border border-2 border-black shadow-2xl">
-                    
-                </textarea>
+                <p class = "titulo_descripcion_pedido">Descripción del pedido</p>
+                <textarea class = "textarea_descripcion_pedido"></textarea>
 
                 <ul id="panel-list" class="max-h-[500px] overflow-y-auto border-t border-cyan-100 pt-3">
                     <!-- Items will be added here dynamically -->

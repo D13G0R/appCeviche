@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.decorators import api_view 
+from rest_framework.decorators import api_view
 
 from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
 from .serializers import PedidoProductoTopicSerializer, TopicSerializer,  PedidoSerializer
@@ -81,6 +81,44 @@ def receiveOrder(request):
            
     message = "Todo Ok (al parecer)"
     return  Response({"message": message})
+
+@api_view(["PUT"])
+def changeDescriptionOrder(request):
+    data = request.data
+    
+    # 1. Validación mejorada
+    order_id = data.get("order_id")
+    new_description = data.get("new_description")
+
+    if not order_id: 
+        return Response(
+            {"error": "Se requiere 'order_id'."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        # 2. Manejo de error si el pedido no existe
+        pedido_object = Pedidos.objects.get(id=order_id)
+    except Pedidos.DoesNotExist:
+        return Response(
+            {"error": f"El pedido con id {order_id} no existe."},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Lógica de actualización
+    pedido_object.descripcion = new_description
+    
+    # 3. ¡Guardar el cambio en la base de datos!
+    pedido_object.save()
+
+    # 4. Respuesta de éxito explícita y devolviendo el dato actualizado
+    return Response(
+        {"message": "La descripción se actualizó correctamente."},
+        status=status.HTTP_200_OK
+    )
+
+
+
 
 class showOrdersTaken(ListView):
     model = Pedidos

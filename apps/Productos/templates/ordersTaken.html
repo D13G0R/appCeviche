@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/ordersTaken.css' %}">
 </head>
+
 <body>
 
     <header class="header">
@@ -21,7 +23,7 @@
                     <p>Panel Administrativo</p>
                 </div>
             </div>
-            
+
             <nav class="nav-menu">
                 <a href="{% url 'inicio' %}" class="nav-item">
                     <span>🏠</span>
@@ -52,7 +54,8 @@
             <a href="{% url 'takeOrderView' %}" class="back-button">
                 <div class="back-icon">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                        </path>
                     </svg>
                 </div>
                 <span>Volver</span>
@@ -73,67 +76,70 @@
 
         <div class="orders-grid">
             {% for pedido in Pedidos %}
-                <div class="order-item">
-                    <div class="order-header">
-                        <span class="order-id">Pedido #{{ pedido.id }}</span>
-                        <span class="order-total">${{ pedido.total|floatformat:0 }}</span>
-                    </div>
+            <div class="order-item">
+                <div class="order-header">
+                    <span class="order-id">Pedido #{{ pedido.id }}</span>
+                    <span class="order-total">${{ pedido.total|floatformat:0 }}</span>
+                </div>
 
-                    <div class="order-meta">
-                        {% if pedido.estado == 'Pendiente' %}
-                            <span class="order-status-badge">
-                                {{ pedido.descripcion }}
-                            </span>
+                <div class="order-meta">
+                    {% if pedido.estado == 'Pendiente' %}
+                    <textarea id="description-{{ pedido.id }}" class="order-description-editor">{{ pedido.descripcion }}</textarea>
+                    <button type="button" class = "button-edit-description-order" onclick = "changeDescription('{{ pedido.id }}')">></button>
+                    {% endif %}
+                </div>
+
+                <div class="products-list">
+                    {% for detalle in pedido.detalle_pedido.all %}
+                    <div class="product-item">
+                        <div class="product-main">
+                            <span class="product-name">{{ detalle.fk_producto.nombre_producto }}</span>
+                            <span class="product-quantity">x{{ detalle.cantidad_producto }}</span>
+                        </div>
+                        {% if detalle.detalle_producto %}
+                        <div class="product-note">{{ detalle.detalle_producto }}</div>
+                        {% endif %}
+                        {% if detalle.topics_de_producto.all %}
+                        <div class="extras-section">
+                            {% for topic in detalle.topics_de_producto.all %}
+                            <span class="extra-item">{{ topic.fk_topic.nombre_topic }} (x{{ topic.cantidad_topic
+                                }})</span>
+                            {% endfor %}
+                        </div>
                         {% endif %}
                     </div>
+                    {% endfor %}
+                </div>
 
-                    <div class="products-list">
-                        {% for detalle in pedido.detalle_pedido.all %}
-                            <div class="product-item">
-                                <div class="product-main">
-                                    <span class="product-name">{{ detalle.fk_producto.nombre_producto }}</span>
-                                    <span class="product-quantity">x{{ detalle.cantidad_producto }}</span>
-                                </div>
-                                {% if detalle.detalle_producto %}
-                                <div class="product-note">{{ detalle.detalle_producto }}</div>
-                                {% endif %}
-                                {% if detalle.topics_de_producto.all %}
-                                <div class="extras-section">
-                                    {% for topic in detalle.topics_de_producto.all %}
-                                    <span class="extra-item">{{ topic.fk_topic.nombre_topic }} (x{{ topic.cantidad_topic }})</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <a href="{% url 'cancelarPedido' id=pedido.id %}" class="btn btn-cancel">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                            Cancelar
-                        </a>
-                        
-                        <a href="{% url 'pagarPedido' id=pedido.id %}" class="btn btn-pay">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Pagado
-                        </a>
-                    </div>
+                <div class="action-buttons">
+                    <a href="{% url 'cancelarPedido' id=pedido.id %}" class="btn btn-cancel">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Cancelar
+                    </a>
+
+                    <a href="{% url 'pagarPedido' id=pedido.id %}" class="btn btn-pay">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        Pagado
+                    </a>
                 </div>
-                <hr class="order-divider">
+            </div>
+            <hr class="order-divider">
             {% empty %}
-                <div class="empty-state">
-                    <div class="empty-icon">🎉</div>
-                    <h3 class="empty-title">¡Excelente trabajo!</h3>
-                    <p class="empty-message">No hay pedidos pendientes en este momento</p>
-                    <div class="empty-note">Los nuevos pedidos aparecerán aquí automáticamente</div>
-                </div>
+            <div class="empty-state">
+                <div class="empty-icon">🎉</div>
+                <h3 class="empty-title">¡Excelente trabajo!</h3>
+                <p class="empty-message">No hay pedidos pendientes en este momento</p>
+                <div class="empty-note">Los nuevos pedidos aparecerán aquí automáticamente</div>
+            </div>
             {% endfor %}
         </div>
     </div>
 </body>
+<script src = "{% static 'js/ordersTaken.js'%}"></script>
 </html>
