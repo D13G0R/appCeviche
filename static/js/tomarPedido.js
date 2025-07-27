@@ -330,7 +330,7 @@ async function enviarDatos (){
     elementos = document.querySelectorAll(".elementos").forEach(elemento => {
         let id_elemento = elemento.querySelector(".id_elemento").value;//input
 
-        let detalle_pedido = document.querySelector(".descripcion_pedido").value.trim();
+        let detalle_pedido = document.querySelector(".textarea_descripcion_pedido").value.trim();
 
         let id_producto = elemento.querySelector(".id_producto").value;//input
         let cantidad_producto = elemento.querySelector(".cantidad_producto").textContent; //p
