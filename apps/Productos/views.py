@@ -13,7 +13,11 @@ from .serializers import PedidoProductoTopicSerializer, TopicSerializer,  Pedido
 from apps.Productos import forms
 
 from django.utils import timezone
+from datetime import datetime
 from django.db.models import Q
+
+from rest_framework.exceptions import ValidationError as DRFValidationError
+from django.db import IntegrityError, DataError
 # Create your views here.
 class view_take_order(ListView):
     model = Productos
@@ -25,56 +29,83 @@ class view_take_order(ListView):
         context["Topics"] = Topics.objects.all().order_by("nombre_topic")
         return context
 
-#HAY QUE CONTIUAR CON MOSTRAR LOS PEDIDOS QUE SE HAYAN ECHO.
-class PedidoProductoTopicView(APIView):
+#Esa
+class PedidoProductoTopicView(APIView): #PARECIERA QUE ESTA FUNCION NO SIRVE PARA NADA
     def post(self, request):
-        serializer = PedidoProductoTopicSerializer(data=request.data, many=True)
-        if serializer.is_valid():
+        try:
+            serializer = PedidoProductoTopicSerializer(data=request.data, many=True)
+            serializer.is_valid(raise_exceptions=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        except DRFValidationError as e:
+            return Response({"error" : "Exception de error de validacion", "detail": e.detail}, status=e.status_code)
+        
+        except IntegrityError as e:
+            return Response({"error" : "Exception de error de integridad", "detail (str)" : str(e)},status=e.status_code)
+        
     
 
 class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topics.objects.all().order_by("nombre_topic")
     serializer_class = TopicSerializer
 
-@api_view(['POST'])
+'''Esta funcion se encarga de recibir el pedido que se envia desde 'tomarPedido.js/html', procesarlo y guardarlo'''
+@api_view(['POST']) 
 def receiveOrder(request):
-    hoy = timezone.datetime
+    hoy = timezone.now() #SE COLOCO ESTO PQ ANTES ESTABA .datetime() y eso no da la fecha, solo es un modulo
     data = request.data
-    if data:
-        print(data)
-        print("Datos Correctos")
-    else:
-        print("No llegaron datos")
-    seCreoPedido = False
+    if not data:
+        return Response({"message" : "No llegaron datos"}, status = status.HTTP_400_BAD_REQUEST)
+    print(F"DATOS RECIBIDOS: {data}")
+
+    seCreoPedido = False    
     for elemento in data:
-        id_elemento = elemento["id_elemento"]
-        precio_total = elemento["precio_total"]
-        precio_unidad_producto = elemento["precio_unidad_producto"]
-
-        if seCreoPedido != True:
+        try:
+            #EXTRACCION DE INFORMACION GENERAL DEL ELEMENTO-PEDIDO
+            id_elemento = elemento["id_elemento"]
+            precio_total = elemento["precio_total"]
+            precio_unidad_producto = elemento["precio_unidad_producto"]
             descripcion_pedido = elemento["descripcion_pedido"]
-            pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion = descripcion_pedido if descripcion_pedido else "Ninguna", fecha_pedido = hoy)
-            seCreoPedido = True
+            #EXTRACCION DEL PRODUCTO EN EL ELEMENTO
+            producto = elemento["producto"]
+            id_producto = producto["id_producto"]
+            detalle_producto = producto["detalle_producto"]
+            cantidad_producto = int(producto["cantidad_producto"])
+            if cantidad_producto < 1:
+                return Response({"message": "La cantidad de producto no puede ser menor a 1."}, status= status.HTTP_400_BAD_REQUEST)
 
-        producto = elemento["producto"]
-        id_producto = producto["id_producto"]
-        OBJETO_producto = Productos.objects.get(id = id_producto)
-        cantidad_producto = producto["cantidad_producto"]
-        detalle_producto = producto["detalle_producto"]
-        OBJETO_pedido_producto = Pedido_Producto.objects.create(fk_pedido = pedido, fk_producto = OBJETO_producto, cantidad_producto = cantidad_producto, detalle_producto = detalle_producto)
-        if not OBJETO_pedido_producto:
-            message = "ERROR al crear un pedido_producto"
-            return  Response({"message": message})
+        except KeyError as e:
+            return Response({"message" : "Elementos invalidos o inexistentes", "detail" : str(e)}, status = status.HTTP_400_BAD_REQUEST)
         
-        for topic in producto["topics"]:
-            id_topic = topic["id_topic"]
-            OBJETO_topic = Topics.objects.get(id = id_topic)
-            cantidad_topic = topic["cantidad_topic"]
-            detalle_topic = topic["detalle_topic"]
-            pedido_producto_topic = Pedido_Producto_Topic.objects.create(fk_id_pedido_producto = OBJETO_pedido_producto, fk_topic = OBJETO_topic, cantidad_topic = cantidad_topic, detalle_topic = detalle_topic)
+        if not seCreoPedido:
+            try:
+                pedido = Pedidos.objects.create(sub_total = precio_total, total = precio_total, estado = "Pendiente", descripcion = descripcion_pedido if descripcion_pedido else "Ninguna", fecha_pedido = hoy)
+                seCreoPedido = True
+            except (DataError, IntegrityError) as e:
+                return Response({"message": "Error al crear el pedido.", "detail" : str(e)}, status = status.HTTP_400_BAD_REQUEST)
+            
+        try: 
+            OBJETO_producto = Productos.objects.get(id = id_producto)
+        except Productos.DoesNotExist as e:
+            return Response({"message": "Producto no encontrado.", "detail": str(e)}, status= status.HTTP_404_NOT_FOUND)
+
+        try:
+            OBJETO_pedido_producto = Pedido_Producto.objects.create(fk_pedido = pedido, fk_producto = OBJETO_producto, cantidad_producto = cantidad_producto, detalle_producto = detalle_producto)
+        except (IntegrityError, ValueError, DataError, TypeError) as e:
+            return  Response({"message": "Error al crear el producto, puede haber un valor invalido", "detail": str(e)})
+        
+        for topic in producto.get("topics", []):
+            try:
+                id_topic = topic["id_topic"]
+                OBJETO_topic = Topics.objects.get(id = id_topic)
+                detalle_topic = topic["detalle_topic"]
+                cantidad_topic = int(topic["cantidad_topic"])
+                if cantidad_topic < 1:
+                    return Response({"message": "La cantidad de topics NO debe ser menor a 1."}, status=status.HTTP_400_BAD_REQUEST)
+                pedido_producto_topic = Pedido_Producto_Topic.objects.create(fk_id_pedido_producto = OBJETO_pedido_producto, fk_topic = OBJETO_topic, cantidad_topic = cantidad_topic, detalle_topic = detalle_topic)
+            except (KeyError, Topics.DoesNotExist, DataError) as e:
+                return Response({"message" : "Faltan datos o no existe el Topic o error al crear el Pedido_Producto_Topic", "detail" : str(e)})
             if not pedido_producto_topic:
                 message = "ERROR al crear un pedido_producto_topic"
                 return  Response({"message": message})
@@ -82,40 +113,37 @@ def receiveOrder(request):
     message = "Todo Ok (al parecer)"
     return  Response({"message": message})
 
+'''Esta funcion/vista de api recibe la id y texto para cambiar la descripcion de el pedido referente que se envia desde ordersTaken.js.'''
 @api_view(["PUT"])
 def changeDescriptionOrder(request):
     data = request.data
-    
+    if not data:
+        return Response({"message": "No llegaron datos"}, status = status.HTTP_404_NOT_FOUND)
     # 1. Validación mejorada
-    order_id = data.get("order_id")
-    new_description = data.get("new_description")
+    try:
+        order_id = data["order_id"]
+        new_description = data["new_description"]
 
-    if not order_id: 
-        return Response(
-            {"error": "Se requiere 'order_id'."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    except KeyError: 
+        return Response({"message": "Se pausó por falta de datos", "detail" : str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         # 2. Manejo de error si el pedido no existe
         pedido_object = Pedidos.objects.get(id=order_id)
-    except Pedidos.DoesNotExist:
-        return Response(
-            {"error": f"El pedido con id {order_id} no existe."},
-            status=status.HTTP_404_NOT_FOUND
-        )
+    except Pedidos.DoesNotExist as e:
+        return Response({"message": f"El pedido con id {order_id} no existe.", "detail" : str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     # Lógica de actualización
     pedido_object.descripcion = new_description
     
-    # 3. ¡Guardar el cambio en la base de datos!
-    pedido_object.save()
-
-    # 4. Respuesta de éxito explícita y devolviendo el dato actualizado
-    return Response(
-        {"message": "La descripción se actualizó correctamente."},
-        status=status.HTTP_200_OK
-    )
+    try:
+        pedido_object.save()
+        return Response(
+            {"message": "La descripción se actualizó correctamente."},
+            status=status.HTTP_200_OK
+        )
+    except (ValueError, IntegrityError, DataError)as e:
+        return Response({"message": "Error en los datos que se intentaroon guardar.", "detail": str(e)}, status = status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -123,12 +151,11 @@ def changeDescriptionOrder(request):
 class showOrdersTaken(ListView):
     model = Pedidos
     context_object_name = "Pedidos"
-    template_name = "ordersTaken.html" # HAY QUE CAMBIAR ACA EL NOMBRE DEL HTML DESPUES DE ESTRUCTURAR
+    template_name = "ordersTaken.html"
     def get_queryset(self):
         return Pedidos.objects.filter(estado = "Pendiente").prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
     
-from django.utils import timezone
-from datetime import datetime
+
 
 class showAllOrders(ListView):
     model = Pedidos
