@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario - CevichePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/register.css' %}">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Botón de regreso -->
+        <div class="back-button-container">
+            <a href="#" class="back-button">
+                <div class="back-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </div>
+                <span>Volver</span>
+            </a>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="form-container">
+            <!-- Encabezado -->
+            <div class="form-header">
+                <h1 class="form-title">Nuevo Usuario</h1>
+                <p class="form-subtitle">Complete la información para crear una nueva cuenta</p>
+            </div>
+
+            <!-- Formulario -->
+            <form method="POST" class="user-form">
+                {% csrf_token %}
+                
+                <!-- Nombres -->
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="firstName" class="field-label">Nombre</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                name="firstName" 
+                                class="form-input" 
+                                placeholder="Ingrese el nombre"
+                                required
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="lastName" class="field-label">Apellido</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                name="lastName" 
+                                class="form-input" 
+                                placeholder="Ingrese el apellido"
+                                required
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usuario -->
+                <div class="form-field">
+                    <label for="username" class="field-label">Nombre de Usuario</label>
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="Ingrese el nombre de usuario"
+                            required
+                        >
+                        <div class="input-line"></div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-field">
+                    <label for="email" class="field-label">Correo Electrónico</label>
+                    <div class="input-container">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="Ingrese el correo electrónico"
+                            required
+                        >
+                        <div class="input-line"></div>
+                    </div>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-field">
+                    <label for="password" class="field-label">Contraseña</label>
+                    <div class="input-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            placeholder="Ingrese la contraseña"
+                            required
+                        >
+                        <div class="input-line"></div>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <svg class="eye-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Línea separadora -->
+                <div class="form-separator"></div>
+
+                <!-- Botones de acción -->
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="window.history.back()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        Cancelar
+                    </button>
+                    
+                    <button type="submit" class="btn btn-submit">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Crear Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src = "{% static 'js/register.js' %}"></script>
+</html>

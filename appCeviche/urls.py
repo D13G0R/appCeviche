@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import inicio
-from apps.Productos import urls
+
 from rest_framework import routers
 from apps.Productos import views
+import apps
 
 routes = routers.DefaultRouter()
 routes.register("topicsAll", views.TopicViewSet, basename="topicsAll")
@@ -28,8 +29,10 @@ routes.register("topicsAll", views.TopicViewSet, basename="topicsAll")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inicio/', inicio, name = "inicio"),
-    path('', include(urls)),
+    
+    path('', include('apps.Productos.urls')),
     path('api/', include(routes.urls)),
     path('api/receiveOrder', views.receiveOrder, name = "receiveOrder"),
-    path('api/changeDescriptionOrder', views.changeDescriptionOrder, name = 'changeDescriptionOrder')
+    path('api/changeDescriptionOrder', views.changeDescriptionOrder, name = 'changeDescriptionOrder'),
+    path('', include('apps.User.urls'))
 ]
