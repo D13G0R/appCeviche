@@ -382,7 +382,7 @@ async function enviarDatos (){
         "body" : JSON.stringify(listaElementos),
     })
     .then(res => res.json())
-    .then(data => console.log(data));
+    .then(data => alert("Mensaje: " + data["message"], "Detalle: " + data["detail"] ));
 }
 
 

@@ -18,5 +18,5 @@ async function changeDescription(id){
         throw new Error('Error en la data de la response');
     }
     let data = await response.json();
-    alert(`${data}`)
+    alert("Mensaje: " + data["message"], "Detalle: " + data["detail"]);
 }

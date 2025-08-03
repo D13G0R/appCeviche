@@ -102,8 +102,7 @@
                         {% if detalle.topics_de_producto.all %}
                         <div class="extras-section">
                             {% for topic in detalle.topics_de_producto.all %}
-                            <span class="extra-item">{{ topic.fk_topic.nombre_topic }} (x{{ topic.cantidad_topic
-                                }})</span>
+                            <span class="extra-item">{{ topic.fk_topic.nombre_topic }} (x{{ topic.cantidad_topic}})</span>
                             {% endfor %}
                         </div>
                         {% endif %}
