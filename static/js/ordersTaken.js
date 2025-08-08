@@ -7,6 +7,7 @@ async function changeDescription(id){
         method : "PUT",
         headers: {
             "Content-Type" : "application/json",
+             "X-CSRFToken": getCSRFToken(),  // 👈 CSRF obligatorio
         },
         body: JSON.stringify({
             order_id: id,
@@ -19,4 +20,17 @@ async function changeDescription(id){
     }
     let data = await response.json();
     alert("Mensaje: " + data["message"], "Detalle: " + data["detail"]);
+}
+
+
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+            return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+    }
+    return null;
 }

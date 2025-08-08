@@ -377,12 +377,17 @@ async function enviarDatos (){
     console.log(JSONElements);
 
     const response = await fetch("http://127.0.0.1:8000/api/receiveOrder", {
-        "method" : "POST",
-        "headers" : {"Content-Type": "application/json"},
-        "body" : JSON.stringify(listaElementos),
-    })
-    .then(res => res.json())
-    .then(data => alert("Mensaje: " + data["message"], "Detalle: " + data["detail"] ));
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),  // 👈 CSRF obligatorio
+    },
+    credentials: "include", // 👈 Para incluir cookies de sesión y csrf
+    body: JSON.stringify(listaElementos),
+})
+.then(res => res.json())
+.then(data => alert("Mensaje: " + data["message"], "Detalle: " + data["detail"] ));
+
 }
 
 
@@ -456,3 +461,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(styleSheet);
 });
 //END IA
+
+
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+            return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+    }
+    return null;
+}

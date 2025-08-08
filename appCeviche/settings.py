@@ -61,7 +61,7 @@ ROOT_URLCONF = 'appCeviche.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/proyectosDare/appCeviche/appCeviche/templates', 'C:/proyectosDare/SoftwareCevichera/appCeviche/apps/Productos/template'],
+        'DIRS': ['C:/proyectosDare/appCeviche/appCeviche/templates', 'C:/proyectosDare/SoftwareCevichera/appCeviche/apps/Productos/template', 'C:/proyectosDare/appCeviche/apps/User/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
