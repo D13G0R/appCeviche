@@ -12,7 +12,7 @@
     <div class="page-container">
         <!-- Botón de regreso -->
         <div class="back-button-container">
-            <a href="#" class="back-button">
+            <a href="{% url 'inicio' %}" class="back-button">
                 <div class="back-icon">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -25,7 +25,10 @@
         <!-- Contenido principal -->
         <div class="form-container">
             <!-- Encabezado -->
-            <div class="form-header">
+             {% if message %}
+             <p class = "alert-info"> {{ message }} </p>
+             {% endif %}
+             <div class="form-header">
                 <h1 class="form-title">Nuevo Usuario</h1>
                 <p class="form-subtitle">Complete la información para crear una nueva cuenta</p>
             </div>

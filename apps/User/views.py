@@ -1,12 +1,18 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+
+from django.shortcuts import render, redirect
+
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
+from django.db import IntegrityError
+from apps.User.forms import LoginForm
 
-def register(request):
-    if request != "POST":
-        return render(request, "register.html", {"message" : "METODO NO PERMITIDO."}, status=400)
+
+def registerUser(request):
+    if request.method != "POST":
+        return render(request, "register.html", {"error" : "METODO NO PERMITIDO."}, status=400)
     try:
         firstNameReceived = request.POST["firstName"].strip()
         lastNameReceived = request.POST["lastName"].strip()
@@ -36,3 +42,31 @@ def register(request):
         password = passwordReceived)
     
     return render(request, "login.html", {"message": "Usuario creado correctamente"})
+
+
+def loginUser(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect('inicio')
+            else:
+                return render(request, "login.html", {
+                    "message": "Usuario o contraseña incorrectos",
+                    "form": form
+                })
+        else:
+            return render(request, "login.html", {
+                "message": "Por favor complete todos los campos correctamente",
+                "form": form
+            })
+    
+    return render(request, "login.html", {
+        "form": LoginForm(),
+        "message": None
+    })
