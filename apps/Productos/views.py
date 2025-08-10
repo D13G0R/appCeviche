@@ -1,25 +1,41 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, ListView, UpdateView, DeleteView, CreateView
+from django.utils import timezone
+from datetime import datetime
+from django.db.models import Q
+from django.db import IntegrityError, DataError
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError as DRFValidationError
 
 from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
 from .serializers import PedidoProductoTopicSerializer, TopicSerializer,  PedidoSerializer
 from apps.Productos import forms
 
-from django.utils import timezone
-from datetime import datetime
-from django.db.models import Q
-
-from rest_framework.exceptions import ValidationError as DRFValidationError
-from django.db import IntegrityError, DataError
 # Create your views here.
-class view_take_order(ListView):
+
+
+class view_take_order(LoginRequiredMixin, ListView):
+    """
+    Vista para tomar pedidos.
+
+    Muestra los productos ya registrados en la base de datos junto con los topics que tambien han sido cargados
+
+    Attributes:
+        model(Model): modelo productos para traer los datos;
+        contex_object_name(str): no quiero que se llame simplemente object_list, asi que le puse de nombre 'Productos';
+        template_name(str): plantilla en la que cargará todo;
+
+    Methods:
+        get_context_data(self, *, object_list=None, **kwargs): Agrega al contexto la lista de topics que estan en la base de datos ordenados por nombre;
+    """
     model = Productos
     context_object_name = "Productos"
     template_name = "tomarPedido.html"
@@ -50,9 +66,12 @@ class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topics.objects.all().order_by("nombre_topic")
     serializer_class = TopicSerializer
 
-'''Esta funcion se encarga de recibir el pedido que se envia desde 'tomarPedido.js/html', procesarlo y guardarlo'''
+
 @api_view(['POST']) 
 def receiveOrder(request):
+    '''
+    Esta funcion se encarga de recibir el pedido que se envia desde 'tomarPedido.js/html', procesarlo y guardarlo
+    '''
     hoy = timezone.now() #SE COLOCO ESTO PQ ANTES ESTABA .datetime() y eso no da la fecha, solo es un modulo
     data = request.data
     if not data:
@@ -113,9 +132,13 @@ def receiveOrder(request):
     message = "Todo Ok (al parecer)"
     return  Response({"message": message})
 
-'''Esta funcion/vista de api recibe la id y texto para cambiar la descripcion de el pedido referente que se envia desde ordersTaken.js.'''
 @api_view(["PUT"])
 def changeDescriptionOrder(request):
+    '''
+    Esta funcion/vista de api recibe la id y texto para cambiar la descripcion de el pedido referente que se envia 
+    desde ordersTaken.js.
+    '''
+
     data = request.data
     if not data:
         return Response({"message": "No llegaron datos"}, status = status.HTTP_404_NOT_FOUND)
@@ -148,7 +171,19 @@ def changeDescriptionOrder(request):
 
 
 
-class showOrdersTaken(ListView):
+class showOrdersTaken(LoginRequiredMixin, ListView):
+    """
+        Mostrar ordenes ya tomadas pero antes de ser pagadas.
+
+        Muestra todos los pedidos con su productos y topics asociados.
+
+        Attributes:
+            model(Model): modelo productos para traer los datos.
+            contex_object_name(str): no quiero que se llame simplemente object_list, asi que le puse de nombre 'Productos'.
+            template_name(str): plantilla en la que cargará todo.
+        Methods:
+            get_queryset(self): Para mostrar todos los pedidos que están aun por pagar.
+    """
     model = Pedidos
     context_object_name = "Pedidos"
     template_name = "ordersTaken.html"
@@ -213,7 +248,7 @@ def pagarPedido(request, id):
 
 
 
-class adminProductos(ListView):
+class adminProductos(LoginRequiredMixin, ListView):
     model = Productos
     template_name = "adminProductos.html"
     # context_object_name = "Objetos_productos"
@@ -252,7 +287,7 @@ def activarProducto(request, id):
 
 
 
-class adminTopics(ListView):
+class adminTopics(LoginRequiredMixin, ListView):
     model = Topics
     template_name = "adminTopics.html"
     # context_object_name = "ObjetoTopics"

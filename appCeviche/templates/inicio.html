@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CevichePro - Panel Administrativo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/inicio.css' %}"
-</head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}" </head>
+
 <body>
     <!-- Header Administrativo -->
     <header class="header">
@@ -21,7 +22,7 @@
                     <p>Panel Administrativo</p>
                 </div>
             </div>
-            
+
             <nav class="nav-menu">
                 <a href="{% url 'inicio' %}" class="nav-item">
                     <span>🏠</span>
@@ -43,11 +44,23 @@
                     <span>💰</span>
                     <span>Ventas</span>
                 </a>
-                <a href="{% url 'registerUser' %}" class="nav-item">
-                    <span>👥</span>
-                    <span>Registrar</span>
-                </a>
+
+                <div class="SessionsStyle">
+                    <a href="{% url 'registerUser' %}" class="nav-item">
+                        <span>👥</span>
+                        <span>Registrar</span>
+                    </a>
+                    <a href="{% url 'loginUser' %}" class="nav-item">
+                        <span>🚪</span>
+                        <span>Iniciar Session</span>
+                    </a>
+                    <a href="{% url 'logoutUser' %}" class="nav-item">
+                        <span>💨</span>
+                        <span>Cerrar Session</span>
+                    </a>
+            </div>
             </nav>
+            
         </div>
     </header>
 
@@ -80,19 +93,19 @@
                 <div class="quick-card-title">Dashboard</div>
                 <div class="quick-card-desc">Resumen de ventas y métricas</div>
             </div>
-            
+
             <div class="quick-card">
                 <div class="quick-card-icon">🍤</div>
                 <div class="quick-card-title">Gestión de Menú</div>
                 <div class="quick-card-desc">Administra platos y precios</div>
             </div>
-            
+
             <div class="quick-card">
                 <div class="quick-card-icon">📋</div>
                 <div class="quick-card-title">Inventario</div>
                 <div class="quick-card-desc">Control de insumos y stock</div>
             </div>
-            
+
             <div class="quick-card">
                 <div class="quick-card-icon">📈</div>
                 <div class="quick-card-title">Reportes</div>
@@ -101,4 +114,5 @@
         </div>
     </main>
 </body>
+
 </html>

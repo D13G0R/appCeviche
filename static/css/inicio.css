@@ -60,6 +60,19 @@ body {
     display: flex;
     gap: 2rem;
 }
+.SessionsStyle{
+    width: 380px;
+    background-color: #FF6B00;
+    color: white;
+    border-radius: 10px;
+    border: #ffffff00;
+    display:flex;
+    
+}
+.SessionsStyle:hover{
+    
+    background-color: rgba(147, 79, 30, 0.834);
+}
 
 .nav-item {
     display: flex;
