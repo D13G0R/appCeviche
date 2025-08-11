@@ -1,25 +1,42 @@
+# Django imports
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import View, ListView, UpdateView, DeleteView, CreateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
+from django.db.models import Q
+from django.db import IntegrityError, DataError
+from datetime import datetime
 
+# Django REST Framework imports
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
-
-from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
-from .serializers import PedidoProductoTopicSerializer, TopicSerializer,  PedidoSerializer
-from apps.Productos import forms
-
-from django.utils import timezone
-from datetime import datetime
-from django.db.models import Q
-
 from rest_framework.exceptions import ValidationError as DRFValidationError
-from django.db import IntegrityError, DataError
+
+# Local imports
+from .models import Pedido_Producto_Topic, Pedidos, Productos, Topics, Pedido_Producto
+from .serializers import PedidoProductoTopicSerializer, TopicSerializer, PedidoSerializer
+from apps.Productos import forms
 # Create your views here.
-class view_take_order(ListView):
+
+
+class view_take_order(LoginRequiredMixin, ListView):
+    '''
+    Vista para tomar ordenes
+
+    Esta vista envia los productos y topics al html para poder tomar pedidos
+
+    attributes:
+        model = Usa el modelo Producto.
+        context_object_name = Para no usar object_list usamos Productos para usar el contexto.
+        template_name = plantilla donde se enviarán los datos.
+
+    method:
+        get_context_data() = trae y agrega al context los topics que estén registrados 
+    '''
     model = Productos
     context_object_name = "Productos"
     template_name = "tomarPedido.html"
@@ -29,8 +46,8 @@ class view_take_order(ListView):
         context["Topics"] = Topics.objects.all().order_by("nombre_topic")
         return context
 
-#Esa
-class PedidoProductoTopicView(APIView): #PARECIERA QUE ESTA FUNCION NO SIRVE PARA NADA
+class PedidoProductoTopicView(APIView):
+    # NOTA: Esta vista parece no estar en uso - considerar eliminar
     def post(self, request):
         try:
             serializer = PedidoProductoTopicSerializer(data=request.data, many=True)
@@ -50,9 +67,47 @@ class TopicViewSet(viewsets.ModelViewSet):
     queryset = Topics.objects.all().order_by("nombre_topic")
     serializer_class = TopicSerializer
 
-'''Esta funcion se encarga de recibir el pedido que se envia desde 'tomarPedido.js/html', procesarlo y guardarlo'''
 @api_view(['POST']) 
 def receiveOrder(request):
+    """
+    Procesa y guarda pedidos completos enviados desde el frontend.
+    
+    Esta función recibe un array de elementos de pedido desde 'tomarPedido.js',
+    valida los datos, crea el pedido principal y guarda todos los productos
+    y topics asociados en la base de datos.
+    
+    Estructura esperada de datos:
+    [
+        {
+            "id_elemento": int,
+            "precio_total": float,
+            "precio_unidad_producto": float,
+            "descripcion_pedido": str,
+            "producto": {
+                "id_producto": int,
+                "cantidad_producto": int,
+                "detalle_producto": str,
+                "topics": [
+                    {
+                        "id_topic": int,
+                        "cantidad_topic": int,
+                        "detalle_topic": str
+                    }
+                ]
+            }
+        }
+    ]
+    
+    Args:
+        request: HttpRequest con datos del pedido en format JSON
+        
+    Returns:
+        Response: JSON con mensaje de éxito o error detallado
+        
+    Raises:
+        HTTP_400_BAD_REQUEST: Cuando faltan datos o son inválidos
+        HTTP_404_NOT_FOUND: Cuando un producto no existe
+    """
     hoy = timezone.now() #SE COLOCO ESTO PQ ANTES ESTABA .datetime() y eso no da la fecha, solo es un modulo
     data = request.data
     if not data:
@@ -113,9 +168,30 @@ def receiveOrder(request):
     message = "Todo Ok (al parecer)"
     return  Response({"message": message})
 
-'''Esta funcion/vista de api recibe la id y texto para cambiar la descripcion de el pedido referente que se envia desde ordersTaken.js.'''
 @api_view(["PUT"])
 def changeDescriptionOrder(request):
+    """
+    Actualiza la descripción de un pedido específico.
+    
+    Recibe el ID del pedido y la nueva descripción desde 'ordersTaken.js'
+    para permitir la edición de descripciones de pedidos existentes.
+    
+    Estructura de datos esperada:
+    {
+        "order_id": int,
+        "new_description": str
+    }
+    
+    Args:
+        request: HttpRequest con order_id y new_description
+        
+    Returns:
+        Response: JSON con mensaje de éxito o error
+        
+    Raises:
+        HTTP_400_BAD_REQUEST: Datos faltantes o inválidos
+        HTTP_404_NOT_FOUND: Pedido no encontrado
+    """
     data = request.data
     if not data:
         return Response({"message": "No llegaron datos"}, status = status.HTTP_404_NOT_FOUND)
@@ -148,7 +224,7 @@ def changeDescriptionOrder(request):
 
 
 
-class showOrdersTaken(ListView):
+class showOrdersTaken(LoginRequiredMixin, ListView):
     model = Pedidos
     context_object_name = "Pedidos"
     template_name = "ordersTaken.html"
@@ -157,7 +233,11 @@ class showOrdersTaken(ListView):
     
 
 
-class showAllOrders(ListView):
+class showAllOrders(LoginRequiredMixin, ListView):
+    """
+    Vista para mostrar pedidos filtrados por fecha.
+    Utiliza timezone de Colombia para fechas locales.
+    """
     model = Pedidos
     context_object_name = "Pedidos"
     template_name = "allOrders.html"
@@ -197,12 +277,14 @@ class showAllOrders(ListView):
 #     return Response({"pedidos" : pedidosSerializado.data})
 
 
+@login_required
 def cancelarPedido(request, id):
     pedido = Pedidos.objects.get(id = id)
     pedido.estado = "Cancelado"
     pedido.save()
     return redirect("showOrdersTaken")
 
+@login_required
 def pagarPedido(request, id):
     pedido = Pedidos.objects.get(id = id)
     pedido.estado = "Pagado"
@@ -213,29 +295,30 @@ def pagarPedido(request, id):
 
 
 
-class adminProductos(ListView):
+class adminProductos(LoginRequiredMixin, ListView):
     model = Productos
     template_name = "adminProductos.html"
     # context_object_name = "Objetos_productos"
 
-class crearProducto(CreateView):
+class crearProducto(LoginRequiredMixin, CreateView):
     model = Productos
     template_name="formularioCrearProducto.html"
     success_url = reverse_lazy("adminProductos")
     form_class = forms.FormularioEditarProducto
 
-class editarProducto(UpdateView):
+class editarProducto(LoginRequiredMixin, UpdateView):
     model = Productos
     form_class = forms.FormularioEditarProducto
     success_url = reverse_lazy("adminProductos")
     template_name = "formularioEditarProducto.html"
 
-class eliminarProducto(DeleteView):
+class eliminarProducto(LoginRequiredMixin, DeleteView):
     model = Productos
     template_name = "confirmDeleteProducto.html"
     success_url= reverse_lazy("adminProductos")
     context_object_name = "Producto"
 
+@login_required
 def deshabilitarProducto(request, id):
     producto_id = id
     objetoProducto = Productos.objects.get(id = id)
@@ -243,7 +326,9 @@ def deshabilitarProducto(request, id):
     objetoProducto.save()
     return redirect("adminProductos")
 
+@login_required
 def activarProducto(request, id):
+    # TODO: Corregir redirección - debería ir a adminProductos
     objectoProducto = Productos.objects.get(id = id)
     objectoProducto.estado_producto = "Activo"
     objectoProducto.save()
@@ -252,35 +337,37 @@ def activarProducto(request, id):
 
 
 
-class adminTopics(ListView):
+class adminTopics(LoginRequiredMixin, ListView):
     model = Topics
     template_name = "adminTopics.html"
     # context_object_name = "ObjetoTopics"
 
-class crearTopic(CreateView):
+class crearTopic(LoginRequiredMixin, CreateView):
     model = Topics
     template_name = "formularioCrearTopic.html"
     success_url = reverse_lazy("adminTopics")
     form_class = forms.FormularioEditarTopic
 
-class editarTopic(UpdateView):
+class editarTopic(LoginRequiredMixin, UpdateView):
     model = Topics
     template_name = "formularioEditarTopic.html"
     success_url = reverse_lazy("adminTopics")
     form_class = forms.FormularioEditarTopic
 
-class eliminarTopic(DeleteView):
+class eliminarTopic(LoginRequiredMixin, DeleteView):
     model = Topics
     template_name = "confirmDeleteTopic.html"
     success_url = reverse_lazy("adminTopics")
     context_object_name = "Topic"
 
+@login_required
 def deshabilitarTopic(request, id):
     objectoTopic = Topics.objects.get(id = id)
     objectoTopic.estado_topic = "Deshabilitado"
     objectoTopic.save()
     return redirect("adminTopics")
 
+@login_required
 def activarTopic(request, id):
     objectoTopic = Topics.objects.get(id = id)
     objectoTopic.estado_topic = "Activo"
