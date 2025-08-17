@@ -101,6 +101,13 @@
                         >
                             📅 Filtrar
                         </a>
+                        
+                        <a 
+                            href="{% url 'AllOrders' %}" 
+                            class="btn btn-filter"
+                        >
+                            📊 Todas las fechas
+                        </a>
                     </div>
                 </div>
             </div>
@@ -204,8 +211,8 @@
             {% empty %}
                 <div class="empty-state">
                     <div class="empty-icon">🍽️</div>
-                    <h3 class="empty-title">No hay pedidos hoy</h3>
-                    <p class="empty-message">Los pedidos aparecerán aquí cuando se realicen</p>
+                    <h3 class="empty-title">No hay pedidos</h3>
+                    <p class="empty-message">Los pedidos completados aparecerán aquí</p>
                 </div>
             {% endfor %}
         </div>

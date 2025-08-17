@@ -7,7 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.db.models import Q
 from django.db import IntegrityError, DataError
-from datetime import datetime
+from datetime import datetime, time
+import pytz
 
 # Django REST Framework imports
 from rest_framework.views import APIView
@@ -247,7 +248,8 @@ class showOrdersTaken(LoginRequiredMixin, ListView):
 
 class showAllOrders(LoginRequiredMixin, ListView):
     """
-    Vista para mostrar pedidos filtrados por fecha.
+    Vista para mostrar pedidos pagados.
+    Por defecto muestra todos los pedidos pagados.
     Utiliza timezone de Colombia para fechas locales.
     """
     model = Pedidos
@@ -263,15 +265,31 @@ class showAllOrders(LoginRequiredMixin, ListView):
                 fecha_str = dia_str  # "YYYY-MM-DD"
                 fecha_date = datetime.strptime(fecha_str, "%Y-%m-%d").date()
                 self.dia_seleccionado = fecha_date
-                # La búsqueda en DB debe usar la parte de fecha únicamente
-                return Pedidos.objects.filter(fecha_pedido__date=fecha_date).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
+                
+                # Crear rango de fechas respetando el timezone local
+                bogota_tz = pytz.timezone('America/Bogota')
+                fecha_inicio_local = bogota_tz.localize(datetime.combine(fecha_date, time.min))
+                fecha_fin_local = bogota_tz.localize(datetime.combine(fecha_date, time.max))
+                
+                # Convertir a UTC para la consulta
+                fecha_inicio_utc = fecha_inicio_local.astimezone(pytz.UTC)
+                fecha_fin_utc = fecha_fin_local.astimezone(pytz.UTC)
+                
+                # Filtrar por rango de fechas y solo pedidos pagados
+                return Pedidos.objects.filter(
+                    fecha_pedido__gte=fecha_inicio_utc, 
+                    fecha_pedido__lte=fecha_fin_utc,
+                    estado="Pagado"
+                ).prefetch_related("detalle_pedido__topics_de_producto__fk_topic").order_by('-fecha_pedido')
+                
             except ValueError:
-                # Fecha inválida, usas hoy o ajustas como quieras
-                return Pedidos.objects.none()  # O Pedidos.objects.filter(fecha_pedido__date=self.hoy.date())
+                # Fecha inválida, mostrar todos los pedidos pagados
+                self.dia_seleccionado = "Fecha inválida - Mostrando todos"
+                return Pedidos.objects.filter(estado="Pagado").prefetch_related("detalle_pedido__topics_de_producto__fk_topic").order_by('-fecha_pedido')
         else:
-            # Sin parámetro, filtrar por hoy
-            return Pedidos.objects.filter(fecha_pedido__date=self.hoy.date()).prefetch_related("detalle_pedido__topics_de_producto__fk_topic")
-            self.dia_seleccionado = hoy
+            # Sin parámetro, mostrar TODOS los pedidos pagados (no solo los de hoy)
+            self.dia_seleccionado = "Todas las fechas"
+            return Pedidos.objects.filter(estado="Pagado").prefetch_related("detalle_pedido__topics_de_producto__fk_topic").order_by('-fecha_pedido')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["hoy"] = self.dia_seleccionado
