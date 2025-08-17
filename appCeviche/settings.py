@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = "C:/proyectosDare/appCeviche/apps/User/templates/login.html"
 # Application definition
 
 INSTALLED_APPS = [

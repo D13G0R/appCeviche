@@ -24,19 +24,19 @@ from apps.Productos import forms
 
 
 class view_take_order(LoginRequiredMixin, ListView):
-    '''
-    Vista para tomar ordenes
+    """
+    Vista para tomar pedidos.
 
-    Esta vista envia los productos y topics al html para poder tomar pedidos
+    Muestra los productos ya registrados en la base de datos junto con los topics que tambien han sido cargados
 
-    attributes:
-        model = Usa el modelo Producto.
-        context_object_name = Para no usar object_list usamos Productos para usar el contexto.
-        template_name = plantilla donde se enviarán los datos.
+    Attributes:
+        model(Model): modelo productos para traer los datos;
+        context_object_name(str): no quiero que se llame simplemente object_list, asi que le puse de nombre 'Productos';
+        template_name(str): plantilla en la que cargará todo;
 
-    method:
-        get_context_data() = trae y agrega al context los topics que estén registrados 
-    '''
+    Methods:
+        get_context_data(self, *, object_list=None, **kwargs): Agrega al contexto la lista de topics que estan en la base de datos ordenados por nombre;
+    """
     model = Productos
     context_object_name = "Productos"
     template_name = "tomarPedido.html"
@@ -225,6 +225,18 @@ def changeDescriptionOrder(request):
 
 
 class showOrdersTaken(LoginRequiredMixin, ListView):
+    """
+    Mostrar ordenes ya tomadas pero antes de ser pagadas.
+
+    Muestra todos los pedidos con su productos y topics asociados.
+
+    Attributes:
+        model(Model): modelo productos para traer los datos.
+        context_object_name(str): no quiero que se llame simplemente object_list, asi que le puse de nombre 'Productos'.
+        template_name(str): plantilla en la que cargará todo.
+    Methods:
+        get_queryset(self): Para mostrar todos los pedidos que están aun por pagar.
+    """
     model = Pedidos
     context_object_name = "Pedidos"
     template_name = "ordersTaken.html"

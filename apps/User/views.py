@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic import ListView
 
 from django.shortcuts import render, redirect
@@ -72,6 +72,10 @@ def loginUser(request):
         "form": LoginForm(),
         "message": None
     })
+
+def logoutUser(request):
+    logout(request)
+    return redirect("loginUser")
 
 # class adminSales(ListView):
 #     template_name = "adminSales.html"
