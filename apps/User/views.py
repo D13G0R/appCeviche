@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.views.generic import ListView
 
 from django.shortcuts import render, redirect
 
@@ -8,6 +9,7 @@ from django.core.exceptions import ValidationError
 
 from django.db import IntegrityError
 from apps.User.forms import LoginForm
+from apps.Productos.models import Pedido_Producto, Pedidos
 
 
 def registerUser(request):
@@ -70,3 +72,39 @@ def loginUser(request):
         "form": LoginForm(),
         "message": None
     })
+
+# class adminSales(ListView):
+#     template_name = "adminSales.html"
+#     model = Pedido_Producto
+#     context_object_name = "object_product"
+#     queryset = Pedido_Producto.objects.order_by('-fk_pedido__fecha_pedido')
+class adminSales(ListView):
+    """
+    Muestra una lista de todos los pedidos con sus detalles completos,
+    optimizada para evitar problemas de N+1 queries.
+    """
+    # 1. Modelo principal: Pedidos
+    model = Pedidos
+    
+    # 2. Nombre del archivo de la plantilla
+    template_name = "adminSales.html"
+    
+    # 3. Nombre de la lista de objetos en la plantilla (será 'pedidos')
+    context_object_name = "pedidos"
+    
+    # 4. (Opcional pero recomendado) Paginación para no mostrar miles de pedidos a la vez
+    paginate_by = 20
+
+    def get_queryset(self):
+        """
+        Sobrescribimos este método para optimizar la consulta.
+        """
+        # prefetch_related es la clave aquí. Le dice a Django: "Cuando obtengas
+        # los pedidos, trae también todos los productos y topics asociados en
+        # consultas adicionales y eficientes, en lugar de una por cada pedido".
+        queryset = Pedidos.objects.prefetch_related(
+            'detalle_pedido__fk_producto',                 # Precarga los productos de cada pedido
+            'detalle_pedido__topics_de_producto__fk_topic' # Precarga los topics de cada producto
+        ).order_by('-fecha_pedido') # Muestra los pedidos más recientes primero
+        
+        return queryset
