@@ -59,10 +59,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'appCeviche.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/proyectosDare/appCeviche/appCeviche/templates', 'C:/proyectosDare/SoftwareCevichera/appCeviche/apps/Productos/template', 'C:/proyectosDare/appCeviche/apps/User/templates'],
+        'DIRS': [
+                BASE_DIR/'appCeviche/templates', 
+                BASE_DIR/'/apps/Productos/template', 
+                BASE_DIR/'apps/User/templates'
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

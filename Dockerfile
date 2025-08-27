@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     TZ=America/Bogota \
     DJANGO_SETTINGS_MODULE=appCeviche.settings
 
-# Dependencias del sistema necesarias para mysqlclient
+# Dependencias del sistema
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        build-essential \
@@ -18,21 +18,22 @@ RUN apt-get update \
 # Directorio de trabajo
 WORKDIR /app
 
-# Copiar el proyecto
-COPY . /app
+# ----> ¡AQUÍ EMPIEZA EL CAMBIO! <----
 
-# Instalar dependencias de Python (sin requirements.txt, instalamos las claves)
-RUN pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir \
-      "django>=5.0,<6.0" \
-      djangorestframework \
-      mysqlclient \
-      django-cors-headers \
-      gunicorn
+# 1. Copia solo el archivo de requisitos.
+COPY requirements.txt ./
+
+# 2. Instala las dependencias desde ese archivo.
+#    Esto se guarda en caché. Si no cambias requirements.txt, este paso no se volverá a ejecutar.
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 3. AHORA copia el resto de tu código fuente.
+COPY . .
+
+# ----> ¡AQUÍ TERMINA EL CAMBIO! <----
 
 # Exponer puerto
 EXPOSE 8000
 
-# Comando por defecto: gunicorn
+# Comando por defecto
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "appCeviche.wsgi:application"]
-
