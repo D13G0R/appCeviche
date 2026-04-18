@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-%&+=dn8m95tkb9wu69a
 # - En producción define: DJANGO_DEBUG=False y DJANGO_ALLOWED_HOSTS con una lista separada por comas.
 # - En desarrollo puedes dejar DJANGO_DEBUG=True; ALLOWED_HOSTS tendrá valores locales por defecto.
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 't', 'yes', 'y')
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app').split(',')
 
 # Configuración de CORS
 CORS_ALLOWED_ORIGINS = [
@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'appCeviche.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default = os.getenv('DATABASE_URL')
+        default=os.getenv('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
     )
 }
 
