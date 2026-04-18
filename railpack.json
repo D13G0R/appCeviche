@@ -1,0 +1,4 @@
+{
+  "project_type": "python",
+  "start_command": "gunicorn appCeviche.wsgi:application"
+}
