@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%&+=dn8m95tkb9wu69a=gdcl&fd*6^p)p72ltiy!9+^w$d%*v*'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-%&+=dn8m95tkb9wu69a=gdcl&fd*6^p)p72ltiy!9+^w$d%*v*')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG y ALLOWED_HOSTS ahora se leen desde variables de entorno para evitar hardcodear valores.
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.Productos',
+    'apps.User',
     'rest_framework',
     'corsheaders',
     'whitenoise',
@@ -58,7 +59,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware'
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     # WhiteNoise sirve archivos estáticos directamente desde STATIC_ROOT en producción.
     # Debe ir inmediatamente después de SecurityMiddleware.
