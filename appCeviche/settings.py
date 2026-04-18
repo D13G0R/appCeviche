@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-%&+=dn8m95tkb9wu69a
 # DEBUG y ALLOWED_HOSTS ahora se leen desde variables de entorno para evitar hardcodear valores.
 # - En producción define: DJANGO_DEBUG=False y DJANGO_ALLOWED_HOSTS con una lista separada por comas.
 # - En desarrollo puedes dejar DJANGO_DEBUG=True; ALLOWED_HOSTS tendrá valores locales por defecto.
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true')
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv(
     'DJANGO_ALLOWED_HOSTS',
