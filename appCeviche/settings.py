@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,11 +25,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%&+=dn8m95tkb9wu69a=gdcl&fd*6^p)p72ltiy!9+^w$d%*v*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG y ALLOWED_HOSTS ahora se leen desde variables de entorno para evitar hardcodear valores.
+# - En producción define: DJANGO_DEBUG=False y DJANGO_ALLOWED_HOSTS con una lista separada por comas.
+# - En desarrollo puedes dejar DJANGO_DEBUG=True; ALLOWED_HOSTS tendrá valores locales por defecto.
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 't', 'yes', 'y')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
-ALLOWED_HOSTS = []
+# Configuración de CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    # "http://localhost:3000",  # Si usas un frontend en otro puerto
+    "http://127.0.0.1:3000",
+]
 
-LOGIN_URL = "C:/proyectosDare/appCeviche/apps/User/templates/login.html"
+
+LOGIN_URL = 'loginUser'
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,21 +53,26 @@ INSTALLED_APPS = [
     'apps.Productos',
     'rest_framework',
     'corsheaders',
+    'whitenoise',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware'
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise sirve archivos estáticos directamente desde STATIC_ROOT en producción.
+    # Debe ir inmediatamente después de SecurityMiddleware.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
 ]
 #_SOLO MIENTRAS DESARROLLAS.
-CORS_ALLOW_ALL_ORIGINS = True
-
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = []
 
 ROOT_URLCONF = 'appCeviche.urls'
 
@@ -63,9 +80,9 @@ ROOT_URLCONF = 'appCeviche.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
+'DIRS': [
                 BASE_DIR/'appCeviche/templates', 
-                BASE_DIR/'/apps/Productos/template', 
+                BASE_DIR/'apps/Productos/templates', 
                 BASE_DIR/'apps/User/templates'
             ],
         'APP_DIRS': True,
@@ -87,14 +104,9 @@ WSGI_APPLICATION = 'appCeviche.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME'),      # Lee el nombre de la DB desde Docker
-        'USER': os.environ.get('DB_USER'),      # Lee el usuario desde Docker
-        'PASSWORD': os.environ.get('DB_PASSWORD'),# Lee la contraseña desde Docker
-        'HOST': os.environ.get('DB_HOST'),      # Leerá 'db', el nombre del servicio
-        'PORT': os.environ.get('DB_PORT'),      # Lee el puerto desde Docker
-    }
+    'default': dj_database_url.config(
+        default = os.getenv('DATABASE_URL')
+    )
 }
 
 
@@ -132,9 +144,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = ('C:/proyectosDare/appCeviche/static', )
+STATICFILES_DIRS = (BASE_DIR/'static', )
+STATIC_ROOT = BASE_DIR/'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media'
+
+# Almacenamiento: Compresión y hashing automático
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
