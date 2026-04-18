@@ -28,17 +28,21 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-%&+=dn8m95tkb9wu69a
 # DEBUG y ALLOWED_HOSTS ahora se leen desde variables de entorno para evitar hardcodear valores.
 # - En producción define: DJANGO_DEBUG=False y DJANGO_ALLOWED_HOSTS con una lista separada por comas.
 # - En desarrollo puedes dejar DJANGO_DEBUG=True; ALLOWED_HOSTS tendrá valores locales por defecto.
-DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 't', 'yes', 'y')
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.railway.app').split(',')
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true')
 
-# Configuración de CORS
+ALLOWED_HOSTS = os.getenv(
+    'DJANGO_ALLOWED_HOSTS',
+    'localhost,127.0.0.1,appceviche-production.up.railway.app'
+).split(',')
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    # "http://localhost:3000",  # Si usas un frontend en otro puerto
     "http://127.0.0.1:3000",
+    "https://appceviche-production.up.railway.app",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://appceviche-production.up.railway.app",
+]
 
 LOGIN_URL = 'loginUser'
 # Application definition
