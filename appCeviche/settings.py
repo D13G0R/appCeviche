@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,12 +29,28 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-%&+=dn8m95tkb9wu69a
 # DEBUG y ALLOWED_HOSTS ahora se leen desde variables de entorno para evitar hardcodear valores.
 # - En producción define: DJANGO_DEBUG=False y DJANGO_ALLOWED_HOSTS con una lista separada por comas.
 # - En desarrollo puedes dejar DJANGO_DEBUG=True; ALLOWED_HOSTS tendrá valores locales por defecto.
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', cast=bool)
 
-ALLOWED_HOSTS = os.getenv(
-    'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1,appceviche-production.up.railway.app'
-).split(',')
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME' : config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT', cast=int)
+        }
+    }
+else:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+        )
+    }
+    
+ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
@@ -107,12 +124,6 @@ WSGI_APPLICATION = 'appCeviche.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
-    )
-}
 
 
 # Password validation
