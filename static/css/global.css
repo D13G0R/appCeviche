@@ -1,0 +1,26 @@
+:root {
+    --bg-main: #1B263B;
+    --bg-card: #233451;
+    --accent-primary: #FF6B00;
+    --accent-hover: #E55A00;
+    --text-main: #E0E5EC;
+    --text-title: #FFFFFF;
+    --border-color: rgba(224, 229, 236, 0.2);
+    --radius-lg: 4px;
+    --radius-md: 2px;
+    --radius-sm: 0px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}

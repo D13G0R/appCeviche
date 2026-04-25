@@ -1,78 +1,13 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CevichePro - Panel Administrativo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+{% block title %}CevichePro - Panel Administrativo{% endblock %}
+
+{% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/inicio.css' %}">
-</head>
+{% endblock %}
 
-<body>
-    <!-- Header Administrativo -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo gentle-float">
-                    🐟
-                </div>
-                <div class="logo-text">
-                    <h2>CevichePro</h2>
-                    <p>Panel Administrativo</p>
-                </div>
-            </div>
-
-            <nav class="nav-menu">
-                <a href="{% url 'inicio' %}" class="nav-item">
-                    <span>🏠</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{% url 'adminProductos' %}" class="nav-item">
-                    <span>🍤</span>
-                    <span>Productos</span>
-                </a>
-                <a href="{% url 'adminTopics' %}" class="nav-item">
-                    <span>📋</span>
-                    <span>Categorías</span>
-                </a>
-                <a href="{% url 'showOrdersTaken' %}" class="nav-item">
-                    <span>🛒</span>
-                    <span>Pedidos</span>
-                </a>
-                <a href="{% url 'AllOrders' %}" class="nav-item">
-                    <span>💰</span>
-                    <span>Ventas</span>
-                </a>
-
-                <div class="SessionsStyle">
-                    {% if user.is_authenticated %}
-
-                        <a href="{% url 'logoutUser' %}" class="nav-item">
-                            <span>💨</span>
-                            <span>Cerrar Session</span>
-                        </a>
-
-                    {% else %}
-
-                        <a href="{% url 'registerUser' %}" class="nav-item">
-                            <span>👥</span>
-                            <span>Registrar</span>
-                        </a>
-                        <a href="{% url 'loginUser' %}" class="nav-item">
-                            <span>🚪</span>
-                            <span>Iniciar Session</span>
-                        </a>
-                        
-                    {% endif %}
-                    
-            </div>
-            </nav>
-            
-        </div>
-    </header>
-
+{% block content %}
     <!-- Sección Principal -->
     <main class="main-section">
         <div>
@@ -121,6 +56,4 @@
             </div>
         </div>
     </main>
-</body>
-
-</html>
+{% endblock %}

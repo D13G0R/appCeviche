@@ -1,28 +1,11 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #1B263B;
-    color: #E0E5EC;
-    min-height: 100vh;
-    line-height: 1.5;
-}
-
 .page-container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 40px auto;
     padding: 24px;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* Botón de regreso */
 .back-button-container {
     margin-bottom: 32px;
 }
@@ -31,58 +14,32 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    background-color: #233451;
-    color: #E0E5EC;
+    background-color: var(--bg-card);
+    color: var(--text-main);
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     text-decoration: none;
-    border: 1px solid #E0E5EC;
+    border: 1px solid var(--border-color);
     transition: all 0.2s ease;
 }
 
 .back-button:hover {
-    background-color: #FF6B00;
+    background-color: var(--accent-primary);
     color: #FFFFFF;
-    border-color: #FF6B00;
+    border-color: var(--accent-primary);
 }
 
-.back-icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.alert-info {
-    padding: 10px 15px;
-    border: 1px solid #bce8f1;
-    background-color: #d9edf7;
-    color: #31708f;
-    border-radius: 4px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.alert-info:hover {
-    background-color: #c4e3f3;
-    border-color: #9bd0e7;
-}
-
-/* Contenedor del formulario */
 .form-container {
-    background-color: #233451;
-    border-radius: 8px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
     padding: 40px;
-    border: 1px solid #E0E5EC;
+    border: 1px solid var(--border-color);
     flex: 1;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* Encabezado */
 .form-header {
     text-align: center;
     margin-bottom: 40px;
@@ -91,16 +48,15 @@ body {
 .form-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #FFFFFF;
+    color: var(--text-title);
     margin-bottom: 8px;
 }
 
 .form-subtitle {
-    color: #E0E5EC;
+    color: var(--text-main);
     font-weight: 400;
 }
 
-/* Formulario */
 .user-form {
     flex: 1;
     display: flex;
@@ -123,7 +79,7 @@ body {
 .field-label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #E0E5EC;
+    color: var(--text-main);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -140,12 +96,12 @@ body {
     padding: 16px 0;
     font-size: 1rem;
     font-weight: 400;
-    color: #FFFFFF;
+    color: var(--text-title);
     font-family: 'Inter', sans-serif;
 }
 
 .form-input::placeholder {
-    color: #E0E5EC;
+    color: var(--text-main);
     opacity: 0.6;
 }
 
@@ -155,47 +111,15 @@ body {
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: #E0E5EC;
+    background-color: var(--border-color);
     transition: all 0.3s ease;
 }
 
-.form-input:focus + .input-line,
-.form-input:not(:placeholder-shown) + .input-line {
-    background-color: #FF6B00;
+.form-input:focus + .input-line {
+    background-color: var(--accent-primary);
     height: 2px;
 }
 
-/* Toggle de contraseña */
-.password-toggle {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #E0E5EC;
-    cursor: pointer;
-    padding: 8px;
-    transition: color 0.2s ease;
-}
-
-.password-toggle:hover {
-    color: #FF6B00;
-}
-
-.eye-icon {
-    width: 20px;
-    height: 20px;
-}
-
-/* Separador */
-.form-separator {
-    height: 1px;
-    background-color: #E0E5EC;
-    margin: 20px 0;
-}
-
-/* Botones de acción */
 .action-buttons {
     display: flex;
     gap: 16px;
@@ -210,7 +134,7 @@ body {
     gap: 8px;
     padding: 16px 24px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     font-size: 0.875rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -218,13 +142,12 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
-    font-family: 'Inter', sans-serif;
 }
 
 .btn-cancel {
-    background-color: #1B263B;
-    color: #E0E5EC;
-    border: 1px solid #E0E5EC;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
 }
 
 .btn-cancel:hover {
@@ -234,92 +157,18 @@ body {
 }
 
 .btn-submit {
-    background-color: #FF6B00;
+    background-color: var(--accent-primary);
     color: #FFFFFF;
-    border: 1px solid #FF6B00;
+    border: 1px solid var(--accent-primary);
 }
 
 .btn-submit:hover {
-    background-color: #E55A00;
-    border-color: #E55A00;
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
-.btn:active {
-    transform: translateY(1px);
-}
-
-/* Estados de validación */
-.form-input:invalid:not(:placeholder-shown) + .input-line {
-    background-color: #E06C75;
-}
-
-.form-input:valid:not(:placeholder-shown) + .input-line {
-    background-color: #4CAF50;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-    .page-container {
-        padding: 16px;
-    }
-
-    .form-container {
-        padding: 24px;
-    }
-
-    .form-title {
-        font-size: 2rem;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-        gap: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .form-container {
-        padding: 20px;
-    }
-
-    .form-title {
-        font-size: 1.5rem;
-    }
-
-    .btn {
-        padding: 14px 20px;
-    }
-}
-
-/* Animaciones */
-.form-container {
-    animation: fadeIn 0.6s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Focus visible para accesibilidad */
-.form-input:focus {
-    outline: 2px solid #FF6B00;
-    outline-offset: 2px;
-    border-radius: 4px;
-}
-
-.btn:focus {
-    outline: 2px solid #FF6B00;
-    outline-offset: 2px;
+    .form-container { padding: 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .action-buttons { flex-direction: column; }
 }

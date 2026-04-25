@@ -11,8 +11,12 @@ from django.db import IntegrityError
 from apps.User.forms import LoginForm
 from apps.Productos.models import Pedido_Producto, Pedidos
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def registerUser(request):
+    logger.info("Procesando registro de usuario.")
     if request.method != "POST":
         return render(request, "register.html", {"error" : "METODO NO PERMITIDO."}, status=400)
     try:
@@ -47,6 +51,7 @@ def registerUser(request):
 
 
 def loginUser(request):
+    logger.info("Procesando inicio de sesión.")
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -74,14 +79,10 @@ def loginUser(request):
     })
 
 def logoutUser(request):
+    logger.info("Cerrando sesión de usuario.")
     logout(request)
     return redirect("loginUser")
 
-# class adminSales(ListView):
-#     template_name = "adminSales.html"
-#     model = Pedido_Producto
-#     context_object_name = "object_product"
-#     queryset = Pedido_Producto.objects.order_by('-fk_pedido__fecha_pedido')
 class adminSales(ListView):
     """
     Muestra una lista de todos los pedidos con sus detalles completos,
@@ -103,6 +104,7 @@ class adminSales(ListView):
         """
         Sobrescribimos este método para optimizar la consulta.
         """
+        logger.info("Accediendo a la vista de administración de ventas.")
         # prefetch_related es la clave aquí. Le dice a Django: "Cuando obtengas
         # los pedidos, trae también todos los productos y topics asociados en
         # consultas adicionales y eficientes, en lugar de una por cada pedido".

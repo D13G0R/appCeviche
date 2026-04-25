@@ -1,52 +1,15 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Productos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/adminProductos.css' %}">
-</head>
-<body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo gentle-float">
-                    🐟
-                </div>
-                <div class="logo-text">
-                    <h2>CevichePro</h2>
-                    <p>Panel Administrativo</p>
-                </div>
-            </div>
-            
-            <nav class="nav-menu">
-                <a href="{% url 'inicio' %}" class="nav-item">
-                    <span>🏠</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{% url 'adminProductos' %}" class="nav-item">
-                    <span>🍤</span>
-                    <span>Productos</span>
-                </a>
-                <a href="{% url 'adminTopics' %}" class="nav-item">
-                    <span>📋</span>
-                    <span>Categorías</span>
-                </a>
-                <a href="{% url 'showOrdersTaken' %}" class="nav-item">
-                    <span>🛒</span>
-                    <span>Pedidos</span>
-                </a>
-                <a href="{% url 'AllOrders' %}" class="nav-item">
-                    <span>💰</span>
-                    <span>Ventas</span>
-                </a>
-            </nav>
-        </div>
-    </header>
+
+{% block title %}Administración de Productos{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adminProductos.css' %}">
+{% endblock %}
+
+{% block content %}
     <div class="main-header">
-        <div class="header-content">
+        <div class="header-content-sub">
             <div class="header-left">
                 <a href="{% url 'inicio' %}" class="back-link">
                     <span class="back-icon">←</span>
@@ -129,5 +92,4 @@
     <footer class="main-footer">
         <p>© {% now "Y" %} CevichePro.</p>
     </footer>
-</body>
-</html>
+{% endblock %}

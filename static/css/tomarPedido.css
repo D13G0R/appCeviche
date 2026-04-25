@@ -1,108 +1,94 @@
-
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #ecfeff; /* Matching the Tailwind cyan-50 color */
 }
 
 main {
     display: flex;
     flex: 1;
+    padding-top: 80px;
 }
 
 .content {
     flex: 1;
-    margin-right: 16rem; /* Matches the width of the panel */
+    margin-right: 2rem;
     transition: margin-right 0.3s ease;
 }
 
-/*Responsive Design to Panel of Orders*/
+/* Responsive Design to Panel of Orders */
 .panel {
-    width: 16rem;
+    width: 320px;
     transition: transform 0.3s ease;
-    border-color: #000000; /* Matching Tailwind cyan-200 */
-    background-color: white;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-md);
+    position: sticky;
+    top: 100px;
+    height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Height responsive adjustments based on viewport height */
-@media (min-height: 500px) {
-    .panel {
-        height: 500px;
-    }
-}
-
-@media (min-height: 650px) {
-    .panel {
-        height: 700px;
-    }
-}
-
-@media (min-height: 900px) {
-    .panel {
-        height: 950px;
-    }
-}
-
-@media (min-height: 1150px) {
-    .panel {
-        height: 950px;
-    }
-}
-
-.panel.closed {
-    transform: translateX(100%);
-}
-
-/* Panel styling */
 .panel #panel-list {
+    flex: 1;
     overflow-y: auto;
+    padding: 1rem;
 }
 
-.titulo_descripcion_pedido{
+.titulo_descripcion_pedido {
     font-weight: bold;
-    font-size: large;
+    font-size: 0.875rem;
     text-align: center;
-    margin: 2px;
+    margin: 10px 0;
+    color: var(--text-title);
+    text-transform: uppercase;
 }
 
 .textarea_descripcion_pedido {
-    field-sizing: content;
-    width: 220px;
-    min-width: 220px;
-    max-width: 220px;
-    height: fit-content;
-    min-height: 30px;
-    max-height: 120px;
-    border: 2px;
-    border-radius: 8px;
-    box-shadow: 1px 0px 10px 5px rgba(12, 12, 42, 0.652);
-    padding:12px;
-}
-
-
-/* Modal topics styling */
-.modalTopics {
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-}
-
-.modalTopics.show {
-    display: flex;
+    width: 100%;
+    min-height: 60px;
+    background-color: var(--bg-main);
+    color: var(--text-title);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    margin-bottom: 1rem;
+    resize: none;
 }
 
 .buscador {
-    background-color: white;
-    border-radius: 9999px;
+    background-color: var(--bg-main);
+    color: var(--text-title);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     padding: 0.5rem 1rem;
     width: 100%;
     outline: none;
 }
 
 .buscador:focus {
-    box-shadow: 0 0 0 2px #0891b2; /* Tailwind cyan-600 */
+    border-color: var(--accent-primary);
+}
+
+/* Modal Topics */
+.modalTopicss {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-main);
+}
+
+.topicRelated {
+    background-color: var(--bg-main) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-main) !important;
+}
+
+.topicRelated:hover {
+    border-color: var(--accent-primary) !important;
 }
 
 /* Mobile responsive styles */
@@ -113,8 +99,7 @@ main {
     
     .panel {
         width: 100%;
-        height: auto;
-        max-height: 80vh;
+        height: 60vh !important;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -122,43 +107,10 @@ main {
         top: auto;
         transform: translateY(100%);
         z-index: 50;
-        border-radius: 1rem 1rem 0 0;
-        transition: transform 0.3s ease;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     }
     
     .panel.open {
         transform: translateY(0);
-    }
-    
-    .modalTopics {
-        width: 100%;
-        padding: 1rem;
-    }
-    
-    /* Adjust header nav for mobile */
-    header nav {
-        width: 85%;
-    }
-    
-    header ul {
-        justify-content: space-around;
-        font-size: 0.875rem;
-    }
-    
-    /* Add toggle button for panel on mobile */
-    .panel-toggle {
-        position: fixed;
-        bottom: 4rem;
-        right: 1rem;
-        background-color: #0891b2; /* Cyan-600 */
-        color: white;
-        border-radius: 9999px;
-        width: 3.5rem;
-        height: 3.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 40;
     }
 }

@@ -1,11 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos Pendientes</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Pedidos Pendientes{% endblock %}
+
+{% block extra_css %}
+<style>
+    .data-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    h1, h2 {
+        color: var(--text-title);
+    }
+    p, li {
+        color: var(--text-main);
+    }
+    hr {
+        border-color: var(--border-color);
+        margin: 2rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="data-container">
     <h1>Pedidos Pendientes</h1>
 
     {% for pedido in Pedidos %}
@@ -32,7 +50,6 @@
     {% endfor %}
     </ul>
     <hr>
-{% endfor %}
-
-</body>
-</html>
+    {% endfor %}
+</div>
+{% endblock %}

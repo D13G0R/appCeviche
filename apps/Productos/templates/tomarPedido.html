@@ -1,135 +1,158 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedido</title>
+{% block title %}CevichePro - Tomar Pedido{% endblock %}
+
+{% block extra_css %}
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/tomarPedido.css' %}">
-</head>
+    <style>
+        /* Overriding Tailwind and matching the theme */
+        :root {
+            --bg-main: #1B263B;
+            --bg-card: #233451;
+            --accent-primary: #FF6B00;
+            --accent-hover: #E55A00;
+            --text-main: #E0E5EC;
+            --text-title: #FFFFFF;
+            --border-color: rgba(224, 229, 236, 0.2);
+        }
+        
+        body { background-color: var(--bg-main) !important; color: var(--text-main) !important; }
+        
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            background-color: #2a3f5f;
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+        
+        .accent-text { color: var(--accent-primary) !important; }
+        .title-text { color: var(--text-title) !important; }
+        
+        #panel {
+            background-color: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 4px !important;
+        }
+        
+        .panel-header { background-color: var(--accent-primary) !important; }
+        .total-container { background-color: var(--bg-main) !important; border: 1px solid var(--border-color); border-radius: 4px; }
+        
+        .btn-send {
+            background-color: var(--accent-primary) !important;
+            border-radius: 4px !important;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-send:hover { background-color: var(--accent-hover) !important; }
 
-<body class="bg-cyan-50 text-slate-800 font-sans min-h-screen flex flex-col">
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast {
+            background-color: var(--bg-card);
+            color: var(--text-title);
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent-primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease-out;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-success { border-left-color: #4CAF50; }
+        .toast-error { border-left-color: #E06C75; }
+    </style>
+{% endblock %}
 
-    <header class="bg-white w-full h-16 fixed top-0 left-0 z-20 flex justify-between items-center shadow-md">
-        <a href="{% url 'inicio' %}"
-            class="flex items-center justify-center w-12 h-12 ml-3 hover:bg-cyan-50 rounded-full transition-colors">
-            <img src="{% static 'images/previous.png' %}" class="w-8 h-8" alt="Back">
-        </a>
+{% block content %}
+    <div id="toast-container"></div>
 
-        <nav class="bg-white text-slate-700 w-3/4 h-full">
-            <ul class="flex w-full h-full justify-evenly items-center text-lg font-bold">
-                <li class="h-full">
-                    <span
-                        class="flex items-center h-full px-4 cursor-pointer hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Inicio</span>
-                </li>
-                <li class="h-full">
-                    <a href="{% url 'adminProductos' %}"
-                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Productos
-                    </a>
-                </li>
-                <li class="h-full">
-                    <a href="{% url 'adminTopics' %}"
-                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Topics
-                    </a>
-                </li>
-                <li class="h-full">
-                    <a href="{% url 'showOrdersTaken' %}"
-                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Pedidos</a>
-                </li>
-                <li class="h-full">
-                    <a href="{% url 'AllOrders' %}"
-                        class="flex items-center h-full px-4 hover:text-cyan-600 hover:border-b-2 hover:border-cyan-500 transition-all">Ventas del día</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="pt-24 pb-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto flex flex-1">
+    <main class="pt-8 pb-20 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-8 w-full">
         <div class="content flex-1">
-            <h2 class="text-3xl md:text-4xl text-center font-bold mb-8 text-cyan-600">Productos</h2>
-            <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <h2 class="text-2xl font-bold mb-8 title-text">Productos Disponibles</h2>
+            <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {% for producto in Productos %}
                     {% if  producto.estado_producto == "Activo" %}
-                        <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
+                        <div class="product-card p-4 cursor-pointer"
                         onclick="addToPanel('Producto', '{{ producto.id }}', '{{ producto.nombre_producto }}', '{{ producto.precio_producto }}')">
-                        <h2 class="text-lg font-semibold text-slate-800">{{ producto.nombre_producto }}</h2>
-                        <p class="text-sm text-slate-600 mt-2">{{ producto.descripcion_producto }}</p>
-                        <p class="text-lg font-bold text-cyan-600 mt-3">${{ producto.precio_producto }}</p>
+                            <h2 class="text-lg font-semibold title-text">{{ producto.nombre_producto }}</h2>
+                            <p class="text-sm text-slate-400 mt-1 h-10 overflow-hidden">{{ producto.descripcion_producto|truncatechars:80 }}</p>
+                            <p class="text-xl font-bold accent-text mt-3">${{ producto.precio_producto }}</p>
                         </div>
                     {% endif %}
                 {% endfor %}
             </section>
 
-            <h2 class="text-3xl md:text-4xl text-center font-bold mt-16 mb-8 text-cyan-600">Topics</h2>
+            <h2 class="text-2xl font-bold mt-16 mb-8 title-text">Categorías / Insumos</h2>
 
-            <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <section class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {% for topic in Topics %}
                     {% if  topic.estado_topic == "Activo" %}
-                        <div class="bg-white hover:bg-cyan-50 transition-all p-4 rounded-xl shadow-md hover:shadow-lg text-center cursor-pointer transform hover:-translate-y-1"
+                        <div class="product-card p-4 cursor-pointer"
                         onclick="addToPanel('Topic', '{{ topic.id }}' , '{{ topic.nombre_topic }}', '{{ topic.precio_topic }}')">
-                        <h3 class="text-lg font-semibold text-slate-800">{{ topic.nombre_topic }}</h3>
-                        <p class="text-sm text-slate-600 mt-2">{{ topic.descripcion_topic }}</p>
-                        <p class="text-lg font-bold text-cyan-600 mt-3">${{ topic.precio_topic }}</p>
+                            <h3 class="text-lg font-semibold title-text">{{ topic.nombre_topic }}</h3>
+                            <p class="text-sm text-slate-400 mt-1 h-10 overflow-hidden">{{ topic.descripcion_topic|truncatechars:80 }}</p>
+                            <p class="text-xl font-bold accent-text mt-3">${{ topic.precio_topic }}</p>
                         </div>
                     {% endif %}
                 {% endfor %}
             </section>
         </div>
 
-        <article id="panel"
-            class="panel fixed top-20 right-4 bg-white rounded-xl border-2 border-cyan-200 shadow-xl overflow-hidden w-64">
-            <div class="bg-cyan-500 py-3">
-                <h2 class="text-center font-bold text-white text-lg">En lista...</h2>
+        <aside id="panel" class="panel w-full md:w-80 shrink-0">
+            <div class="panel-header py-4">
+                <h2 class="text-center font-bold text-white text-lg uppercase tracking-wider">Detalle del Pedido</h2>
             </div>
-            <div class="p-4">
-                <div class="flex justify-between items-center mb-3 px-2 py-3 bg-cyan-100 rounded-lg">
-                    <p class="font-bold text-slate-800">Total</p>
-                    <p class="totalPedido font-bold text-cyan-700">0</p>
+            <div class="p-4 flex flex-col h-full overflow-hidden">
+                <div class="total-container flex justify-between items-center mb-4 p-4">
+                    <p class="font-bold title-text">TOTAL</p>
+                    <p class="totalPedido font-bold text-2xl accent-text">0.00</p>
                 </div>
+                
+                <p class="titulo_descripcion_pedido">Notas Generales</p>
+                <textarea class="textarea_descripcion_pedido" placeholder="Ej: Mesa 5, sin cebolla..."></textarea>
+
+                <div class="flex-1 overflow-y-auto pr-2">
+                    <ul id="panel-list" class="space-y-3">
+                        <!-- Items dynamically added -->
+                    </ul>
+                </div>
+
                 <button type="button"
-                    class="w-full py-3 mb-4 bg-teal-500 hover:bg-teal-600 text-white font-bold text-center rounded-lg shadow-md transition-colors"
+                    class="btn-send w-full py-4 mt-4 text-white font-bold text-center uppercase tracking-widest shadow-lg"
                     onclick="enviarDatos()">
-                    <a href="{% url 'takeOrderView' %}" class="block w-full h-full bg-black">Enviar Pedido</a>
+                    Enviar Pedido
                 </button>
-                <p class = "titulo_descripcion_pedido">Descripción del pedido</p>
-                <textarea class = "textarea_descripcion_pedido"></textarea>
-
-                <ul id="panel-list" class="max-h-[500px] overflow-y-auto border-t border-cyan-100 pt-3">
-                    <!-- Items will be added here dynamically -->
-                </ul>
             </div>
-        </article>
+        </aside>
 
-        <div class="modalTopicss hidden fixed inset-0 bg-black bg-opacity-50 z-30 flex items-center justify-center ">
-            <div class="relative bg-white w-11/12 max-w-4xl h-5/6 rounded-xl shadow-2xl overflow-hidden">
-                <div class="bg-cyan-600 p-4 flex items-center justify-between">
-                    <button onclick="closeTopicModal()"
-                        class="bg-white rounded-full p-1 hover:bg-cyan-100 transition-colors">
-                        <img src="{% static 'images/close.png' %}" class="w-8 h-8">
-                    </button>
-                    <h2 class="text-2xl font-bold text-white">Topics</h2>
-                    <div class="relative">
-                        <input
-                            class="buscador px-4 py-2 rounded-full shadow-inner focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                            placeholder="Buscar topics...">
-                    </div>
-                </div>
-                <div
-                    class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 overflow-y-auto max-h-[calc(100%-80px)]">
-                    <!-- MODAL DE TOPICS -->
-                </div>
-            </div>
+        <!-- Modal for Topics -->
+        <div class="modalTopicss hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <!-- Content generated by JS -->
         </div>
     </main>
 
-    <footer class="bg-teal-500 text-white text-center py-3 bottom-0 left-0 w-full shadow-lg z-10">
-        <p class="text-sm font-medium">© 2023 Pedido App</p>
+    <footer class="bg-slate-900 text-slate-500 text-center py-4 mt-auto border-t border-slate-800">
+        <p class="text-xs uppercase tracking-widest">© 2024 CevichePro Management System</p>
     </footer>
+{% endblock %}
 
+{% block extra_js %}
     <script src="{% static 'js/tomarPedido.js' %}"></script>
-
-</body>
-
-</html>
+{% endblock %}

@@ -1,101 +1,3 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #1B263B;
-    color: #E0E5EC;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-/* Header Styles */
-.header {
-    background-color: #1B263B;
-    padding: 1rem 0;
-    border-bottom: 1px solid #E0E5EC;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.logo {
-    font-size: 2rem;
-    animation: gentle-float 3s ease-in-out infinite;
-}
-
-.logo-text h2 {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #FFFFFF;
-    margin-bottom: 0.25rem;
-}
-
-.logo-text p {
-    font-weight: 400;
-    font-size: 0.875rem;
-    color: #E0E5EC;
-}
-
-.nav-menu {
-    display: flex;
-    gap: 2rem;
-}
-.SessionsStyle{
-    width: 380px;
-    background-color: #FF6B00;
-    color: white;
-    border-radius: 10px;
-    border: #ffffff00;
-    display:flex;
-    
-}
-.SessionsStyle:hover{
-    
-    background-color: rgba(147, 79, 30, 0.834);
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #E0E5EC;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.nav-item:hover {
-    color: #FF6B00;
-    background-color: rgba(255, 107, 0, 0.1);
-}
-
-.nav-item span:first-child {
-    font-size: 1.1rem;
-}
-
 /* Main Section */
 .main-section {
     max-width: 1200px;
@@ -107,7 +9,7 @@ body {
 .welcome-title {
     font-weight: 700;
     font-size: 3rem;
-    color: #FFFFFF;
+    color: var(--text-title);
     margin-bottom: 1rem;
     opacity: 0;
     animation: fade-in 1s ease-out 0.2s forwards;
@@ -116,7 +18,7 @@ body {
 .welcome-subtitle {
     font-weight: 400;
     font-size: 1.125rem;
-    color: #E0E5EC;
+    color: var(--text-main);
     margin-bottom: 3rem;
     opacity: 0;
     animation: fade-in 1s ease-out 0.4s forwards;
@@ -133,11 +35,11 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    background-color: #FF6B00;
-    color: #FFFFFF;
+    background-color: var(--accent-primary);
+    color: var(--text-title);
     text-decoration: none;
     padding: 1.5rem 2rem;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     font-weight: 700;
     font-size: 1.125rem;
     transition: all 0.3s ease;
@@ -145,7 +47,7 @@ body {
 }
 
 .cta-button:hover {
-    background-color: #e55a00;
+    background-color: var(--accent-hover);
     transform: translateY(-2px);
 }
 
@@ -168,12 +70,14 @@ body {
 }
 
 .quick-card {
-    background-color: #233451;
+    background-color: var(--bg-card);
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
     opacity: 0;
     animation: fade-in 1s ease-out forwards;
+    border-radius: var(--radius-md);
+    text-decoration: none;
 }
 
 .quick-card:nth-child(1) { animation-delay: 0.8s; }
@@ -194,23 +98,23 @@ body {
 .quick-card-title {
     font-weight: 700;
     font-size: 1.25rem;
-    color: #FFFFFF;
+    color: var(--text-title);
     margin-bottom: 0.5rem;
 }
 
 .quick-card-desc {
     font-weight: 400;
     font-size: 0.875rem;
-    color: #E0E5EC;
+    color: var(--text-main);
 }
 
 /* Separador entre secciones */
 .section-separator {
     width: 100%;
     height: 1px;
-    background-color: #E0E5EC;
+    background-color: var(--text-main);
     margin: 3rem 0;
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 /* Animations */
@@ -225,15 +129,6 @@ body {
     }
 }
 
-@keyframes gentle-float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
 @keyframes subtle-pulse {
     0%, 100% {
         box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4);
@@ -245,23 +140,6 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 0 1rem;
-    }
-
-    .nav-menu {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .nav-item {
-        font-size: 0.75rem;
-        padding: 0.5rem 0.75rem;
-    }
-
     .main-section {
         padding: 2rem 1rem;
     }
@@ -290,46 +168,5 @@ body {
 
     .quick-card {
         padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-content {
-        padding: 0 0.5rem;
-    }
-
-    .logo-section {
-        gap: 0.5rem;
-    }
-
-    .logo {
-        font-size: 1.5rem;
-    }
-
-    .logo-text h2 {
-        font-size: 1.25rem;
-    }
-
-    .nav-menu {
-        gap: 0.5rem;
-    }
-
-    .nav-item {
-        padding: 0.375rem 0.5rem;
-        font-size: 0.7rem;
-    }
-
-    .welcome-title {
-        font-size: 1.75rem;
-    }
-
-    .cta-button {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1rem;
-    }
-
-    .cta-icon {
-        font-size: 1.5rem;
     }
 }

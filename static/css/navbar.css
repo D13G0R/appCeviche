@@ -1,0 +1,105 @@
+/* Navbar Styles for CevichePro */
+
+.header {
+    background-color: var(--bg-main);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    font-size: 2rem;
+    animation: gentle-float 3s ease-in-out infinite;
+}
+
+.logo-text h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-title);
+    margin-bottom: 0.25rem;
+}
+
+.logo-text p {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: var(--text-main);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.SessionsStyle {
+    background-color: var(--accent-primary);
+    color: white;
+    border-radius: var(--radius-lg);
+    border: none;
+    display: flex;
+    transition: background-color 0.3s ease;
+}
+
+.SessionsStyle:hover {
+    background-color: var(--accent-hover);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    color: var(--accent-primary);
+    background-color: rgba(255, 107, 0, 0.1);
+}
+
+.nav-item span:first-child {
+    font-size: 1.1rem;
+}
+
+@keyframes gentle-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .nav-item {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+    }
+}

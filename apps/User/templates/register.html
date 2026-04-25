@@ -1,14 +1,13 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario - CevichePro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" type = "text/css" href = "{% static 'css/register.css' %}">
-</head>
-<body>
+
+{% block title %}Registro de Usuario - CevichePro{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
     <div class="page-container">
         <!-- Botón de regreso -->
         <div class="back-button-container">
@@ -146,6 +145,8 @@
             </form>
         </div>
     </div>
-</body>
-<script src = "{% static 'js/register.js' %}"></script>
-</html>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock %}
